@@ -1,0 +1,15 @@
+{
+  "name": "reto1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "guardado.js",
+  "scripts": {
+    "devStart": "nodemon guardado.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^6.7.1"
+  }
+}

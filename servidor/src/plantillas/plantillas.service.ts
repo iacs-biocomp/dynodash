@@ -11,20 +11,20 @@ import { Buffer } from "buffer";
 @Injectable()
 export class PlantillasService {
 
-    constructor(@InjectModel('Template') private plantillaModel: Model<Plantilla>){}
+    constructor(@InjectModel('Template') private plantillaModel: Model<Plantilla>) { }
 
-    async obtenerPlantilla(name : string) {
-        /**
-         * Implementar un try/catch.
-         * Es recomendable crear una plantilla con los posibles mensajes de error para mostrarlos en el navegador
-         */
-        var HTMLencoded = (await this.plantillaModel.findOne({"_name" : name}))._html;
-        var HTMLdecoded = Buffer.from(HTMLencoded, "base64").toString("utf-8");
+    async obtenerPlantilla(parametro: string) {
+
+        let object = (await this.plantillaModel.findById(parametro));
+
+        if(!object) {
+            object = await this.plantillaModel.findOne({ "_name": parametro });
+            let HTMLdecoded = Buffer.from(object._html, "base64").toString("utf-8");
+            return HTMLdecoded;
+        }
+        let HTMLdecoded = Buffer.from(object._html, "base64").toString("utf-8");
         return HTMLdecoded;
-    }
 
-    async recuperarPlantilla(id: string) {
-        return await this.plantillaModel.findById(id);
     }
 
     /*plantilla: Plantilla[] = 
@@ -50,6 +50,6 @@ export class PlantillasService {
     obtenerPlantillas() {
         return this.plantilla;
     }*/
-    
+
 
 }

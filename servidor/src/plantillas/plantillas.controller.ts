@@ -1,24 +1,38 @@
-import { Body, Controller, Get, Param } from '@nestjs/common';
+import {Controller, Get, Render, HttpException, HttpStatus, Param, UseFilters, UseGuards, ForbiddenException } from '@nestjs/common';
+import { AuthGard } from 'src/gards/auth.gard';
 
-import { CrearPlantillaDTO } from "./dto/plantillaDTO";
-import { Plantilla } from './interfaces/Plantilla';
+import { HttpExceptionFilter } from 'src/global.filter';
 
 import { PlantillasService } from "./plantillas.service";
 
 @Controller('templates')
 export class PlantillasController {
 
-    constructor(private plantillaServicio: PlantillasService) {}
+    constructor(private plantillaServicio: PlantillasService) { }
 
     /*Método Get para recuperar la información de la base de datos*/
-    @Get(':plantillaName')
-    obtenerPlantilla(@Param('plantillaName') plantillaName) {
-        return this.plantillaServicio.obtenerPlantilla(plantillaName);
+    @Get(':parametro')
+    @UseGuards(new AuthGard())
+    @UseFilters(new HttpExceptionFilter())
+    @Render('index.hbs')
+    async obtenerPlantilla(@Param('parametro') parametro) {
+        try {
+            
+            return { message : await this.plantillaServicio.obtenerPlantilla(parametro)};
+
+        } catch (err) {
+            if(err instanceof ForbiddenException) {
+                throw new HttpException('fallo rol', HttpStatus.FORBIDDEN);
+            }else {
+                throw new HttpException('fallo ruta', HttpStatus.BAD_REQUEST);
+            }
+        }
+
     }
 
-    @Get(':id')
-    recuperarPlantilla(@Param('id') id: string) {
-        return this.plantillaServicio.recuperarPlantilla(id);
+    @Get()
+    @Render('index.hbs')
+    root() {
+        return { message: 'Hola mundo!' };
     }
-
 }

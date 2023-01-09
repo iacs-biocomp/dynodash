@@ -13,7 +13,7 @@ export class TemplatesService {
 
     //function to insert template into DB
     async insertTemplate(plantilla) {
-        const { namePlantilla, content} = plantilla;
+        /*const { namePlantilla, content} = plantilla;
         console.log(namePlantilla);
         console.log(content);
 
@@ -27,7 +27,7 @@ export class TemplatesService {
     
         } catch (e) {
             console.log(e.menssage)
-        }
+        }*/
     }
 
     //function to delete template from database

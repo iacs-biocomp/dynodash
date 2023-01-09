@@ -33,7 +33,7 @@ const validarJWT = async() => {
 boton.addEventListener('click',async ev => {
     //ev.defaultPrevented();
 
-    await validarJWT();
+    const token = localStorage.getItem('token') || '';
 
     const formData = {};
 
@@ -44,8 +44,13 @@ boton.addEventListener('click',async ev => {
 
     fetch('http://localhost:3000/templates', {
     method: "POST",
-    body: JSON.stringify(formData),
-    headers: {"Content-type": "application/json"}
+    body: JSON.stringify({
+        token: token,
+        data : formData
+    }),
+    headers: {
+        "Content-type": "application/json",
+        }
     })
 
 });
@@ -54,7 +59,7 @@ boton.addEventListener('click',async ev => {
 
 const main = async() => {
     // Validar JWT
-    await validarJWT();
+    //await validarJWT();
 
 }
 

@@ -11,20 +11,12 @@
 
 
     <div class="row mt-5">
-        <!--<div class="col-sm-6">
-            <h1>Signin</h1>
-            <hr>
-            <br>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
-            <br>
-            <a href="#" onclick="signOut();">Sign out</a>
-        </div>-->
-
+  
         <div class="col-sm-6">
             <h1>Login manual</h1>
             <hr>
 
-            <form class="d-grid">
+            <form action="/auth/login" method="post" class="d-grid">
                 <input type="text" name="username" class="form-control mb-2" placeholder="Name" />
                 <input type="text" name="password" class="form-control mb-2" placeholder="Password" />
     
@@ -39,7 +31,7 @@
     
 
 
-    <script src="./scripts/auth.js"></script>
+    <script src="./scripts/cargarPortal.js"></script>
 
 </body>
 </html>

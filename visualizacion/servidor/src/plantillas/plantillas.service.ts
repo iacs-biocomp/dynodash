@@ -8,12 +8,16 @@ import { Model } from "mongoose";
 
 import { Buffer } from "buffer";
 
+import { SafeString } from 'handlebars';
+
+
 @Injectable()
 export class PlantillasService {
 
     constructor(@InjectModel('Template') private plantillaModel: Model<Plantilla>) { }
 
     async obtenerPlantilla(parametro: string) {
+
         console.log(parametro)
 
         let object = (await this.plantillaModel.findById({'_id' : parametro}));
@@ -26,9 +30,74 @@ export class PlantillasService {
             return HTMLdecoded;
         }
         let HTMLdecoded = Buffer.from(object._html, "base64").toString("utf-8");
+        console.log(HTMLdecoded);
         return HTMLdecoded;
 
     }
+
+    /**
+     * Metodo para hacer la llamada a la coleccion Gatos que contiene todos los datos sobre los gatos
+     * @returns Devuelve toda la coleccion Gatos
+     */
+    async opcions() {
+      const data = [
+        {
+          "name" : "Purrsloud",
+          "species" : "Cat",
+          "birthYear" : 2016,
+          "photo" : "https://learnwebcode.github.io/json-example/images/cat-2.jpg"
+        },
+        {
+          "name" : "Barksalot",
+          "species" : "Dog",
+          "birthYear" : 2008,
+          "photo" : "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
+        },
+        {
+          "name" : "Miguel",
+          "species" : "Cat",
+          "favFoods" : ["tuna", "catnip", "celery"],
+          "birthYear" : 2012,
+          "photo" : "https://learnwebcode.github.io/json-example/images/cat-1.jpg"
+        }
+      ];
+
+      return data;
+    }
+
+    /**
+     * Metodo para seleccionar un gato en concreto de la coleccion Gatos
+     * @returns objeto Gato
+     */
+    async buscarGato(paramentro : string) {
+
+      const data = [
+        {
+          "name" : "Purrsloud",
+          "species" : "Cat",
+          "birthYear" : 2016,
+          "photo" : "https://learnwebcode.github.io/json-example/images/cat-2.jpg"
+        },
+        {
+          "name" : "Barksalot",
+          "species" : "Dog",
+          "birthYear" : 2008,
+          "photo" : "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
+        },
+        {
+          "name" : "Miguel",
+          "species" : "Cat",
+          "favFoods" : ["tuna", "catnip", "celery"],
+          "birthYear" : 2012,
+          "photo" : "https://learnwebcode.github.io/json-example/images/cat-1.jpg"
+        }
+      ];
+
+      const gato = data.find(gato => gato.name=== paramentro );
+
+      return gato;
+    }
+    
 
     /*plantilla: Plantilla[] = 
         [

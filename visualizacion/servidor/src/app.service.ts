@@ -11,7 +11,8 @@ export class AppService {
 
   constructor(private readonly requestService : RequestService) {}
 
-  getHello() {
+  getForm() : string {
+    return 'Bienvenido!'
   }
 
 }

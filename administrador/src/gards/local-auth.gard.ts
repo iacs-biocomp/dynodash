@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable, U
 import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 import { LocalStrategy } from 'src/auth/strategies';
-import { HttpExceptionFilter } from 'src/common/exceptionFilters/globalFilter';
+import { HttpExceptionFilter } from 'src/common/exceptionFilters/globalFilterExpress';
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local'){
@@ -14,6 +14,7 @@ export class AthenticatedSession implements CanActivate {
         const req = context.switchToHttp().getRequest();
         const autorizado = req.session.get('authenticated');
         if(!autorizado) {
+            console.log('Usuario no logeado')
             throw new HttpException('Usuario no logeado', HttpStatus.UNAUTHORIZED);
         } else {
             

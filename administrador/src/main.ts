@@ -5,7 +5,9 @@ import * as passport from 'passport';
 
 
 import { AppModule } from './app.module';
-import { join } from 'path';
+import path, { join } from 'path';
+import fastifyStatic from '@fastify/static';
+import { HttpExceptionFilter } from './common/exceptionFilters/globalFilterExpress';
 
 
 async function bootstrap() {
@@ -14,20 +16,37 @@ async function bootstrap() {
     new FastifyAdapter()
   );
 
+  const httpAdapter = app.getHttpAdapter();
+
+  
+  /**
+   * Registro de la localizacion de elemenetos static
+   */
   app.useStaticAssets({
     root: join(__dirname, '..', 'public'),
     prefix: '/public/',
   });
+
+  /**
+   * Resgistro de la localizacion de las vistas HTML
+   */
 
   app.setViewEngine({
     engine: {
       handlebars: require('handlebars'),
     },
     templates: join(__dirname, '..', 'views'),
+    root: join(__dirname, '..', 'views'),
+    layout:"./layouts/index",
+    viewExt: "hbs",
   });
 
   const port = 3000;
 
+
+/**
+ * Registro del gestor de sesiones
+ */
   await app.register(secureSession, {
     cookieName: "myCookie",
     secret: 'averylogphrasebiggerthanthirtytwochars',

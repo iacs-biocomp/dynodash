@@ -9,82 +9,68 @@ import {
 import { AuthService } from './auth/auth.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { HttpExceptionFilter } from './common/exceptionFilters/globalFilter';
+import { HttpExceptionFilter } from './common/exceptionFilters/globalFilterExpress';
 import { Response } from 'express';
+import { FastifyExceptionFilter } from './common/exceptionFilters/globalFilterFastify';
+import { FastifyReply } from "fastify";
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService, private authService: AuthService) { }
 
   @Get()
-  @UseFilters(new HttpExceptionFilter())
-  @Render('index.hbs')
+  @Render('main.hbs')
   root() {
-    return {
-      message: `<div class="row mt-5">
-  
-    <div class="col-sm-6">
-        <h1>Login manual</h1>
-        <hr>
+    return {title: "Pagina web"}
+  }
 
-        <form action="/auth/login" method="post" class="d-grid">
-            <input type="text" name="username" class="form-control mb-2" placeholder="Name" />
-            <input type="text" name="password" class="form-control mb-2" placeholder="Password" />
+  @Get('error400')
+  @Render('error400.hbs')
+  error400(@Res() res: Response) {
+     return {title: "Error 400"}
+  }
 
-            <button type="submit" class="btn btn-primary">
-                Ingresar
-            </button>
-        </form>
+  @Get('error401')
+  @Render('error401.hbs')
+  error401(@Res() res: Response) {
+     return {title: "Error 401"}
+  }
 
-    </div>
-</div>` };
+  @Get('error403')
+  @Render('error403.hbs')
+  error403(@Res() res: Response) {
+     return {title: "Error 403"}
+  }
+
+  @Get('error404')
+  @Render('error404.hbs')
+  error404(@Res() res: Response) {
+     return {title: "Error 404"}
   }
 
   @UseGuards(LocalAuthGuard)
   @UseFilters(new HttpExceptionFilter())
   @Post('auth/login')
-  @Render('index.hbs')
+  @Render('layouts/loggin.hbs')
   async login(@Req() req, @Session() session: secureSession.Session,@Res() resp: Response) {
-    try {
-
       const visits = session.get('visits');
       session.set('visits', visits ? visits + 1 : 1);
       session.authenticated = true;
-      session.user = req.body.username;
+      const username = req.body.username;
+      session.user = username;
       console.log(session)
 
-      return {
-        message: `<div class="row mt-5">
-  
-                  <div class="col-sm-6">
-                      <h1>Login manual</h1>
-                      <hr>
-
-                      <form action="/profile" method="post" class="d-grid">
-                          <button type="submit" class="btn btn-primary">
-                              WhoIam
-                          </button>
-                      </form>
-
-                  </div>
-              </div>`};
-
-    }catch(err) {
-      if(err instanceof ForbiddenException) {
-        throw new HttpException('fallo rol', HttpStatus.FORBIDDEN);
-    }else {
-        throw new HttpException('fallo ruta', HttpStatus.BAD_REQUEST);
-    }
-    }
+      return {title: username}
 
   }
 
   @UseGuards(AthenticatedSession)
-  @Post('profile')
+  @Get('profile')
   @UseFilters(new HttpExceptionFilter())
-  @Render('index.hbs')
+  @Render('layouts/index.hbs')
   async getProfile(@Req() req) {
-    return { message: req.session.user };
+    return { body: req.session.user,
+            title: req.session.user };
   }
 
   @Get('logout')

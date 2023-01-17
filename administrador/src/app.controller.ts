@@ -1,4 +1,4 @@
-import { Controller, Render, Get, Post, Req, Session, UseGuards, UseFilters, HttpException, HttpStatus, Res, ForbiddenException } from '@nestjs/common';
+import { Controller, Render, Get, Post, Req, Session, UseGuards, UseFilters, Res } from '@nestjs/common';
 import * as secureSession from '@fastify/secure-session';
 
 import { AppService } from './app.service';
@@ -7,12 +7,10 @@ import {
   AthenticatedSession
 } from "./gards";
 import { AuthService } from './auth/auth.service';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+
 import { HttpExceptionFilter } from './common/exceptionFilters/globalFilterExpress';
 import { Response } from 'express';
 import { FastifyExceptionFilter } from './common/exceptionFilters/globalFilterFastify';
-import { FastifyReply } from "fastify";
 
 @Controller()
 export class AppController {
@@ -20,7 +18,9 @@ export class AppController {
 
   @Get()
   @Render('main.hbs')
-  root() {
+  root(@Session() session: secureSession.Session) {
+    console.log("En root")
+    console.log(session)
     return {title: "Pagina web"}
   }
 
@@ -58,6 +58,8 @@ export class AppController {
       session.authenticated = true;
       const username = req.body.username;
       session.user = username;
+
+      console.log("En login")
       console.log(session)
 
       return {title: username}
@@ -73,9 +75,13 @@ export class AppController {
             title: req.session.user };
   }
 
-  @Get('logout')
-  async eleiminarSesion(@Session() session: secureSession.Session) {
+  @Post('logout')
+  async eleiminarSesion(@Session() session: secureSession.Session, @Res() resp: Response) {
     session.delete();
+    console.log("En logout")
+    console.log(session)
+    resp.status(302).redirect('/') 
+    return session;
   }
 
 

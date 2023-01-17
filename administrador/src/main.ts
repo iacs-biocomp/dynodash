@@ -1,13 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import secureSession from '@fastify/secure-session';
-import * as passport from 'passport';
+import helmet from "@fastify/helmet";
 
+import { join } from 'path';
 
 import { AppModule } from './app.module';
-import path, { join } from 'path';
-import fastifyStatic from '@fastify/static';
-import { HttpExceptionFilter } from './common/exceptionFilters/globalFilterExpress';
+
+
 
 
 async function bootstrap() {
@@ -31,7 +31,7 @@ async function bootstrap() {
    * Resgistro de la localizacion de las vistas HTML
    */
 
-  app.setViewEngine({
+  app.register(require("@fastify/view"),{
     engine: {
       handlebars: require('handlebars'),
     },
@@ -39,10 +39,21 @@ async function bootstrap() {
     root: join(__dirname, '..', 'views'),
     layout:"./layouts/index",
     viewExt: "hbs",
+    options: {
+      partials: {
+        logoutBoton: '/partials/logoutBoton.hbs',
+      }
+    }
   });
 
   const port = 3000;
 
+
+/*
+Registro del middleware helmet para controlar la seguridad de la aplicacion. Modifica los headers para evitar vulnerabilidades HTTP.
+*/
+
+await app.register(helmet);
 
 /**
  * Registro del gestor de sesiones

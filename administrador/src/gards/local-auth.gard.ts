@@ -13,10 +13,15 @@ export class AthenticatedSession implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<any> {
         const req = context.switchToHttp().getRequest();
         const autorizado = req.session.get('authenticated');
+        const estadoSession = req.session.deleted;
         if(!autorizado) {
             console.log('Usuario no logeado')
             throw new HttpException('Usuario no logeado', HttpStatus.UNAUTHORIZED);
-        } else {
+        }else if( estadoSession ) {
+            console.log('Usuario no logeado')
+            throw new HttpException('Usuario no logeado', HttpStatus.UNAUTHORIZED);
+        }
+         else {
             
             return req.session.user;
         }

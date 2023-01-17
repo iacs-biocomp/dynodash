@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Render, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from "express";
-
+import * as Handlebars from "handlebars";
 
 @Controller()
 export class AppController {
@@ -19,10 +19,21 @@ export class AppController {
    */
   @Get()
   root(@Res() res: Response) {
-    return res.render(
-      "main",
+
+    /**
+     * Handlebars compila la plantilla e introduce los datos en ella para contruir el HTML.
+     */
+    const template = this.appService.getPlantilla();
+    const compiledTemplate = Handlebars.compile(template);
+    const data = this.appService.getData();
+    const html = compiledTemplate(data);
+    console.log(html)
+    return res.render("layouts/index",{
+      titulo: "Inicio",
+      body: html
+    }
     );
 
-}
+  }
 
 }

@@ -62,6 +62,11 @@ export class PlantillasService {
         }
       ];
 
+      /**
+       * Si no hay datos devuelve un empty
+       */
+      const dataempty ={};
+
       return data;
     }
 

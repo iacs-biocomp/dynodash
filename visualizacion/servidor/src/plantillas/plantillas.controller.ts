@@ -2,6 +2,9 @@ import {Controller, Get, Render, HttpException, HttpStatus, Param, UseFilters, R
 import { HttpExceptionFilter } from 'src/global.filter';
 
 import { Response } from 'express';
+import * as Handlebars from "handlebars";
+import { lista } from "../../views/helpers/helpers";
+
 
 import { PlantillasService } from "./plantillas.service";
 
@@ -43,9 +46,39 @@ export class PlantillasController {
      */
     @Get()
     async root(@Res() res: Response) {
+
+
+        Handlebars.registerHelper('lista', function(items, options) {
+        
+            
+            //Comprobar que se reciben datos para generar el HTML
+             
+            if(Object.keys(items).length !== 0){
+                const h2 = "<h2>Selecciona una opción</h2>\n"
+                const itemsAsHtml = items.map(pet => '<a class="btn btn-primary btn-lg" role="button" href="/templates/'+ options.fn(pet.name) +'" '+ 'role="button">' + options.fn(pet.name) + "</a>" +"<br>");
+                return h2 + itemsAsHtml.join("\n"); 
+            }
+            return "<p>No hay opciones disponibles.</p>"
+        });
+
+        //Recibo la plantilla de la DB Plantillas
+        const template = `{{#if pets}}{{#lista pets}}{{this}}{{/lista}}{{/if}}`;
+
+        const compiledTemplate = Handlebars.compile(template, {knownHelpers: {'lista':true}, knownHelpersOnly:true});
+        console.log(compiledTemplate)
+
+        //Recibo los datos de la DB Datos
+        const pets = await this.plantillaServicio.opcions();
+        console.log(pets);
+
+        //Creacion del HTML
+        const html = compiledTemplate({pets});
+        console.log(html);
+
         return res.render("main",{
             layout: 'index',
-            pets : await this.plantillaServicio.opcions()
+            titulo: "Inicio",
+            opciones: html
         },
           );
 
@@ -63,8 +96,38 @@ export class PlantillasController {
     async buscarGato(@Param('parametro') gatoName : string, @Res() res : Response) {
         try {
 
-            return res.render("layouts/gato",{
-                gato : await this.plantillaServicio.buscarGato(gatoName)
+            const template = `{{#with gato}}
+            <div class="{{name}}">
+                <div class="photo-column">
+                  <img src="{{photo}}">
+                </div>
+            
+                <div class="info-column">
+                  <h2>{{name}} <span class="species">({{species}})</span></h2>
+            
+                  {{#if favFoods}}
+                  <h4 class="headline-bar">Favorite Foods</h4>
+                  <ul class="favorite-foods">
+                    {{#each favFoods}}
+                      <li>{{{this}}}</li>
+                    {{/each}}
+                  </ul>
+                  {{/if}}
+            
+                </div>
+              </div>
+            {{/with}}`;
+
+            const compiledTemplate = Handlebars.compile(template);
+
+            const gato = await this.plantillaServicio.buscarGato(gatoName);
+            console.log(gato);
+
+            const html = compiledTemplate({gato});
+
+            return res.render("layouts/index",{
+                titulo: gato.name,
+                body : html
             },
               );
 

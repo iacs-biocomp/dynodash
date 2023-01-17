@@ -6,6 +6,7 @@ import * as exphbs from "express-handlebars";
 //import * as hbs from 'express-handlebars';
 import { HttpExceptionFilter } from "./global.filter";
 import * as hbs from 'hbs';
+import * as helpers from "../views/helpers/helpers";
 
 
 async function bootstrap() {
@@ -25,6 +26,7 @@ const hbs = exphbs.create({
   defaultLayout: "index",
   layoutsDir: join(__dirname,'..','..', "views", "layouts"),
   partialsDir: join(__dirname,'..','..', "views", "partials"),
+  helpers: helpers,
   extname: ".hbs",
 });
 app.engine(".hbs", hbs.engine);

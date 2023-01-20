@@ -61,6 +61,38 @@ export class PlantillasController {
             return "<p>No hay opciones disponibles.</p>"
         });
 
+        Handlebars.registerHelper('lista2', function(items, options) {
+        
+            
+            //Comprobar que se reciben datos para generar el HTML
+             
+            if(Object.keys(items).length !== 0){
+                const h2 = `<h2>Selecciona una opción</h2>\n<ul id="side-nav" class="main-menu navbar-collapse collapse">\n`
+
+                const itemsAsHtml = items.map(function(pet){
+
+                    '<li><a class="btn btn-primary btn-lg" role="button" href="/templates/'+ options.fn(pet.name) +'" '+ 'role="button">' + options.fn(pet.name) + "</a></li>"
+
+                    if(![].length) {
+                        const ul = "<ul>";
+                        const listNested = [
+                            {"objeto": "pelota"}
+                          ].map(juguete => 
+                            '<li><a class="btn btn-primary btn-lg" role="button" href="/templates/'+ options.fn(juguete.objeto) +'" '+ 'role="button">' + options.fn(juguete.objeto) + "</a></li>")
+                        ul + listNested + "</ul>"
+                    }
+
+
+                })//pet => 
+                    
+                    //Usar filter
+
+                    //'<li><a class="btn btn-primary btn-lg" role="button" href="/templates/'+ options.fn(pet.name) +'" '+ 'role="button">' + options.fn(pet.name) + "</a></li>" +"<br>");
+                return h2 + itemsAsHtml.join("\n") +"</ul>"; 
+            }
+            return "<p>No hay opciones disponibles.</p>"
+        });
+
         //Recibo la plantilla de la DB Plantillas
         const template = `{{#if pets}}{{#lista pets}}{{this}}{{/lista}}{{/if}}`;
 

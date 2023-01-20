@@ -45,7 +45,10 @@ export class PlantillasService {
           "name" : "Purrsloud",
           "species" : "Cat",
           "birthYear" : 2016,
-          "photo" : "https://learnwebcode.github.io/json-example/images/cat-2.jpg"
+          "photo" : "https://learnwebcode.github.io/json-example/images/cat-2.jpg",
+          "juguetes": [
+            {"objeto": "pelota"}
+          ]
         },
         {
           "name" : "Barksalot",
@@ -61,6 +64,55 @@ export class PlantillasService {
           "photo" : "https://learnwebcode.github.io/json-example/images/cat-1.jpg"
         }
       ];
+
+      const datos = [
+        {
+          "id": 1,
+          "nombre": "Situación",
+          "opciones": [
+            {
+              "id": 13,
+              "nombre": "Situación y perfil poblacional"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "nombre": "Uso racional de recursos",
+          "opciones": [
+            {
+              "id": 14,
+              "nombre": "Atención especializada"
+            },
+            {
+              "id": 29,
+              "nombre": "Procedimiento de dudoso valor"
+            },
+            {
+              "id": 30,
+              "nombre": "Hospitalizaciones"
+            },
+            {
+              "id": 31,
+              "nombre": "Cirugía ortopédica"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "nombre": "Recomendaciones",
+          "opciones": [
+            {
+              "id": 63,
+              "nombre": "Hacer/No hacer"
+            },
+            {
+              "id": 64,
+              "nombre": "Consulta global"
+            }
+          ]
+        }
+      ]
 
       /**
        * Si no hay datos devuelve un empty

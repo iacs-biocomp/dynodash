@@ -46,6 +46,7 @@
     "@types/express": "^4.17.13",
     "@types/express-handlebars": "^5.3.1",
     "@types/jest": "28.1.8",
+    "@types/jquery": "^3.5.16",
     "@types/node": "^16.0.0",
     "@types/passport-jwt": "^3.0.7",
     "@types/passport-local": "^1.0.34",

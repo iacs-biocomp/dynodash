@@ -45,10 +45,7 @@ export class PlantillasService {
           "name" : "Purrsloud",
           "species" : "Cat",
           "birthYear" : 2016,
-          "photo" : "https://learnwebcode.github.io/json-example/images/cat-2.jpg",
-          "juguetes": [
-            {"objeto": "pelota"}
-          ]
+          "photo" : "https://learnwebcode.github.io/json-example/images/cat-2.jpg"
         },
         {
           "name" : "Barksalot",
@@ -62,6 +59,13 @@ export class PlantillasService {
           "favFoods" : ["tuna", "catnip", "celery"],
           "birthYear" : 2012,
           "photo" : "https://learnwebcode.github.io/json-example/images/cat-1.jpg"
+        },
+        {
+          "name" : "Ramon",
+          "species" : "Dog",
+          "favFoods" : ["meat", "bones"],
+          "birthYear" : 2001,
+          "photo" : "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
         }
       ];
 
@@ -147,6 +151,13 @@ export class PlantillasService {
           "favFoods" : ["tuna", "catnip", "celery"],
           "birthYear" : 2012,
           "photo" : "https://learnwebcode.github.io/json-example/images/cat-1.jpg"
+        },
+        {
+          "name" : "Ramon",
+          "species" : "Dog",
+          "favFoods" : ["meat", "bones"],
+          "birthYear" : 2001,
+          "photo" : "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
         }
       ];
 

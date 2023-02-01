@@ -21,14 +21,14 @@ export class AppController {
    * @returns 
    */
   @Get()
-  async root(@Req() req: Request, @Res() res: Response) {
+  async root(@Req() req: Request, @Res() res: Response, @Param('parametro') param : string) {
 
     let html;
     /**
      * Handlebars compila la plantilla e introduce los datos en ella para contruir el HTML.
      */
     console.log('Plantilla data')
-    html = this.appService.getPlantilla();
+    html = this.appService.getPlantilla(param);
     console.log(html)
 
     let etiquetas = this.funciones.buscadorEtiquetas(html);
@@ -61,24 +61,5 @@ export class AppController {
 
   }
 
-  @Post('renderizar')
-  renderizado(@Req() req: Request, @Res() resp: Response) {
-
-    const {etiqueta, html} = req.body;
-
-    console.log(req.body)
-
-    //HTML es la template de handlebars
-
-    const compiledTemplate = Handlebars.compile(html);
-    console.log(compiledTemplate)
-    const data = this.appService.getData(etiqueta)
-    const htmlResponse = compiledTemplate(data);
-
-    return resp.json({
-      "html" : htmlResponse
-    })
-
-  }
 
 }

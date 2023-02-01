@@ -12,26 +12,115 @@ export class AppService {
     /**
    * Funcion que devuelve la plantilla iniciadora
    */
-    getPlantilla() : string {
+    getPlantilla(param :string) : string {
 
-      return `<div class="card card-body p-5 mt-4">
-                  <h1 class="display-4">Mascotas</h1>
-                    <p class="lead">En esta web se visualizaran las mascotas que usted elija.</p>
-                  <hr class="my-4" />
-                  </br>
-                  <div id="listas">
-                      {{{lista}}}
-                      {{{menu}}}
-                  </div>
-              </div>`;
+      const plantillas = [
+        {
+          "name" : "Inicio",
+          "content": `{{{containerMenu}}}
+          {{{containerInicio}}}`
+        },
+        {
+          "name" : "Barksalot",
+          "content": `{{{containerMenu}}}
+          {{{containerBarksalot}}}`
+        },
+        {
+          "name" : "Miguel",
+          "content": `{{{containerMenu}}}
+          {{{containerMiguel}}}`
+        },
+        {
+          "name" : "Ramon",
+          "content": `{{{containerMenu}}}
+          {{{containerRamon}}}`
+        },
+        {
+          "name" : "Purrsloud",
+          "content": `{{{containerMenu}}}
+          {{{containerPurrsloud}}}`
+        },
+      ]
+
+
+      /**
+       * Si el parametro no existe es porque se está haciendo una llamada desde el root
+       */
+      let html;
+      if(param) {
+        html = plantillas.find(plantilla => plantilla.name===param).content
+      }else {
+        html = plantillas.find(plantilla => plantilla.name==="Inicio").content
+        console.log(html)
       }
+
+
+      return html;
+
+  }
 
   /**
    * Funcion que recupera los datos de la DB de Datos.
    */
-  getData(param : string): {} {
+  getData(etiqueta : string): {} {
 
     const plantillas = [
+      {
+        "name" : "containerMenu",
+        "content" : `<div class='split left'>\\n\
+        <div class='centered'>\\n\
+        <h1 class='display-4'>Mascotas</h1>\\n\
+                      <p class='lead'>En esta web se visualizaran las mascotas que usted elija.</p>\\n\
+                    <hr class='my-4' />\\n\
+                    </br>\\n\
+                    <div id='listas'>\\n\
+                        {{{lista}}}\
+                        {{{menu}}}\
+                    </div>\\n\
+                </div>\\n\
+        </div>\\n\
+      </div>`
+      },
+      {
+        "name" : "containerInicio",
+        "content" : `<div class='split right'>\\n\
+        <div class='centered1'>\\n\
+          {{{inicio}}}\
+        </div>\\n\
+      </div>`
+      },
+      {
+        "name" : "containerBarksalot",
+        "content" : `<div class='split right'>\\n\
+        <div class='centered1'>\\n\
+          {{{Barksalot}}}\
+        </div>\\n\
+      </div>`
+      },
+      {
+        "name" : "containerMiguel",
+        "content" : `<div class='split right'>\\n\
+        <div class='centered1'>\\n\
+          {{{Miguel}}}\
+        </div>\\n\
+      </div>`
+      },
+      {
+        "name" : "containerRamon",
+        "content" : `<div class='split right'>\\n\
+        <div class='centered1'>\\n\
+          {{{Ramon}}}\
+        </div>\\n\
+      </div>`
+      },
+      {
+        "name" : "containerPurrsloud",
+        "content" : `<div class='split right'>\\n\
+        <div class='centered1'>\\n\
+          {{{Purrsloud}}}\
+        </div>\\n\
+      </div>`
+      },
       {
         "name" : "lista",
         "content" : `{{#each data}}\
@@ -55,10 +144,17 @@ export class AppService {
         "name": "tituloGato",
         "content": `{{#each data}}\
         <h2>{{nombre}}</h2>\\n\
-        <ul id='{{nombre}}'>{{inner}}</ul>\
+        <ul id='{{nombre}}'>\\n\
+        {{inner}}\\n\
+        </ul>\
         {{/each}}\
         `,
-        "data" : [{"nombre" : "Gatos", "inner" : "{{{gatosVarios}}}"}]
+        "data" : [
+          {
+            "nombre" : "Gatos",
+            "inner" : "{{{gatosVarios}}}"
+          }
+        ]
       },
       {
         "name": "tituloPerro",
@@ -76,11 +172,11 @@ export class AppService {
         "content" : `<h2>Menu</h2>\\n\
         <ul id='side-nav' class='main-menu navbar-collapse collapse'>\\n\
         {{#each data}}\
-          <li id={{id}} class='has-sub'><a href=''><i class='fas fa-street-view'></i><span class='title'>{{nombre}}</span></a>\\n\
+          <li id='{{id}}' class='has-sub'><a href=''><i class='fas fa-street-view'></i><span class='title'>{{nombre}}</span></a>\\n\
           {{#if opciones}}\
           <ul class='nav collapse'>\\n\
             {{#each opciones}}\
-            <li id={{id}} class=''><a href='{{enlace}}' target='_self'><span class='title'>{{nombre}}</span></a></li>\\n\
+            <li id='{{id}}' class=''><a href='{{enlace}}' target='_self'><span class='title'>{{nombre}}</span></a></li>\\n\
             {{/each}}\
           </ul>\\n\
           {{/if}}\
@@ -139,7 +235,170 @@ export class AppService {
       },
       {
         "name" :"perrosVarios",
-        "content": "<p>Un buen perro</p>"
+        "content": `{{#each data}}\
+        <li id='{{name}}'><a class='btn btn-primary btn-lg' role='button' href='/templates/{{name}}'>{{name}}</a></li>\\n\
+        {{/each}}`,
+        "data": [
+          {
+            "name" : "Barksalot",
+            "species" : "Dog",
+            "birthYear" : 2008,
+            "photo" : "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
+          },
+          {
+            "name" : "Ramon",
+            "species" : "Dog",
+            "favFoods" : ["meat", "bones"],
+            "birthYear" : 2001,
+            "photo" : "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
+          }
+        ]
+      },
+      {
+        "name" :"gatosVarios",
+        "content": `{{#each data}}\
+        <li id='{{name}}'><a class='btn btn-primary btn-lg' role='button' href='/templates/{{name}}'>{{name}}</a></li>\\n\
+        {{/each}}`,
+        "data": [
+          {
+            "name" : "Purrsloud",
+            "species" : "Cat",
+            "birthYear" : 2016,
+            "photo" : "https://learnwebcode.github.io/json-example/images/cat-2.jpg"
+          },
+          {
+            "name" : "Miguel",
+            "species" : "Cat",
+            "favFoods" : ["tuna", "catnip", "celery"],
+            "birthYear" : 2012,
+            "photo" : "https://learnwebcode.github.io/json-example/images/cat-1.jpg"
+          },
+        ]
+      },
+      {
+        "name" : "inicio",
+        "content" : `<div class = 'Inicio'>\\n\
+        <h2>Muestra info sobre la mascota</h2>\\n\
+        <p>Clica en los nombres del menu para mostrar informacion.</p>\\n\
+        <div>`
+      },
+      {
+        "name" : "Barksalot",
+        "content" : `{{#each data}}\
+        <div class='{{name}}'>\\n\
+            <div class='photo-column'>\\n\
+              <img src='{{photo}}'>\\n\
+            </div>\\n\
+            <div class='info-column'>\\n\
+              <h2>{{name}} <span class='species'>({{species}})</span></h2>\\n\
+              {{#if favFoods}}\
+              <h4 class='headline-bar'>Favorite Foods</h4>\\n\
+              <ul class='favorite-foods'>\\n\
+                {{#each favFoods}}\
+                  <li>{{{this}}}</li>\\n\
+                {{/each}}\
+              </ul>\\n\
+              {{/if}}\
+            </div>\\n\
+          </div>\\n\
+        {{/each}}`,
+        "data" : [
+          {
+            "name" : "Barksalot",
+            "species" : "Dog",
+            "birthYear" : 2008,
+            "photo" : "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
+          }
+        ]
+      },
+      {
+        "name" : "Miguel",
+        "content" : `{{#each data}}\
+        <div class='{{name}}'>\\n\
+            <div class='photo-column'>\\n\
+              <img src='{{photo}}'>\\n\
+            </div>\\n\
+            <div class='info-column'>\\n\
+              <h2>{{name}} <span class='species'>({{species}})</span></h2>\\n\
+              {{#if favFoods}}\
+              <h4 class='headline-bar'>Favorite Foods</h4>\\n\
+              <ul class='favorite-foods'>\\n\
+                {{#each favFoods}}\
+                  <li>{{{this}}}</li>\\n\
+                {{/each}}\
+              </ul>\\n\
+              {{/if}}\
+            </div>\\n\
+          </div>\\n\
+        {{/each}}`,
+        "data" : [
+          {
+            "name" : "Miguel",
+            "species" : "Cat",
+            "favFoods" : ["tuna", "catnip", "celery"],
+            "birthYear" : 2012,
+            "photo" : "https://learnwebcode.github.io/json-example/images/cat-1.jpg"
+          }
+        ]
+      },
+      {
+        "name" : "Purrsloud",
+        "content" : `{{#each data}}\
+        <div class='{{name}}'>\\n\
+            <div class='photo-column'>\\n\
+              <img src='{{photo}}'>\\n\
+            </div>\\n\
+            <div class='info-column'>\\n\
+              <h2>{{name}} <span class='species'>({{species}})</span></h2>\\n\
+              {{#if favFoods}}\
+              <h4 class='headline-bar'>Favorite Foods</h4>\\n\
+              <ul class='favorite-foods'>\\n\
+                {{#each favFoods}}\
+                  <li>{{{this}}}</li>\\n\
+                {{/each}}\
+              </ul>\\n\
+              {{/if}}\
+            </div>\\n\
+          </div>\\n\
+        {{/each}}`,
+        "data" : [
+          {
+            "name" : "Purrsloud",
+            "species" : "Cat",
+            "birthYear" : 2016,
+            "photo" : "https://learnwebcode.github.io/json-example/images/cat-2.jpg"
+          }
+        ]
+      },
+      {
+        "name" : "Ramon",
+        "content" : `{{#each data}}\
+        <div class='{{name}}'>\\n\
+            <div class='photo-column'>\\n\
+              <img src='{{photo}}'>\\n\
+            </div>\\n\
+            <div class='info-column'>\\n\
+              <h2>{{name}} <span class='species'>({{species}})</span></h2>\\n\
+              {{#if favFoods}}\
+              <h4 class='headline-bar'>Favorite Foods</h4>\\n\
+              <ul class='favorite-foods'>\\n\
+                {{#each favFoods}}\
+                  <li>{{{this}}}</li>\\n\
+                {{/each}}\
+              </ul>\\n\
+              {{/if}}\
+            </div>\\n\
+          </div>\\n\
+        {{/each}}`,
+        "data" : [
+          {
+            "name" : "Ramon",
+            "species" : "Dog",
+            "favFoods" : ["meat", "bones"],
+            "birthYear" : 2001,
+            "photo" : "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
+          }
+        ]
       }
     ];
 
@@ -150,7 +409,7 @@ export class AppService {
      */
     try {
 
-      const plantilla = plantillas.find(plantilla => plantilla.name===param)
+      const plantilla = plantillas.find(plantilla => plantilla.name===etiqueta)
       const {name, content, data} = plantilla;
 
       html = content;

@@ -1,0 +1,49 @@
+[
+    {
+        "id": "DETAIL_H_SELECT",
+        "description": "Detail Hospital Selector",
+        "content": "detailHospSelector.jsp", "//comment": "----> Aqui se define la template en formato base64",
+
+        "js": null, "//comment1": "----> Aqui se define el id del JavaScript guardado en collection_javaScript",
+
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    },
+    {
+        "id": "HIGHCHART",
+        "description": "Highchart Graph",
+        "content": "highchart.jsp",
+        "js": null,
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    },
+    {
+        "id": "INFO-PANEL-O",
+        "description": "info panel box open",
+        "content": "info-panel-o.jsp",
+        "js": null,
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    },
+    {
+        "id": "DATE_SLIDER",
+        "description": "Date Slider",
+        "content": "dateSlider.jsp",
+        "js": null,
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    },
+    {
+        "id": "MAP_ARAGON_S",
+        "description": "Mapa Aragon Sectores",
+        "content": "mapLine.jsp",
+        "js": "/cdn/js/d3/topojson.v1.min.js",
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    }
+]

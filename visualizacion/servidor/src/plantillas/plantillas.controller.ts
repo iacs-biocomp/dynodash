@@ -7,35 +7,17 @@ import { lista } from "../../views/helpers/helpers";
 
 
 import { PlantillasService } from "./plantillas.service";
+import { AppService } from 'src/app.service';
+import { Funciones } from 'src/common/funciones/funciones';
 
 @Controller('templates')
 export class PlantillasController {
 
-    constructor(private plantillaServicio: PlantillasService) { }
-
-    /*Método Get para recuperar la información de la base de datos*/
-    /*@Get(':parametro')
-    @UseFilters(new HttpExceptionFilter())
-    //@Render('cuerpo.hbs')
-    async obtenerPlantilla(@Param('parametro') parametro : string, @Res() res: Response) {
-        try {
-
-            return res.render("main",{
-                layout: 'index',
-                pets : await this.plantillaServicio.obtenerPlantilla(parametro)
-            },
-              );
-            
-
-        } catch (err) {
-            if(err instanceof ForbiddenException) {
-                throw new HttpException('fallo rol', HttpStatus.FORBIDDEN);
-            }else {
-                throw new HttpException('fallo ruta', HttpStatus.BAD_REQUEST);
-            }
-        }
-
-    }*/
+    constructor(
+        private plantillaServicio: PlantillasService,
+        private appService : AppService,
+        private funciones: Funciones
+        ) { }
 
     @Get()
     obetenerDatos() {
@@ -99,43 +81,38 @@ export class PlantillasController {
      * @returns 
      */
     @Get(':parametro')
-    async buscarGato(@Param('parametro') gatoName : string, @Res() res : Response) {
+    async buscarMascota(@Param('parametro') mascotaName : string, @Res() res : Response) {
         try {
 
-            const template = `{{#with gato}}
-            <div class="{{name}}">
-                <div class="photo-column">
-                  <img src="{{photo}}">
-                </div>
-            
-                <div class="info-column">
-                  <h2>{{name}} <span class="species">({{species}})</span></h2>
-            
-                  {{#if favFoods}}
-                  <h4 class="headline-bar">Favorite Foods</h4>
-                  <ul class="favorite-foods">
-                    {{#each favFoods}}
-                      <li>{{{this}}}</li>
-                    {{/each}}
-                  </ul>
-                  {{/if}}
-            
-                </div>
-              </div>
-            {{/with}}`;
+            let plant = this.appService.getPlantilla(mascotaName);
 
-            const compiledTemplate = Handlebars.compile(template);
+            let etiquetas = this.funciones.buscadorEtiquetas(plant);
 
-            const gato = await this.plantillaServicio.buscarGato(gatoName);
-            console.log(gato);
+            console.log(etiquetas)
 
-            const html = compiledTemplate({gato});
+            while(etiquetas.length!==0) {
 
-            return res.render("layouts/index",{
-                titulo: gato.name,
-                body : html
-            },
-              );
+                const json = this.funciones.crearJSON(etiquetas);
+                console.log('Plantilla compilada')
+                const compiledTemplate = Handlebars.compile(plant);
+                console.log(compiledTemplate)
+
+                plant = compiledTemplate(json)
+                console.log(plant)
+
+                etiquetas = this.funciones.buscadorEtiquetas(plant)
+
+            }
+
+            if(etiquetas.length===0) {
+                console.log("No hay mas etiquetas")
+            }
+
+            return res.render("main",{
+                titulo: mascotaName,
+                body: plant
+              }
+            );
 
         }catch(err){
             throw new Error("Gato no encontrado.")

@@ -11,62 +11,68 @@ En el servidor se realizara el renderizado y se volvera a enviar la respuesta al
 */
 
 
+/*const url = 'http://localhost:8080'
 
 $(function() {
-
-
-    const url = 'http://localhost:8080/'
 
     const listaPerros = $('#Perros')
     const listaGatos = $('#Gatos')
 
-    console.log(listaPerros);
+    const mascota = $('.pet')
+
+    console.log(mascota);
 
     function getPets() {
     	return $.ajax({
 	    	dataType:'json',
 	    	type: 'GET',
-	    	url: url +'templates'
+	    	url: url +'/templates'
     	});
     }
 
     var getData = function(response) {
-        //console.log(response[0]);
 
-        //Creaar lista perros
+        const petData = response.find(animal => animal.name==="Purrsloud");
 
-        const perros = response.filter(animal => animal.species==="Dog")
-        console.log(perros)
+        const htmlMascota = mostrarMascota(petData)
         
-        const htmlPerros = hacerLista(perros)
-        
-
-
-        let final = listaPerros.append(htmlPerros)
-
-        const gatos = response.filter(animal => animal.species==="Cat")
-        console.log(perros)
-        
-        const htmlGatos = hacerLista(gatos)
-        
-
-
-        final = listaGatos.append(htmlGatos)
+        final = mascota.replaceWith(htmlMascota)
 
         console.log('Final')
         console.log(final)
 
+        const listaPieza = $('#Barksalot').children().attr("href")
+
+        console.log(listaPieza)
+
     }
 
+    const algo = $('#Perros a[href^="/templates"]');
+    console.log('dasds')
+    console.log(algo)
+    
+    
+
+
     $(getPets().done(getData))
-});
+});*/
+
+/*$('#Barksalot').click(e => {
+
+    const hrefURL = $('#Barksalot').children().attr("href")
+    console.log(url + hrefURL)
+    return $.ajax({
+            dataType:'json',
+            type: 'GET',
+            url: url + hrefURL
+        });
+
+    var getData2 = function(response) {
+        console.log(response)
+    }
 
 
 
 
-/*window.onload = renderizaoConDatos();
-
-function renderizaoConDatos() {
-    console.log(listaPerros)
-}*/
+},  $(getPet().done(getData2)));*/
 

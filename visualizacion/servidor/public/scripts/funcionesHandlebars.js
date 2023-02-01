@@ -2,6 +2,8 @@
 
 function hacerLista(array) {
 
+    console.log(array)
+
     Handlebars.registerHelper('lista', function(items, options) {
         
             
@@ -25,10 +27,41 @@ function hacerLista(array) {
     //Recibo los datos de la DB Datos
     console.log("Datos recuperados")
     const pets = array;
-    console.log(pets);
+    //console.log(pets);
 
     //Creacion del HTML
     const html = compiledTemplate({pets});
     return html;
+}
+
+function mostrarMascota(pet) {
+    const template = `{{#with pet}}
+    <div class="{{name}}">
+        <div class="photo-column">
+          <img src="{{photo}}">
+        </div>
+    
+        <div class="info-column">
+          <h2>{{name}} <span class="species">({{species}})</span></h2>
+    
+          {{#if favFoods}}
+          <h4 class="headline-bar">Favorite Foods</h4>
+          <ul class="favorite-foods">
+            {{#each favFoods}}
+              <li>{{{this}}}</li>
+            {{/each}}
+          </ul>
+          {{/if}}
+    
+        </div>
+      </div>
+    {{/with}}`
+
+    const compileTemplate = Handlebars.compile(template);
+
+    const html = compileTemplate({pet})
+
+    return html;
+
 }
 

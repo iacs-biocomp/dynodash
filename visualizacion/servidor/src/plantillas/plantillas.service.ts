@@ -130,7 +130,7 @@ export class PlantillasService {
      * Metodo para seleccionar un gato en concreto de la coleccion Gatos
      * @returns objeto Gato
      */
-    async buscarGato(paramentro : string) {
+    async buscarMascota(paramentro : string) {
 
       const data = [
         {

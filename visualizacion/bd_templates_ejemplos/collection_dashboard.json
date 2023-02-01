@@ -1,0 +1,83 @@
+[
+    {
+        "id": 14,
+        "descripcion": "Uso Racional de Recursos",
+        "template": "bigan1x1h", "//comment": "----> Aqui se define el id de una template guardada en otra Mongo Collection",
+        "frame_objects": [
+            {
+                "id": 257,
+                "description": "Selector de nivel",
+                "order": 101,
+                "suborder": 1,
+                "frame_type": "DETAIL_H_SELECT", "//comment": "----> Aqui se define el id de una template guardada en otra collection_frames",
+
+                "path": "", "//comment1": "----> Aqui se define el path de peticion de datos.",
+
+                "grant": "AE_GLOBAL",
+                "title": "&#37; Pacientes más de 24h en subir a planta",
+                "comment": null,
+
+                "js": "", "//comment2": "----> Aqui se define el id del JavaScript guardado en collection_javaScript" 
+            },
+            {
+                "id": 260,
+                "description": "Pacientes que tardan más de 24h en subir a planta",
+                "order": 2,
+                "suborder": 1,
+                "frame_type": "HIGHCHART",
+                "path": "", 
+                "grant": "AE_GLOBAL",
+                "title": "&#37; Pacientes más de 24h en subir a planta",
+                "comment": "&#37;  pacientes que tardan > 24 horas en subir a planta desde la orden de ingreso desde urgencias (tiempo estructural) ",
+                "js": "hc_lineseries_load"
+            }
+        ],
+        "grant": "PUBLIC",
+        "script": null
+    },
+    {
+        "id": 29,
+        "descripcion": "Procedimientos de dudoso valor",
+        "template": "bigan2x5hh",
+        "frame_objects": [
+            {
+                "id": 214,
+                "description": "info",
+                "order": 2,
+                "suborder": 1,
+                "frame_type": "INFO-PANEL-O",
+                "path": "",
+                "grant": "PUBLIC",
+                "title": "Procedimientos de dudoso valor",
+                "comment": "<h3>Resumen de indicadores relativos a procedimientos de escaso o dudoso valor en Aragón, según la metodología seguida en el Atlas de Variabilidad de la Práctica Médica</h3><div style='font-size:16px;'>Se entiende como procedimientos de escaso o dudoso valor aquellos procedimientos obsoletos o superados por alternativa más efectiva/coste-efectiva, procedimientos de dudoso valor cuando se utilizan fuera de su indicación principal, o procedimientos para los que la evidencia de efectividad es todavía insuficiente.</div>",
+                "js": ""
+            },
+            {
+                "id": 208,
+                "description": "Time slider",
+                "order": 2,
+                "suborder": 2,
+                "frame_type": "DATE_SLIDER",
+                "path": "{ext_node}/dates?schema=cmbdview&ind=atlas_indicators&type=y{token}",
+                "grant": "PUBLIC",
+                "title": null,
+                "comment": null,
+                "js": "yearSlider"
+            },
+            {
+                "id": 204,
+                "description": "Cesáreas",
+                "order": 11,
+                "suborder": 1,
+                "frame_type": "MAP_ARAGON_S",
+                "path": "{ext_node}/map/aragon?query=11&callback=?",
+                "grant": "PUBLIC",
+                "title": "Cesáreas",
+                "comment": "Porcentaje de cesáreas en condiciones de bajo riesgo obstétrico sobre partos de bajo riesgo en mujeres entre 15 y 55 años",
+                "js": "mapLineDynS"
+            }
+        ],
+        "grant": "PUBLIC",
+        "script": null
+    }
+]

@@ -15,6 +15,7 @@ export class Funciones {
         //obtiene la etiqueta entre llaves y se devuelve un array con las etiquetas
         const matches = [...plantilla.matchAll(re)].flat();
         
+        //[{etiqueta}, etiqueta]
         const etiquetas = matches.filter(item => matches.indexOf(item)%2 != 0);
     
         return etiquetas;

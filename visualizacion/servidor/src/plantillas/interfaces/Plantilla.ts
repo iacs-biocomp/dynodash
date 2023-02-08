@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 
-export interface Plantilla extends Document  {
-    id?: number;
-    _name: string;
-    _html: string;
+
+export class Plantilla extends Document {
+    _html : string;
+    _name : string;
 }

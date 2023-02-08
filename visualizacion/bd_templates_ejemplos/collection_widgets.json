@@ -1,0 +1,41 @@
+[
+    {
+        "type": "INFO-PANEL-O",
+        "descripcion": "info panel box open",
+        "template": "info-panel-o",
+        "js": ""
+    },
+    {
+        "type": "DATE_SLIDER",
+        "descripcion": "Date Slider",
+        "template": "dateSlider",
+        "js": ""
+    },
+    {
+        "type": "MAP_ARAGON_S",
+        "descripcion": "Mapa Aragon Sectores",
+        "template": "mapLine",
+        "js": "/cdn/js/d3/topojson.v1.min.js"
+    },
+    {
+        "_id": "AUTOMATICO",
+        "type": "",
+        "descripcion": "",
+        "template": "",
+        "js": ""
+    },
+    {
+        "_id": "AUTOMATICO",
+        "type": "",
+        "descripcion": "",
+        "template": "",
+        "js": ""
+    },
+    {
+        "_id": "AUTOMATICO",
+        "type": "",
+        "descripcion": "",
+        "template": "",
+        "js": ""
+    }
+]

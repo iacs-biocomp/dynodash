@@ -1,6 +1,17 @@
-import { Schema } from "mongoose";
 
-export const plantillaSchema = new Schema({
-    _name : String,
-    _html: String,
-})
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument } from "mongoose";
+
+export type PlantillaType = HydratedDocument<Plantilla>;
+
+@Schema()
+export class Plantilla {
+
+    @Prop()
+    _name: string;
+
+    @Prop()
+    _html: string;
+}
+
+export const PlantillaSchema = SchemaFactory.createForClass(Plantilla);

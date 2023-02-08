@@ -1,0 +1,89 @@
+[
+    {
+        "code": "bigan2x5hh",
+        "content" : "PGRpdiBjbGFzcz0ncm93Jz4KICAgIDxkaXYgY2xhc3M9J2NvbC1sZy0xMiBkZXMtaGVhZGVyJz4KICAgICAgICAgICAgICAgIHt7e2ZyYW1lOjF9fX0KICAgIDwvZGl2Pgo8L2Rpdj4JCQkKPGRpdiBjbGFzcz0ncm93Jz4KICAgIDxkaXYgY2xhc3M9J2NvbC1sZy01dGhzIGNvbC1tZC00IGRlcy1mcmFtZSc+CiAgICAgICAgPGRpdiBjbGFzcz0ncGFuZWwgcGFuZWwtZGVmYXVsdCc+CiAgICAgICAgICAgICAgICB7e3tmcmFtZToyfX19CiAgICAgICAgPC9kaXY+CQkJCQogICAgPC9kaXY+CiAgICA8ZGl2IGNsYXNzPSdjb2wtbGctNXRocyBjb2wtbWQtNCBkZXMtZnJhbWUnPgogICAgICAgIDxkaXYgY2xhc3M9J3BhbmVsIHBhbmVsLWRlZmF1bHQnPgogICAgICAgICAgICAgICAge3t7ZnJhbWU6MTF9fX0KICAgICAgICA8L2Rpdj4JCQkJCiAgICAgICAgPGRpdiBjbGFzcz0ncGFuZWwgcGFuZWwtZGVmYXVsdCc+CiAgICAgICAgICAgICAgICB7e3tmcmFtZToyMX19fQogICAgICAgIDwvZGl2PgkJCQkKICAgIDwvZGl2PgogICAgPGRpdiBjbGFzcz0nY29sLWxnLTV0aHMgY29sLW1kLTQgZGVzLWZyYW1lJz4KICAgICAgICA8ZGl2IGNsYXNzPSdwYW5lbCBwYW5lbC1kZWZhdWx0Jz4KICAgICAgICAgICAgICAgIHt7e2ZyYW1lOjEyfX19CiAgICAgICAgPC9kaXY+CQkJCQogICAgICAgIDxkaXYgY2xhc3M9J3BhbmVsIHBhbmVsLWRlZmF1bHQnPgogICAgICAgICAgICAgICAge3t7ZnJhbWU6MjJ9fX0KICAgICAgICA8L2Rpdj4JCQkJCiAgICA8L2Rpdj4KICAgIDxkaXYgY2xhc3M9J2NvbC1sZy01dGhzIGNvbC1tZC00IGRlcy1mcmFtZSc+CiAgICAgICAgPGRpdiBjbGFzcz0ncGFuZWwgcGFuZWwtZGVmYXVsdCc+CiAgICAgICAgICAgICAgICB7e3tmcmFtZToxM319fQogICAgICAgIDwvZGl2PgkJCQogICAgICAgIDxkaXYgY2xhc3M9J3BhbmVsIHBhbmVsLWRlZmF1bHQnPgogICAgICAgICAgICAgICAge3t7ZnJhbWU6MjN9fX0KICAgICAgICA8L2Rpdj4JCQkJCiAgICA8L2Rpdj4KICAgIDxkaXYgY2xhc3M9J2NvbC1sZy01dGhzIGNvbC1tZC00IGRlcy1mcmFtZSc+CiAgICAgICAgPGRpdiBjbGFzcz0ncGFuZWwgcGFuZWwtZGVmYXVsdCc+CiAgICAgICAgICAgICAgICB7e3tmcmFtZToxNH19fQogICAgICAgIDwvZGl2PgkJCQkKICAgICAgICA8ZGl2IGNsYXNzPSdwYW5lbCBwYW5lbC1kZWZhdWx0Jz4KICAgICAgICAgICAgICAgIHt7e2ZyYW1lOjI0fX19CiAgICAgICAgPC9kaXY+CQkJCQogICAgPC9kaXY+CjwvZGl2Pg=="
+    },
+
+    {
+        "code": "info-panel-o",
+        "content": "PGRpdiBjbGFzcz0ncGFuZWwgcGFuZWwtaW5mbyAnPgogICAgPGRpdiBjbGFzcz0ncGFuZWwtaGVhZGluZyBjbGVhcmZpeCc+IAogICAgICAgIDxkaXYgY2xhc3M9J3BhbmVsLXRpdGxlJz57e3t0aXRsZX19fTwvZGl2PiAKICAgICAgICA8dWwgY2xhc3M9J3BhbmVsLXRvb2wtb3B0aW9ucyc+IAogICAgICAgICA8bGk+PGEgZGF0YS1yZWw9J2NvbGxhcHNlJyBocmVmPScjJz48aSBjbGFzcz0naWNvbi1kb3duLW9wZW4nPjwvaT48L2E+PC9saT4KICAgICAgICA8IS0tIDxsaT48YSBkYXRhLXJlbD0ncmVsb2FkJyBocmVmPScjJz48aSBjbGFzcz0naWNvbi1hcnJvd3MtY2N3Jz48L2k+PC9hPjwvbGk+CiAgICAgICAgPGxpPjxhIGRhdGEtcmVsPSdjbG9zZScgaHJlZj0nIyc+PGkgY2xhc3M9J2ljb24tY2FuY2VsJz48L2k+PC9hPjwvbGk+IC0tPgogICAgICAgIDwvdWw+ICAKICAgIDwvZGl2PiAKICAgIDwhLS0gcGFuZWwgYm9keSAtLT4gCiAgICA8ZGl2IGNsYXNzPSdwYW5lbC1ib2R5JyBzdHlsZT0nZGlzcGxheTogYmxvY2snPiAKICAgICAgICB7e3tkb2N9fX0KICAgIDwvZGl2PiAKPC9kaXY+IA=="
+    },
+    {
+        "code": "dateSlider",
+        "content": "PCEtLSAgZGVwZW5kcyBvbiBiaWdhbi5qcyAtLT4KPHNjcmlwdCBzcmM9Jy9jZG4vanMvYm9vdHN0cmFwLXNsaWRlci5taW4uanMnPjwvc2NyaXB0Pgo8bGluayByZWw9J3N0eWxlc2hlZXQnIGhyZWY9Jy9jZG4vY3NzL2Jvb3RzdHJhcC1zbGlkZXIubWluLmNzcyc+CgoKPGRpdiBjbGFzcz0ncGFuZWwtaGVhZGluZycgc3R5bGU9J3RleHQtYWxpZ246IGNlbnRlcic+CiAgICA8ZGl2IGlkPSdzbGlkZXJ7e3tmcmFtZV9pZH19fScgc3R5bGU9J3dpZHRoOiA4MCUnPjwvZGl2PgogICAgPGRpdiBzdHlsZT0nd2lkdGg6MTAwJTt0ZXh0LWFsaWduOmNlbnRlcjsnPgogICAgICAgIDxidXR0b24gaWQ9J3N0YXJ0JyBjbGFzcz0nYnRuIHNsaWRlclN0YXJ0QnV0dG9uJyBvbmNsaWNrPSdzdGFydEJ1dHRvbigpJz5TdGFydDwvYnV0dG9uPgogICAgICAgIDxidXR0b24gaWQ9J3N0b3AnIGNsYXNzPSdidG4gc2xpZGVyU3RvcEJ1dHRvbicgb25jbGljaz0nc3RvcEJ1dHRvbigpJz5TdG9wPC9idXR0b24+CiAgICA8L2Rpdj4KPC9kaXY+"
+    },
+    {
+        "code": "mapLine",
+        "content": "PHN0eWxlPgogICAgcGF0aC5zZWN0b3IgeyBzdHJva2U6ICMzMzM7IHN0cm9rZS13aWR0aDogMTsgfQogICAgcGF0aDpob3ZlciB7IHN0cm9rZS13aWR0aDogMzsgfQogICAgCjwvc3R5bGU+Cgo8ZGl2IGNsYXNzPSdwYW5lbC1oZWFkaW5nIGNsZWFyZml4Jz4gCiAgICA8ZGl2IGNsYXNzPSdwYW5lbC10aXRsZSc+e3t7dGl0bGV9fX08L2Rpdj4gCiAgICAgPHVsIGNsYXNzPSdwYW5lbC10b29sLW9wdGlvbnMnPiAKICAgICAgICA8bGkgY2xhc3M9J2ZyYW1laW5mbyc+PGkgY2xhc3M9J2ZhIGZhLWluZm8tY2lyY2xlJz48L2k+CiAgICAgICAgICAgIDxzcGFuIGNsYXNzPSdmcmFtZWluZm90ZXh0Jz57e3tpbmZvfX19PC9zcGFuPgogICAgICAgIDwvbGk+CQkJCSAKPCEtLSAJCQkJCQkJPGxpPjxhIGRhdGEtcmVsPSdjb2xsYXBzZScgaHJlZj0nIyc+PGkgY2xhc3M9J2ljb24tZG93bi1vcGVuJz48L2k+PC9hPjwvbGk+CiAgICAgICAgPGxpPjxhIGRhdGEtcmVsPSdyZWxvYWQnIGhyZWY9JyMnPjxpIGNsYXNzPSdpY29uLWFycm93cy1jY3cnPjwvaT48L2E+PC9saT4KICAgICAgICA8bGk+PGEgZGF0YS1yZWw9J2Nsb3NlJyBocmVmPScjJz48aSBjbGFzcz0naWNvbi1jYW5jZWwnPjwvaT48L2E+PC9saT4gLS0+CiAgICA8L3VsPiAgCjwvZGl2PiAKCjwhLS0gcGFuZWwgYm9keSAtLT4gCjxkaXYgY2xhc3M9J3BhbmVsLWJvZHkgc3RyLWJpbmRhYmxlJyBpZD0nbWFwe3t7ZnJhbWVfaWR9fX0nIHN0eWxlPSdwb3NpdGlvbjogcmVsYXRpdmU7Jz48L2Rpdj4gCQkKPGRpdiBjbGFzcz0ncGFuZWwtYm9keScgaWQ9J2hje3t7ZnJhbWVfaWR9fX0nIHN0eWxlPSdtYXJnaW46IDAgYXV0byc+CjwvZGl2Pg=="
+    },
+    {
+        "id": "",
+        "code": "",
+        "content": ""
+    },
+    {
+        "id": "",
+        "code": "",
+        "content": ""
+    },
+    {
+        "id": "",
+        "code": "",
+        "content": ""
+    },
+    {
+        "id": "",
+        "code": "",
+        "content": ""
+    },
+
+
+
+    {
+        "id": "DETAIL_H_SELECT",
+        "description": "Detail Hospital Selector",
+        "content": "detailHospSelector.jsp", "//comment": "----> Aqui se define la template en formato base64",
+
+        "js": null, "//comment1": "----> Aqui se define el id del JavaScript guardado en collection_javaScript",
+
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    },
+    {
+        "id": "HIGHCHART",
+        "description": "Highchart Graph",
+        "content": "highchart.jsp",
+        "js": null,
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    },
+    {
+        "id": "INFO-PANEL-O",
+        "description": "info panel box open",
+        "content": "info-panel-o.jsp",
+        "js": null,
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    },
+    {
+        "id": "DATE_SLIDER",
+        "description": "Date Slider",
+        "content": "dateSlider.jsp",
+        "js": null,
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    },
+    {
+        "id": "MAP_ARAGON_S",
+        "description": "Mapa Aragon Sectores",
+        "content": "mapLine.jsp",
+        "js": "/cdn/js/d3/topojson.v1.min.js",
+        "data_snippet": null,
+        "data_format": null,
+        "renderer": "es.aragon.midas.dashboard.renderer.BasicRenderer"
+    }
+]

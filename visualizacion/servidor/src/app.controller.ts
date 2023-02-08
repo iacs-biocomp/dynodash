@@ -37,7 +37,7 @@ export class AppController {
 
     while(etiquetas.length!==0) {
 
-      const json = this.funciones.crearJSON(etiquetas);
+      const json = this.funciones.crearJSONnull(etiquetas);
       console.log('Plantilla compilada')
       const compiledTemplate = Handlebars.compile(html);
       console.log(compiledTemplate)

@@ -5,13 +5,11 @@ import { PlantillasModule } from './plantillas/plantillas.module';
 
 
 import { MongooseModule } from "@nestjs/mongoose";
-import { PlantillasService } from './plantillas/plantillas.service';
-import { plantillaSchema } from './plantillas/schemas/plantilla.schema';
 import { Funciones } from './common/funciones/funciones';
 
 
 @Module({
-  imports: [PlantillasModule, MongooseModule.forRoot('mongodb://127.0.0.1:27017/test')],
+  imports: [PlantillasModule, MongooseModule.forRoot('mongodb://127.0.0.1:27017/atlas_vpm')],
   controllers: [AppController],
   providers: [AppService,Funciones],
 })

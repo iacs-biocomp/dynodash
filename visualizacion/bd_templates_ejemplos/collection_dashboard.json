@@ -1,83 +1,122 @@
 [
     {
-        "id": 14,
-        "descripcion": "Uso Racional de Recursos",
-        "template": "bigan1x1h", "//comment": "----> Aqui se define el id de una template guardada en otra Mongo Collection",
-        "frame_objects": [
-            {
-                "id": 257,
-                "description": "Selector de nivel",
-                "order": 101,
-                "suborder": 1,
-                "frame_type": "DETAIL_H_SELECT", "//comment": "----> Aqui se define el id de una template guardada en otra collection_frames",
-
-                "path": "", "//comment1": "----> Aqui se define el path de peticion de datos.",
-
-                "grant": "AE_GLOBAL",
-                "title": "&#37; Pacientes más de 24h en subir a planta",
-                "comment": null,
-
-                "js": "", "//comment2": "----> Aqui se define el id del JavaScript guardado en collection_javaScript" 
-            },
-            {
-                "id": 260,
-                "description": "Pacientes que tardan más de 24h en subir a planta",
-                "order": 2,
-                "suborder": 1,
-                "frame_type": "HIGHCHART",
-                "path": "", 
-                "grant": "AE_GLOBAL",
-                "title": "&#37; Pacientes más de 24h en subir a planta",
-                "comment": "&#37;  pacientes que tardan > 24 horas en subir a planta desde la orden de ingreso desde urgencias (tiempo estructural) ",
-                "js": "hc_lineseries_load"
-            }
-        ],
-        "grant": "PUBLIC",
-        "script": null
-    },
-    {
-        "id": 29,
-        "descripcion": "Procedimientos de dudoso valor",
+        "code": "Procedimientos de dudoso valor",
         "template": "bigan2x5hh",
-        "frame_objects": [
+        "grant": "PUBLIC",
+        "created_by": "",
+        "creation_date": null,
+        "last_update" : null,
+        "widgets": [
             {
-                "id": 214,
-                "description": "info",
-                "order": 2,
-                "suborder": 1,
-                "frame_type": "INFO-PANEL-O",
-                "path": "",
+                "frame": 2,
+                "order": 1,
+                "type": "INFO-PANEL-O",
+                "url": "",
+                "doc": 1,
                 "grant": "PUBLIC",
                 "title": "Procedimientos de dudoso valor",
-                "comment": "<h3>Resumen de indicadores relativos a procedimientos de escaso o dudoso valor en Aragón, según la metodología seguida en el Atlas de Variabilidad de la Práctica Médica</h3><div style='font-size:16px;'>Se entiende como procedimientos de escaso o dudoso valor aquellos procedimientos obsoletos o superados por alternativa más efectiva/coste-efectiva, procedimientos de dudoso valor cuando se utilizan fuera de su indicación principal, o procedimientos para los que la evidencia de efectividad es todavía insuficiente.</div>",
+                "info" : "",
                 "js": ""
             },
             {
-                "id": 208,
-                "description": "Time slider",
+                "frame": 2,
                 "order": 2,
-                "suborder": 2,
-                "frame_type": "DATE_SLIDER",
-                "path": "{ext_node}/dates?schema=cmbdview&ind=atlas_indicators&type=y{token}",
+                "type": "DATE_SLIDER",
+                "url": "{ext_node}/dates?schema=cmbdview&ind=atlas_indicators&type=y{token}",
+                "doc": null,
                 "grant": "PUBLIC",
-                "title": null,
-                "comment": null,
-                "js": "yearSlider"
+                "title": "",
+                "info" : "",
+                "js": "yearSlider" 
             },
             {
-                "id": 204,
-                "description": "Cesáreas",
-                "order": 11,
-                "suborder": 1,
-                "frame_type": "MAP_ARAGON_S",
-                "path": "{ext_node}/map/aragon?query=11&callback=?",
+                "frame": 11,
+                "order": 1,
+                "type": "MAP_ARAGON_S",
+                "url": "{ext_node}/map/aragon?query=11&callback=?",
+                "doc": null,
                 "grant": "PUBLIC",
                 "title": "Cesáreas",
-                "comment": "Porcentaje de cesáreas en condiciones de bajo riesgo obstétrico sobre partos de bajo riesgo en mujeres entre 15 y 55 años",
-                "js": "mapLineDynS"
+                "info" : "Porcentaje de cesáreas en condiciones de bajo riesgo obstétrico sobre partos de bajo riesgo en mujeres entre 15 y 55 años",
+                "js": "mapLineDynS" 
+            },
+            {
+                "frame": 12,
+                "order": 1,
+                "type": "MAP_ARAGON_S",
+                "url": "{ext_node}/map/aragon?query=12&callback=?",
+                "doc": null,
+                "grant": "PUBLIC",
+                "title": "Episiotomía",
+                "info" : "Porcentaje de episiotomías respecto al total de partos vaginales en mujeres entre 15 y 55 años",
+                "js": "mapLineDynS" 
+            },
+            {
+                "frame": 13,
+                "order": 1,
+                "type": "MAP_ARAGON_S",
+                "url": "{ext_node}/map/aragon?query=13&callback=?",
+                "doc": null,
+                "grant": "PUBLIC",
+                "title": "Adenoidectomía",
+                "info" : "Tasa estandarizada por edad y sexo de adenoidectomía por 10.000 habitantes menores de 20 años",
+                "js": "mapLineDynS" 
+            },
+            {
+                "frame": 14,
+                "order": 1,
+                "type": "MAP_ARAGON_S",
+                "url": "{ext_node}/map/aragon?query=14&callback=?",
+                "doc": null,
+                "grant": "PUBLIC",
+                "title": "Tonsilectomía",
+                "info" : "Tasa estandarizada por edad y sexo de amigdalectomías con/sin adenoidectomía por 10.000 habitantes menores de 20 años",
+                "js": "mapLineDynS" 
+            },
+            {
+                "frame": 21,
+                "order": 1,
+                "type": "MAP_ARAGON_S",
+                "url": "{ext_node}/map/aragon?query=15&callback=?",
+                "doc": null,
+                "grant": "PUBLIC",
+                "title": "Miringotomía",
+                "info" : "Tasas estandarizadas por edad y sexo de drenaje timpánico por 10.000 habitantes menores de 20 años",
+                "js": "mapLineDynS" 
+            },
+            {
+                "frame": 22,
+                "order": 1,
+                "type": "MAP_ARAGON_S",
+                "url": "{ext_node}/map/aragon?query=16&callback=?",
+                "doc": null,
+                "grant": "PUBLIC",
+                "title": "Túnel carpiano",
+                "info" : "Tasa estandarizada por edad y sexo de liberación del túnel carpiano por 10.000 habitantes mayores de 15 años",
+                "js": "mapLineDynS" 
+            },
+            {
+                "frame": 23,
+                "order": 1,
+                "type": "MAP_ARAGON_S",
+                "url": "{ext_node}/map/aragon?query=17&callback=?",
+                "doc": null,
+                "grant": "PUBLIC",
+                "title": "Dedo gatillo",
+                "info" : "Tasa estandarizada por edad y sexo de cirugía del dedo gatillo por 10.000 habitantes mayores de 15 años",
+                "js": "mapLineDynS" 
+            },
+            {
+                "frame": 24,
+                "order": 1,
+                "type": "MAP_ARAGON_S",
+                "url": "{ext_node}/map/aragon?query=19&callback=?",
+                "doc": null,
+                "grant": "PUBLIC",
+                "title": "Legrado",
+                "info" : "Tasa estandarizada por edad y sexo de legrado como diagnóstico por 10.000 mujeres mayores de 15 años",
+                "js": "mapLineDynS" 
             }
-        ],
-        "grant": "PUBLIC",
-        "script": null
+        ]
     }
 ]

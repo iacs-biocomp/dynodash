@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Editor</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='style/styleEditor.css'>
+</head>
+<body>
+    <p>Selecciona:</p>
+    <button id="columna">Columna</button>
+    <button id="fila">Fila</button>
+    <br><br>
+    <form>
+        <label for="lname">Nº Filas:</label><br>
+        <input type="text" id="numFilas" name="lname" value=""><br>
+        <label for="fname">Nº Columnas:</label><br>
+        <input type="text" id="numColumnas" name="fname" value=""><br><br>
+    </form>
+    <button id="aceptar">Aceptar</button>
+    <br><br>
+    <form>
+        <label for="anchura">Anchura columna:</label><br>
+        <table style="border-collapse: separate; border-spacing: 10px;">
+            <thead>
+              <tr>
+                <th>Medida</th>
+                <th>Nº Columnas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>sm</td>
+                <td><input type="text" id="anchuraSM" name="anchuraSM" value=""> /12</td>
+              </tr>
+              <tr>
+                <td>md</td>
+                <td><input type="text" id="anchuraMD" name="anchuraMD" value=""> /12</td>
+              </tr>
+              <tr>
+                <td>lg</td>
+                <td><input type="text" id="anchuraLG" name="anchuraLG" value=""> /12</td>
+              </tr>
+            </tbody>
+          </table>
+    </form>
+    <button id="aceptarMedidas">Aceptar</button>
+    <br> <br>
+
+    <button type="button" id="sidebarCollapse" class="btn btn-info">
+        <i class="fas fa-align-left"></i>
+        <span>Sidebar</span>
+    </button>
+    <br> <br>
+
+    <button id="reset">Reset</button> <button id="back">Atrás</button> <button id="end">Finalizar</button>
+    <script src="js/jquery-3.6.3.min.js"></script>
+    <script src="js/scriptEditor.js"></script>
+</body>
+
+</html>

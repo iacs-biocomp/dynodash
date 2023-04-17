@@ -2,12 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../models/users/users.service';
 import * as bcrypt from 'bcrypt';
 
-
 @Injectable()
 export class AuthService {
-  constructor(
-    private usersService: UsersService,
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   async validateUserByPass(username: string, pass: string): Promise<any> {
     const saltOrRounds = 10;
@@ -22,5 +19,4 @@ export class AuthService {
     }
     return null;
   }
-
 }

@@ -1,88 +1,114 @@
-import { Controller, Render, Get, Post, Req, Session, UseGuards, UseFilters, Res } from '@nestjs/common';
+import {
+  Controller,
+  Render,
+  Get,
+  Post,
+  Req,
+  Session,
+  UseGuards,
+  UseFilters,
+  Res,
+} from '@nestjs/common';
 import * as secureSession from '@fastify/secure-session';
 
 import { AppService } from './app.service';
-import {
-  LocalAuthGuard,
-  AthenticatedSession
-} from "./gards";
+import { LocalAuthGuard, AthenticatedSession, DeletedSession } from './gards';
 import { AuthService } from './auth/auth.service';
 
 import { HttpExceptionFilter } from './common/exceptionFilters/globalFilterExpress';
-import { Response } from 'express';
-import { FastifyExceptionFilter } from './common/exceptionFilters/globalFilterFastify';
+import { Response, Request } from 'express';
+import { ImageType } from './models/images/imagesSchema';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, private authService: AuthService) { }
+  constructor(
+    private readonly appService: AppService,
+    private authService: AuthService,
+  ) {}
+
+  @Post('images')
+  async insertarImagen(@Req() req: Request) {
+    await this.appService.insertarImagen(req);
+  }
+
+  @Get('images')
+  async obtenerImagenes(): Promise<ImageType[]> {
+    return await this.appService.obtenerImages();
+  }
 
   @Get()
   @Render('main.hbs')
   root(@Session() session: secureSession.Session) {
-    console.log("En root")
-    console.log(session)
-    return {title: "Pagina web"}
+    console.log('En root');
+    console.log(session);
+    return { title: 'Pagina web' };
   }
 
   @Get('error400')
   @Render('error400.hbs')
-  error400(@Res() res: Response) {
-     return {title: "Error 400"}
+  error400() {
+    return { title: 'Error 400' };
   }
 
   @Get('error401')
   @Render('error401.hbs')
-  error401(@Res() res: Response) {
-     return {title: "Error 401"}
+  error401() {
+    return { title: 'Error 401' };
   }
 
   @Get('error403')
   @Render('error403.hbs')
-  error403(@Res() res: Response) {
-     return {title: "Error 403"}
+  error403() {
+    return { title: 'Error 403' };
   }
 
   @Get('error404')
   @Render('error404.hbs')
-  error404(@Res() res: Response) {
-     return {title: "Error 404"}
+  error404() {
+    return { title: 'Error 404' };
   }
 
   @UseGuards(LocalAuthGuard)
+  @UseGuards(DeletedSession)
   @UseFilters(new HttpExceptionFilter())
-  @Post('auth/login')
-  @Render('layouts/loggin.hbs')
-  async login(@Req() req, @Session() session: secureSession.Session,@Res() resp: Response) {
-      const visits = session.get('visits');
-      session.set('visits', visits ? visits + 1 : 1);
-      session.authenticated = true;
-      const username = req.body.username;
-      session.user = username;
+  @Post('auth/creador-dashboards')
+  @Render('layouts/creador-dashboards.hbs')
+  async login(
+    @Req() req,
+    @Session() session: secureSession.Session,
+    @Res() resp: Response,
+  ) {
+    const visits = session.get('visits');
+    session.set('visits', visits ? visits + 1 : 1);
+    session.authenticated = true;
+    const username = req.body.username;
+    session.user = username;
 
-      console.log("En login")
-      console.log(session)
+    console.log('En login');
+    console.log(session);
 
-      return {title: username}
-
+    return { title: username };
   }
 
   @UseGuards(AthenticatedSession)
-  @Get('profile')
+  @UseGuards(DeletedSession)
   @UseFilters(new HttpExceptionFilter())
-  @Render('layouts/index.hbs')
+  @Get('profile')
+  @Render('layouts/profile.hbs')
   async getProfile(@Req() req) {
-    return { body: req.session.user,
-            title: req.session.user };
+    return { nombre: req.session.user, title: req.session.user };
   }
 
   @Post('logout')
-  async eleiminarSesion(@Session() session: secureSession.Session, @Res() resp: Response) {
+  async logout(
+    @Session() session: secureSession.Session,
+    @Res() resp,
+    @Req() req,
+  ) {
     session.delete();
-    console.log("En logout")
-    console.log(session)
-    resp.status(302).redirect('/') 
-    return session;
+    console.log('En logout');
+    console.log(session);
+    resp.status(302).redirect('/');
+    return resp.send({ session: session.deleted });
   }
-
-
 }

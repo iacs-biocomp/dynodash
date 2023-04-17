@@ -1,0 +1,156 @@
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="row">
+                <div class="col-8 d-flex justify-content-center">
+                    <h3>Menu</h3>
+                </div>
+                <div class="col-4">
+                    {{> logoutBoton}}
+                </div>
+            </div>
+        </div>
+        <ul class="list-unstyled components">
+            <li>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="newDash" checked>
+                    <label class="form-check-label" for="newDash">
+                        Crear dashboard
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="updateDash">
+                    <label class="form-check-label" for="updateDash">
+                        Actualizar dashboard
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="deleteDash">
+                    <label class="form-check-label" for="deleteDash">
+                        Eliminar dashboard
+                    </label>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled components text-center">
+            <li>
+                <input type="text" name="dashboard" class="form-control mb-2" placeholder="Dashboard name" />
+                <button type="button" class="btn btn-primary btn-sm" id="buscar">Buscar</button>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled components text-center">
+            <li>
+                <button type="button" class="btn btn-primary btn-sm" id="abrirEditor">Abrir editor</button>
+                <button type="button" class="btn btn-primary btn-sm" id="guardar">Guardar cambios</button>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled components">
+            <p>Boton</p>
+            <li>
+                <div class="button draggable">
+                    <div class="textChild">Boton</div>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled components">
+            <p>Imagen Mapa</p>
+            <li>
+                <img class="img-fluid mx-auto d-block draggable" src="../public/images/mapaAragon.png" alt="Image">
+            </li>
+        </ul>
+
+        <ul class="list-unstyled components">
+            <p>Imagen gráfico</p>
+            <li>
+                <img class="img-fluid mx-auto d-block draggable" src="../public/images/graficoLineal.png" alt="Image">
+            </li>
+        </ul>
+
+    </nav>
+
+    <!-- Page Content  -->
+    <div class='container-fluid droppable' id='content'></div>
+
+    <!-- Modal window insertar icon -->
+    <div class="modal fullscreen fade" id="fullscreenModal" tabindex="-1" aria-labelledby="fullscreenModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fullscreenModalLabel">Opciones de contenido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="menuPestannas" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pestanna-mapas" data-bs-toggle="tab"
+                                data-bs-target="#mapas" type="button" role="tab" aria-controls="mapas"
+                                aria-selected="true">Mapas</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pestanna-graficos" data-bs-toggle="tab"
+                                data-bs-target="#graficos" type="button" role="tab" aria-controls="graficos"
+                                aria-selected="false">Gráficos</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pestanna-leyendas" data-bs-toggle="tab"
+                                data-bs-target="#leyendas" type="button" role="tab" aria-controls="leyendas"
+                                aria-selected="false">Leyendas</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="menuContenido">
+                        <div class="tab-pane fade show active" id="mapas" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-4 p-5">
+                                </div>
+                                <div class="col-md-4 p-5">
+                                </div>
+                                <div class="col-md-4 p-5">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="graficos" role="tabpanel" aria-labelledby="pestanna-graficos">
+                            <div class="row">
+                                <div class="col-md-4 p-5">
+                                </div>
+                                <div class="col-md-4 p-5">
+                                </div>
+                                <div class="col-md-4 p-5">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="leyendas" role="tabpanel" aria-labelledby="pestanna-leyendas">
+                            <div class="row">
+                                <div class="col-md-4 p-5">
+                                </div>
+                                <div class="col-md-4 p-5">
+                                </div>
+                                <div class="col-md-4 p-5">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{> modalWindowEliminarContenido}}
+
+    {{> modalWindowCrearDash}}
+    {{> modalWindowActualizarDash}}
+    {{> modalWindowEliminarDash}}
+
+    {{> error}}
+</div>
+
+
+<script src="../public/js/jquery-3.6.3.min.js"></script>
+<script src="../public/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script src="../public/js/scriptCreadorDashboards.js"></script>
+<script src="../public/js/modalViews.js"></script>

@@ -17,25 +17,55 @@
         "template": "mapLine",
         "js": "/cdn/js/d3/topojson.v1.min.js"
     },
+
+
+
     {
-        "_id": "AUTOMATICO",
-        "type": "",
-        "descripcion": "",
-        "template": "",
+        "type": "WIDGET_ESCALAS",
+        "descripcion": "Selector de escalas espaciales",
+        "template": "dropdownEscalas",
         "js": ""
     },
     {
-        "_id": "AUTOMATICO",
-        "type": "",
-        "descripcion": "",
-        "template": "",
+        "type": "WIDGET_INDICADORES",
+        "descripcion": "Selector de indicadores y subindicadores",
+        "template": "dropdownIndicadores",
         "js": ""
     },
     {
-        "_id": "AUTOMATICO",
-        "type": "",
-        "descripcion": "",
-        "template": "",
+        "type": "WIDGET_TABLE_IND_SEC",
+        "descripcion": "Tabla con nombres de sectores y valores de indicadores",
+        "template": "tableIndicadoresSectores",
         "js": ""
+    },
+    {
+        "type": "WIDGET_BOTON",
+        "descripcion": "Boton que redirecciona a otro dashboard o atlas",
+        "template": "botonCambioView",
+        "js": ""
+    },
+    {
+        "type": "WIDGET_MAP_SPAIN",
+        "descripcion": "Mapa de España",
+        "template": "mapSpain",
+        "js": "mapSpainDyn"
+    },
+    {
+        "type": "WIDGET_TABLE_SEC",
+        "descripcion": "Tabla con nombres de sectores",
+        "template": "tableSectores",
+        "js": ""
+    },
+    {
+        "type": "WIDGET_TABLA_PERFILES",
+        "descripcion": "Tabla con los perfiles de desempeño de los sectores",
+        "template": "tablePerfiles",
+        "js": ""
+    },
+    {
+        "type":"WIDGET_LEYENDA",
+        "descripcion":"Muestra una leyenda secuencial",
+        "template":"leyendaSecuencial",
+        "js":"legendDyn"
     }
 ]

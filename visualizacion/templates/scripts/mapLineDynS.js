@@ -24,7 +24,7 @@ var mapResults{{{frame_id}}};
 var chart{{{frame_id}}};
 // mapa dinámico
 var map{{{frame_id}}} = 
-    new biganMapAragonS('#map{frame_id}');
+    new biganMapAragonS('#map{{{frame_id}}}');
 
 
 
@@ -33,7 +33,7 @@ function getData{{{frame_id}}}() {
     return $.ajax({
         dataType:'json',
         type: 'GET',
-        url: '{url}'
+        url: '{{{url}}}'
     });
 } 
 
@@ -151,3 +151,5 @@ var getDataCB{{{frame_id}}} = function(rows) {
 
 $(getData{{{frame_id}}}()
         .done(getDataCB{{{frame_id}}}));
+
+

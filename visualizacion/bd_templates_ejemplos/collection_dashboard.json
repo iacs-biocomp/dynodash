@@ -3,20 +3,20 @@
         "code": "Procedimientos de dudoso valor",
         "template": "bigan2x5hh",
         "grant": "PUBLIC",
-        "created_by": "",
+        "created_by": null,
         "creation_date": null,
-        "last_update" : null,
+        "last_update": null,
         "widgets": [
             {
                 "frame": 2,
                 "order": 1,
                 "type": "INFO-PANEL-O",
-                "url": "",
+                "url": null,
                 "doc": 1,
                 "grant": "PUBLIC",
                 "title": "Procedimientos de dudoso valor",
-                "info" : "",
-                "js": ""
+                "info": null,
+                "js": null
             },
             {
                 "frame": 2,
@@ -25,9 +25,9 @@
                 "url": "{ext_node}/dates?schema=cmbdview&ind=atlas_indicators&type=y{token}",
                 "doc": null,
                 "grant": "PUBLIC",
-                "title": "",
-                "info" : "",
-                "js": "yearSlider" 
+                "title": null,
+                "info": null,
+                "js": "yearSlider"
             },
             {
                 "frame": 11,
@@ -37,8 +37,8 @@
                 "doc": null,
                 "grant": "PUBLIC",
                 "title": "Cesáreas",
-                "info" : "Porcentaje de cesáreas en condiciones de bajo riesgo obstétrico sobre partos de bajo riesgo en mujeres entre 15 y 55 años",
-                "js": "mapLineDynS" 
+                "info": "Porcentaje de cesáreas en condiciones de bajo riesgo obstétrico sobre partos de bajo riesgo en mujeres entre 15 y 55 años",
+                "js": "mapLineDynS"
             },
             {
                 "frame": 12,
@@ -48,8 +48,8 @@
                 "doc": null,
                 "grant": "PUBLIC",
                 "title": "Episiotomía",
-                "info" : "Porcentaje de episiotomías respecto al total de partos vaginales en mujeres entre 15 y 55 años",
-                "js": "mapLineDynS" 
+                "info": "Porcentaje de episiotomías respecto al total de partos vaginales en mujeres entre 15 y 55 años",
+                "js": "mapLineDynS"
             },
             {
                 "frame": 13,
@@ -59,8 +59,8 @@
                 "doc": null,
                 "grant": "PUBLIC",
                 "title": "Adenoidectomía",
-                "info" : "Tasa estandarizada por edad y sexo de adenoidectomía por 10.000 habitantes menores de 20 años",
-                "js": "mapLineDynS" 
+                "info": "Tasa estandarizada por edad y sexo de adenoidectomía por 10.000 habitantes menores de 20 años",
+                "js": "mapLineDynS"
             },
             {
                 "frame": 14,
@@ -70,8 +70,8 @@
                 "doc": null,
                 "grant": "PUBLIC",
                 "title": "Tonsilectomía",
-                "info" : "Tasa estandarizada por edad y sexo de amigdalectomías con/sin adenoidectomía por 10.000 habitantes menores de 20 años",
-                "js": "mapLineDynS" 
+                "info": "Tasa estandarizada por edad y sexo de amigdalectomías con/sin adenoidectomía por 10.000 habitantes menores de 20 años",
+                "js": "mapLineDynS"
             },
             {
                 "frame": 21,
@@ -81,8 +81,8 @@
                 "doc": null,
                 "grant": "PUBLIC",
                 "title": "Miringotomía",
-                "info" : "Tasas estandarizadas por edad y sexo de drenaje timpánico por 10.000 habitantes menores de 20 años",
-                "js": "mapLineDynS" 
+                "info": "Tasas estandarizadas por edad y sexo de drenaje timpánico por 10.000 habitantes menores de 20 años",
+                "js": "mapLineDynS"
             },
             {
                 "frame": 22,
@@ -92,8 +92,8 @@
                 "doc": null,
                 "grant": "PUBLIC",
                 "title": "Túnel carpiano",
-                "info" : "Tasa estandarizada por edad y sexo de liberación del túnel carpiano por 10.000 habitantes mayores de 15 años",
-                "js": "mapLineDynS" 
+                "info": "Tasa estandarizada por edad y sexo de liberación del túnel carpiano por 10.000 habitantes mayores de 15 años",
+                "js": "mapLineDynS"
             },
             {
                 "frame": 23,
@@ -103,8 +103,8 @@
                 "doc": null,
                 "grant": "PUBLIC",
                 "title": "Dedo gatillo",
-                "info" : "Tasa estandarizada por edad y sexo de cirugía del dedo gatillo por 10.000 habitantes mayores de 15 años",
-                "js": "mapLineDynS" 
+                "info": "Tasa estandarizada por edad y sexo de cirugía del dedo gatillo por 10.000 habitantes mayores de 15 años",
+                "js": "mapLineDynS"
             },
             {
                 "frame": 24,
@@ -114,9 +114,483 @@
                 "doc": null,
                 "grant": "PUBLIC",
                 "title": "Legrado",
-                "info" : "Tasa estandarizada por edad y sexo de legrado como diagnóstico por 10.000 mujeres mayores de 15 años",
-                "js": "mapLineDynS" 
+                "info": "Tasa estandarizada por edad y sexo de legrado como diagnóstico por 10.000 mujeres mayores de 15 años",
+                "js": "mapLineDynS"
             }
         ]
     }
 ]
+
+
+//dashboard Variabilidad general
+{
+    "id_dashboard": 452,
+    "code": "ATLAS DE HOSPITALIZACIONES POTENCIALMENTE EVITABLES POR CONDICIONES CRÓNICAS 2018-2020",
+    "template": "variabilidadGeneral",
+    "grant": "PUBLIC",
+    "created_by": null,
+    "creation_date": null,
+    "last_update": null,
+    "widgets" : [
+        {
+            "frame": 1,
+            "order": 1,
+            "type": "WIDGET_ESCALAS",
+            "url": "http://localhost:8080/datos/aggLevels/1245",
+            "doc": 1,
+            "grant": "PUBLIC",
+            "title": "Escala espacial",
+            "info": null,
+            "label": null,
+            "js": "dropdownEscalasDyn"
+        },
+        {
+            "frame": 2,
+            "order": 1,
+            "type": "WIDGET_INDICADORES",
+            "url": "http://localhost:8080/datos/indicadores/452",
+            "doc": 2,
+            "grant": "PUBLIC",
+            "title": null,
+            "info": null,
+            "label": null,
+            "js": "dropdownIndicadoresDyn"
+        },
+        {
+            "frame": 3,
+            "order": 1,
+            "type": "WIDGET_TABLE_IND_SEC",
+            "url": null,
+            "doc": 3,
+            "grant": "PUBLIC",
+            "title": ["ZBS o Área ", "Indicador "],
+            "info": null,
+            "label": "General",
+            "js": null
+        },
+        {
+            "frame": 4,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/444",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Perfil de desempeño >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 5,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/333",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Tramos etarios >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 6,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/222",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Hombre/Mujer >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 7,
+            "order": 1,
+            "type": "WIDGET_MAP_SPAIN",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "POBLACIÓN GENERAL",
+            "info": null,
+            "label": "General",
+            "js": "dataMapDyn"
+        },
+        {
+            "frame": 7,
+            "order": 2,
+            "type": "WIDGET_LEYENDA",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": null,
+            "info": null,
+            "label": null,
+            "js": "dataLegendDyn"
+        }
+    ]
+}
+
+//dashboard variabilidad sexo
+{
+    "id_dashboard": 222,
+    "code": "ATLAS DE HOSPITALIZACIONES POTENCIALMENTE EVITABLES POR CONDICIONES CRÓNICAS 2018-2020",
+    "template": "variabilidadSexoEtaria",
+    "grant": "PUBLIC",
+    "created_by": null,
+    "creation_date": null,
+    "last_update": null,
+    "widgets" : [
+        {
+            "frame": 1,
+            "order": 1,
+            "type": "WIDGET_ESCALAS",
+            "url": "http://localhost:8080/datos/aggLevels/1245",
+            "doc": 1,
+            "grant": "PUBLIC",
+            "title": "Escala espacial",
+            "info": null,
+            "label": null,
+            "js": "dropdownEscalasDyn"
+        },
+        {
+            "frame": 2,
+            "order": 1,
+            "type": "WIDGET_INDICADORES",
+            "url": "http://localhost:8080/datos/indicadores/222",
+            "doc": 2,
+            "grant": "PUBLIC",
+            "title": null,
+            "info": null,
+            "label": null,
+            "js": "dropdownIndicadoresDyn"
+        },
+        {
+            "frame": 3,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/444",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Perfil de desempeño >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 4,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/452",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Variabilidad >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 5,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/333",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Tramos estarios >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 6,
+            "order": 1,
+            "type": "WIDGET_MAP_SPAIN",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "POBLACIÓN HOMBRES",
+            "info": null,
+            "label": "Hombre",
+            "js": "dataMapDyn"
+        },
+        {
+            "frame": 7,
+            "order": 1,
+            "type": "WIDGET_MAP_SPAIN",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "POBLACIÓN MUJERES",
+            "info": null,
+            "label": "Mujer",
+            "js": "dataMapDyn"
+        },
+        {
+            "frame": 8,
+            "order": 1,
+            "type": "WIDGET_LEYENDA",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": null,
+            "info": null,
+            "label": null,
+            "js": "dataLegendDyn"
+        },
+        {
+            "frame": 9,
+            "order": 1,
+            "type": "WIDGET_TABLE_IND_SEC",
+            "url": null,
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": ["ZBS o Área ", "Indicador "],
+            "info": null,
+            "label": "Hombre",
+            "js": null
+        },
+        {
+            "frame": 10,
+            "order": 1,
+            "type": "WIDGET_LEYENDA",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": null,
+            "info": null,
+            "label": null,
+            "js": "dataLegendDyn"
+        },
+        {
+            "frame": 11,
+            "order": 1,
+            "type": "WIDGET_TABLE_IND_SEC",
+            "url": null,
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": ["ZBS o Área ", "Indicador "],
+            "info": null,
+            "label": "Mujer",
+            "js": null
+        }
+    ]
+}
+
+
+//dashboard variabilidad etaria
+{
+    "id_dashboard": 333,
+    "code": "ATLAS DE HOSPITALIZACIONES POTENCIALMENTE EVITABLES POR CONDICIONES CRÓNICAS 2018-2020",
+    "template": "variabilidadSexoEtaria",
+    "grant": "PUBLIC",
+    "created_by": null,
+    "creation_date": null,
+    "last_update": null,
+    "widgets" : [
+        {
+            "frame": 1,
+            "order": 1,
+            "type": "WIDGET_ESCALAS",
+            "url": "http://localhost:8080/datos/aggLevels/1245",
+            "doc": 1,
+            "grant": "PUBLIC",
+            "title": "Escala espacial",
+            "info": null,
+            "label": null,
+            "js": "dropdownEscalasDyn"
+        },
+        {
+            "frame": 2,
+            "order": 1,
+            "type": "WIDGET_INDICADORES",
+            "url": "http://localhost:8080/datos/indicadores/333",
+            "doc": 2,
+            "grant": "PUBLIC",
+            "title": null,
+            "info": null,
+            "label": null,
+            "js": "dropdownIndicadoresDyn"
+        },
+        {
+            "frame": 3,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/444",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Perfil de desempeño >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 4,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/452",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Variabilidad >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 5,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/222",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Hombre/ Mujer >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 6,
+            "order": 1,
+            "type": "WIDGET_MAP_SPAIN",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "POBLACIÓN ENTRE 65 Y 79 AÑOS",
+            "info": null,
+            "label": "Edad_65_79",
+            "js": "dataMapDyn"
+        },
+        {
+            "frame": 7,
+            "order": 1,
+            "type": "WIDGET_MAP_SPAIN",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "POBLACIÓN MAYORES DE 80 AÑOS",
+            "info": null,
+            "label": "Edad_80",
+            "js": "dataMapDyn"
+        },
+        {
+            "frame": 8,
+            "order": 1,
+            "type": "WIDGET_LEYENDA",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": null,
+            "info": null,
+            "label": null,
+            "js": "dataLegendDyn"
+        },
+        {
+            "frame": 9,
+            "order": 1,
+            "type": "WIDGET_TABLE_IND_SEC",
+            "url": null,
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": ["ZBS o Área ", "Indicador "],
+            "info": null,
+            "label": "Edad_65_79",
+            "js": null
+        },
+        {
+            "frame": 10,
+            "order": 1,
+            "type": "WIDGET_LEYENDA",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": null,
+            "info": null,
+            "label": null,
+            "js": "dataLegendDyn"
+        },
+        {
+            "frame": 11,
+            "order": 1,
+            "type": "WIDGET_TABLE_IND_SEC",
+            "url": null,
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": ["ZBS o Área ", "Indicador "],
+            "info": null,
+            "label": "Edad_80",
+            "js": null
+        }
+    ]
+}
+
+//dashboard perfil desempeño
+{
+    "id_dashboard": 444,
+    "code": "ATLAS DE HOSPITALIZACIONES POTENCIALMENTE EVITABLES POR CONDICIONES CRÓNICAS 2018-2020",
+    "template": "perfilDesempenno",
+    "grant": "PUBLIC",
+    "created_by": null,
+    "creation_date": null,
+    "last_update": null,
+    "widgets" : [
+        {
+            "frame": 1,
+            "order": 1,
+            "type": "WIDGET_ESCALAS",
+            "url": "http://localhost:8080/datos/aggLevels/1245",
+            "doc": 1,
+            "grant": "PUBLIC",
+            "title": "Escala espacial",
+            "info": null,
+            "label": null,
+            "js": "dropdownEscalasDyn"
+        },
+        {
+            "frame": 2,
+            "order": 1,
+            "type": "WIDGET_MAP_SPAIN",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "2. Selecciona ZBS o Área Sanitaria en el mapa o en el listado",
+            "info": null,
+            "label": "Perfil",
+            "js": "dataMapDyn"
+        },
+        {
+            "frame": 3,
+            "order": 1,
+            "type": "WIDGET_TABLE_SEC",
+            "url": null,
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "ZBS o Área Sanitaria",
+            "info": null,
+            "label": "Perfil",
+            "js": null
+        },
+        {
+            "frame": 4,
+            "order": 1,
+            "type": "WIDGET_BOTON",
+            "url": "http://localhost:8080/atlas/id/452",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Variabilidad >>",
+            "info": null,
+            "label": null,
+            "js": null
+        },
+        {
+            "frame": 5,
+            "order": 1,
+            "type": "WIDGET_TABLA_PERFILES",
+            "url": "http://localhost:8080/datos/",
+            "doc": null,
+            "grant": "PUBLIC",
+            "title": "Perfil de desempeño en el periodo 2018-2020",
+            "info": null,
+            "label": "Perfil",
+            "js": "tablePerfilesDyn"
+        }
+    ]
+}

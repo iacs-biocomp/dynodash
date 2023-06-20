@@ -3,11 +3,12 @@
  */
 
 export class CrearDashboardDTO {
-    code: string;
-    template: string;
-    grant: string;
-    created_by: string;
-    creation_date: Date;
-    last_update : Date;
-    widgets: [];
+  id_dashboard: string;
+  code: string;
+  template: string;
+  grant: string;
+  created_by: string;
+  creation_date: Date;
+  last_update: Date;
+  widgets: [];
 }

@@ -3,6 +3,6 @@
  */
 
 export class CrearScriptDTO {
-    name: string;
-    content: string;
+  name: string;
+  content: string;
 }

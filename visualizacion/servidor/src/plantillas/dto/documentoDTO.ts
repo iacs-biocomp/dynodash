@@ -3,6 +3,6 @@
  */
 
 export class CrearDocumentDTO {
-    code: number;
-    content: string;
+  code: number;
+  content: string;
 }

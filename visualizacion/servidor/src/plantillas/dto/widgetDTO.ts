@@ -3,8 +3,9 @@
  */
 
 export class CrearWidgetDTO {
-    type: string;
-    descripcion: string;
-    template: string;
-    js: string;
+  type: string;
+  descripcion: string;
+  template: string;
+  label: string;
+  js: string;
 }

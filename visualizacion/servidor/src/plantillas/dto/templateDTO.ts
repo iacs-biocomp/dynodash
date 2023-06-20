@@ -3,6 +3,6 @@
  */
 
 export class CrearTemplateDTO {
-    code: string;
-    content: string;
+  code: string;
+  content: string;
 }

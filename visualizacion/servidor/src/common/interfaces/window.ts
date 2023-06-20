@@ -1,3 +1,3 @@
 export interface myStorage extends Storage {
-    localStorage : any,
+  localStorage: any;
 }

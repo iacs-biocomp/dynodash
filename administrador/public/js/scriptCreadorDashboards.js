@@ -22,6 +22,12 @@ $(function () {
 
   annadirEstadoHTML()
 
+  //Desabilitar el boton back en el browser
+  /*window.history.pushState(null, "", window.location.href);
+  window.onpopstate = function () {
+    window.history.pushState(null, "", window.location.href);
+  };*/
+
 
   //Evento para leer los mensajes/eventos recibidos de otras ventanas secundarias
   $(window).on('message', function (event) {
@@ -141,6 +147,7 @@ $(function () {
   /**
    * Evento que cierra las ventanas secundarias abiertas cuando el usuario hace un log out
    */
+
   $('button#logout').on('click', function (event) {
     editorWindow.close();
   });

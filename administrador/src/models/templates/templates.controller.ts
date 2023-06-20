@@ -9,6 +9,11 @@ import { TemplatesService } from './templates.service';
 export class TemplatesController {
   constructor(private templateService: TemplatesService) { }
 
+  //endpoint para obtener todos los templates
+  @Get()
+  async obtenerTemplates() {
+    return await this.templateService.obtenerTemplates();
+  }
 
   //endpoint para insertar un template
   //comprobar que el data no es nulo

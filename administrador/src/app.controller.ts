@@ -85,7 +85,7 @@ export class AppController {
     session.user = username;
 
     console.log('En login');
-    console.log(session);
+    console.log(req.body);
 
     return { title: username };
   }

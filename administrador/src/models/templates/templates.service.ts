@@ -52,4 +52,8 @@ export class TemplatesService {
   async eliminarDashboard(nameDashboard: string) {
     return await this.templateModel.deleteOne({code : nameDashboard})
   }
+
+  async obtenerTemplates(): Promise<Template[]> {
+    return await this.templateModel.find()
+  }
 }

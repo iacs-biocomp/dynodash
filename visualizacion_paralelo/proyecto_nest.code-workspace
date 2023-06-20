@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../proyecto_nest"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../pruebas_mongo"
+		},
+		{
+			"path": "../proyecto"
+		}
+	],
+	"settings": {}
+}

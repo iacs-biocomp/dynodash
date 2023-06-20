@@ -34,10 +34,15 @@
             </li>
         </ul>
 
-        <ul class="list-unstyled components text-center">
+        <ul class="list-unstyled components">
             <li>
-                <input type="text" name="dashboard" class="form-control mb-2" placeholder="Dashboard name" />
-                <button type="button" class="btn btn-primary btn-sm" id="buscar">Buscar</button>
+                <form action="" autocomplete="off">
+                    <div id="options-dash-wrapper" class="options-dash-wrapper">
+                        <input type="text" name="dashboard" class="form-control" placeholder="Dashboard name" />
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm mt-2" id="buscar">Buscar</button>
+                </form>
+
             </li>
         </ul>
 
@@ -149,8 +154,6 @@
     {{> error}}
 </div>
 
-
-<script src="../public/js/jquery-3.6.3.min.js"></script>
-<script src="../public/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 <script src="../public/js/scriptCreadorDashboards.js"></script>
 <script src="../public/js/modalViews.js"></script>
+<script src="../public/js/menuDesplegableInput.js"></script>

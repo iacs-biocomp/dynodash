@@ -1,4 +1,7 @@
-//JavaScript perteneciente al widget de mapa/gráfico
+//JavaScript perteneciente al widget de mapa
+
+//se ejecta cada vez que se cambia el indicador
+
 myViewModel.globalIndicador.subscribe(function () {
 
     if (myViewModel.globalAggLevel() && myViewModel.globalIndicador()) {
@@ -21,8 +24,8 @@ myViewModel.globalIndicador.subscribe(function () {
   });
   
   
-  //estas son las funciones adecuadas que se utilizan para obtener data code 471
-  //JavaScript perteneciente al widget de mapa/gráfico
+    //estas son las funciones adecuadas que se utilizan para obtener los datos de leyenda para colorear el mapa
+
   function getLeyenda{{{frame_id}}}(indicador) {
     return $.ajax({
       dataType: 'json',
@@ -32,7 +35,6 @@ myViewModel.globalIndicador.subscribe(function () {
     });
   }
   
-  //JavaScript perteneciente al widget de mapa/gráfico
   function getData{{{frame_id}}}(indicador) {
     return $.ajax({
       dataType: 'json',
@@ -44,8 +46,8 @@ myViewModel.globalIndicador.subscribe(function () {
     });
   }
   
-  //estas son las funciones adecuadas que se utilizan para obtener data
-  //JavaScript perteneciente al widget de mapa/gráfico
+    //Funcion para pintar el mapa
+
   const getMapa{{{frame_id}}} = function (datos) {
     const { id, data, nivel } = datos[0];
     const { customLabels, customBreaks} = datos[1];

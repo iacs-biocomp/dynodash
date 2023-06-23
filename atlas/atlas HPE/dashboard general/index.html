@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Mapa España</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="fontawesome-free-6.4.0/css/all.min.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='styles.css'>
+    <link href="bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/d3@5.16.0/dist/d3.min.js"></script>
+    <script src="jquery-3.6.3.min.js"></script>
+    <script src="knockout-3.5.1.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+
+</head>
+
+<body>
+    <div class="p-2" title=""
+        style="visibility: visible; color: rgb(102, 102, 102); font-family: Arial; font-size: 22px; font-style: normal; font-weight: bold; width: 78.8%; left: 2.6%; top: 2.8%; opacity: 1;">
+        ATLAS DE HOSPITALIZACIONES POTENCIALMENTE EVITABLES POR CONDICIONES CRÓNICAS 2018-2020
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <div class="row">
+                    <div class="col border border-primary">
+                        <div>
+                            <p class="h6 mt-2">1. Selecciona una opción</p>
+                        </div>
+                        <div class="str-bindable">
+                            <ul class="nav flex-column">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                        aria-expanded="false"><span
+                                            class="badge bg-primary text-dark text-wrap fs-6">Escala
+                                            espacial</span></a>
+                                    <ul class="dropdown-menu" data-bind="foreach: aggLevels">
+                                        <li>
+                                            <a class="dropdown-item" href="#" data-bind="click: $root.setAggLevel"><span
+                                                    class="badge bg-light text-dark text-wrap"
+                                                    data-bind="text: descripcion"> </span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col border border-primary">
+                        <div>
+                            <p class="h6 mt-2">2. Selecciona un indicador</p>
+                        </div>
+                        <div id="lista" class="str-bindable">
+                            <ul class="nav flex-column" data-bind="foreach: elegirIndicadores()">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                        aria-expanded="false"><span class="badge bg-primary text-dark text-wrap"
+                                            data-bind="text: nombre"> </span></a>
+                                    <ul class="dropdown-menu" data-bind="foreach: subindicadores">
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                                data-bind="click: $root.setIndicador"><span
+                                                    class="badge bg-light text-dark text-wrap" data-bind="text: nombre">
+                                                </span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col border border-primary">
+                        <div>
+                            <p class="h6 mt-2">3. Selecciona zbs o área/s</p>
+                        </div>
+                        <div class="str-bindable">
+                            <div class="tableFixHead">
+                                <table class="table">
+                                    <thead class="sticky-top bg-white">
+                                        <tr>
+                                            <th scope="col">ZBS o Área <i title='Ordenar alfabéticamente'
+                                                    class='fa-solid fa-arrow-circle-up' id='ordenarGeneral'
+                                                    style='color: grey; margin-right: 5px;'></i>
+                                                    <i title='Limpiar' class="fa-solid fa-xmark" id='Limpiar'
+                                                    style='color: #e71f08; margin-right: 5px;'>
+                                                </i>
+                                                </th>
+                                            <th scope="col">Indicador </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach: getAreasZonasGeneral()">
+                                        <tr id="table-item"
+                                            data-bind="css: {selected: ($parent.selectedSectores().includes($data.codigo))}">
+                                            <td><span data-bind="text: $data.nombre"> </span>
+                                                <p data-bind="text: $data.codigo" style="display: none;"></p>
+                                            </td>
+                                            <td><span data-bind="text: $data.value"> </span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-4 border border-primary p-1">
+                        <button type="button" class="btn btn-primary">Perfil de desempeño >></button>
+
+                    </div>
+                    <div class="col-4 border border-primary p-1">
+                        <button type="button" class="btn btn-primary">Tramos etarios >></button>
+
+                    </div>
+                    <div class="col-4 border border-primary p-1">
+                        <button type="button" class="btn btn-primary">Hombre/Mujer >></button>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col border border-primary">
+                        <div class="p-2">
+                            POBLACIÓN GENERAL 
+                        </div>
+                        <div class="panel-body str-bindable" id="mapGeneral" style="position: relative; overflow: hidden;"></div>
+                        <div id="legendGeneral" style="position: relative;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="panel-body str-bindable" id="frame_1" style="position: relative;"></div>-->
+    <script src='legend.js'></script>
+    <script src="viewModel.js"></script>
+    <script src='map-spain.js'></script>
+    <script src='index.js'></script>
+    <!--<script src='datosAincluir.js'></script>-->
+</body>
+
+</html>

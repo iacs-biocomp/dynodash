@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+}
+
+#frame_1 {
+  width: 100%;
+}
+
+.legend {
+  background-color: 'white';
+}
+
+.tableFixHead {
+  overflow: auto;
+  height: 300px;
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 8px 16px;
+}
+
+th {
+  background: #eee;
+}
+
+/*Para destacar los sectores e indicadores de la lista*/
+.selected {
+  background: aqua;
+}
+
+.legend {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+}
+
+/*Para destacar los sectores en el mapa*/
+path.sector.selectedPath {
+  stroke-width: 2;
+  stroke: aqua;
+}
+
+path.zona.selectedPath {
+  stroke-width: 2;
+  stroke: aqua;
+}
+
+
+#lista {
+  overflow:auto;
+}
+
+svg.legend.item {
+  background-color: aqua;
+}
+
+#frame_1 {
+  overflow: hidden;
+}

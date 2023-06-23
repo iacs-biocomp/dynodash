@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Mapa España Perfil desempeño</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="fontawesome-free-6.4.0/css/all.min.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='styles.css'>
+    <link href="bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/d3@5.16.0/dist/d3.min.js"></script>
+    <script src="jquery-3.6.3.min.js"></script>
+    <script src="knockout-3.5.1.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+
+</head>
+
+<body>
+    <div class="p-2" title=""
+        style="visibility: visible; color: rgb(102, 102, 102); font-family: Arial; font-size: 22px; font-style: normal; font-weight: bold; width: 78.8%; left: 2.6%; top: 2.8%; opacity: 1;">
+        ATLAS DE HOSPITALIZACIONES POTENCIALMENTE EVITABLES POR CONDICIONES CRÓNICAS 2018-2020
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <div class="row">
+                    <div class="col border border-primary">
+                        <div>
+                            <p class="h6 mt-2">1. Selecciona una opción</p>
+                        </div>
+                        <div class="str-bindable">
+                            <ul class="nav flex-column">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                        aria-expanded="false"><span
+                                            class="badge bg-primary text-dark text-wrap fs-6">Escala espacial</span></a>
+                                    <ul class="dropdown-menu" data-bind="foreach: aggLevels">
+                                        <li>
+                                            <a class="dropdown-item" href="#" data-bind="click: $root.setAggLevel">
+                                                <span class="badge bg-light text-dark text-wrap"
+                                                    data-bind="text: descripcion"> </span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col border border-primary">
+                        <div>
+                            <p class="h6 mt-2">2. Selecciona ZBS o Área Sanitaria en el mapa o en el listado</p>
+                        </div>
+                        <div class="panel-body str-bindable" id="mapPerfil" style="position: relative;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col border border-primary">
+                        <div class="str-bindable">
+                            <div class="tableFixHead">
+                                <table class="table">
+                                    <thead class="sticky-top bg-white">
+                                        <tr>
+                                            <th scope="col">ZBS o Área Sanitaria <i title='Ordenar alfabéticamente'
+                                                    class='fa-solid fa-arrow-circle-up' id='ordenarPerfil'
+                                                    style='color: grey; margin-right: 5px;'>
+                                                </i>
+                                                <i title='Limpiar' class="fa-solid fa-xmark" id='Limpiar'
+                                                    style='color: #e71f08; margin-right: 5px;'>
+                                                </i>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach: getAreasZonasPerfil()">
+                                        <tr id="table-item"
+                                            data-bind="css: {selected: ($parent.selectedSectores().includes($data.codigo))}">
+                                            <td><span data-bind="text: $data.nombre"> </span>
+                                                <p data-bind="text: $data.codigo" style="display: none;"></p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-4 border border-primary p-1">
+                        <a class="btn btn-primary" href="https://www.freecodecamp.org/"><span class="title">Variabilidad >></span></a>  
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col border border-primary">
+                        <div class="ia-widget ia-panel str-bindable" id="ia-widget-spineChart">
+                            <div class="ia-panel-header" id="ia-widget-spineChart-header">
+                                Perfil de desempeño en el periodo 2018-2020
+                            </div>
+                            <div class="ia-panel-content" id="ia-widget-spineChart-content">
+                                <div id="spineChart" class="ia-table">
+                                    <table class="table table-hover" data-bind="foreach: elegirIndicadores()">
+                                        <thead>
+                                            <tr class="ia-table-row">
+                                                <th id="t0" data-bind="attr: { title: $data.nombre }" colspan="12">
+                                                    <span data-bind="text: nombre"></span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <table id="tabla-perfil" class="table table-hover" data-bind="foreach: perfil()">
+                                        <thead data-bind="if: $index() === 0">
+                                            <tr>
+                                                <th id="indicatorName" class="ia-table-header" title="Indicador"
+                                                    style="width:20%">Indicador
+                                                </th>
+                                                <th id="name" class="ia-table-header" title="ZBS/Área"
+                                                    style="width:15%">ZBS/Área</th>
+                                                <th id="poblacion" class="ia-table-header" title="Población"
+                                                    style="width:10%">Población</th>
+                                                <th id="number" class="ia-table-header" title="Nº de casos"
+                                                    style="width:5%">Nº de casos</th>
+                                                <th id="value"
+                                                    class="ia-table-header" title="Tasa estandarizada" style="width:5%">
+                                                    Tasa estandarizada</th>
+                                                <th id="national" class="ia-table-header" title="P25" style="width:5%">
+                                                    P25</th>
+                                                <th id="tendencia"
+                                                    class="ia-table-header" title="Tendencia" style="width:5%">Tendencia
+                                                </th>
+                                                <th id="perfil"
+                                                    class="ia-table-header" title="Perfil de desempeño"
+                                                    style="width:35%">Perfil de desempeño
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="t0-children" data-bind="foreach: $data">
+                                            <tr class="ia-table-row ia-profile-row ia-table-row-even indicator-row">
+                                                <!-- ko if: $index()===0 -->
+                                                <td class="ia-profile-indicator-name-cell" style="width:20%"
+                                                    data-bind="attr: { title: $data[7], rowspan: $parent.length}">
+                                                    <span data-bind="text: $data[7]"></span> <!--HPE-->
+                                                </td>
+                                                <!-- /ko -->
+                                                <td class="ia-profile-indicator-name-cell" style="width:15%"
+                                                    data-bind="attr: { title: $data[6]}">
+                                                    <span data-bind="text: $data[6]"></span> <!--Nombre sector-->
+                                                </td>
+                                                <td class="ia-profile-indicator-name-cell" style="width:10%"
+                                                    data-bind="attr: { title: $data[1]}">
+                                                    <span data-bind="text: $data[1]"></span> <!--poblacion-->
+                                                </td>
+                                                <td class="ia-profile-indicator-name-cell" style="width:5%"
+                                                    data-bind="attr: { title: $data[2]}">
+                                                    <span data-bind="text: $data[2]"></span> <!--nº casos-->
+                                                </td>
+                                                <td class="ia-profile-indicator-name-cell" style="width:5%"
+                                                    data-bind="attr: { title: $data[0]}">
+                                                    <span data-bind="text: $data[0]"></span>
+                                                    <!--tasa estandarizada-->
+                                                </td>
+                                                <td class="ia-profile-indicator-name-cell" style="width:5%"
+                                                    data-bind="attr: { title: $data[5]}">
+                                                    <span data-bind="text: $data[5]"></span> <!--P25-->
+                                                </td>
+                                                <td class="ia-profile-indicator-name-cell" style="width:5%;"
+                                                    data-bind="bindingTendencia: $data[4]">
+                                                </td>
+                                                <td class="ia-profile-indicator-name-cell" style="width:40%;"
+                                                    data-bind="bindingPerfilDesempenno: $data">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="viewModel-perfil.js"></script>
+    <script src='map-spain-perfil.js'></script>
+    <script src='index-perfil.js'></script>
+    <script src="tablaJavaScript.js"></script>
+</body>
+
+</html>

@@ -38,14 +38,14 @@ export class DatosService {
 
   async insertarLeyendas(leyendas: any): Promise<any> {
 
-    const leyendaInsertada = new this.leyendaModel(leyendas);
-    return leyendaInsertada.save();
-    /*const promises = leyendas.map(element => {
+    /*const leyendaInsertada = new this.leyendaModel(leyendas);
+    return leyendaInsertada.save();*/
+    const promises = leyendas.map(element => {
       const leyendaInsertada = new this.leyendaModel(element);
       return leyendaInsertada.save();
     });
 
-    return Promise.all(promises);*/
+    return Promise.all(promises);
   }
 
   async insertarAggLevel(aggLevel: any): Promise<any> {

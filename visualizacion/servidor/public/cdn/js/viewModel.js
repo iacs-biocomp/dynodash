@@ -1,27 +1,31 @@
 
-//funcion para llamar los datos de las zonas
-//ModelView para el binding
+/**
+ * Esta función es el homologo de BiganStructure. Se basa en knockout.js y sirve para dar dinamismo y funcionalidad a la web y a sus componentes.
+ */
 
 let myViewModel = new function () {
 
     //Variable para el contexto
     let self = this
 
-    //Varibles para registrar las as, zbs, año, día, escala, indicadores
     let globalAS = ko.observable();
     let globalZBS = ko.observable();
     let globalYear = ko.observable();
     let globalDate = ko.observable();
     let globalDetail = ko.observable("global");
 
-    let globalAggLevel = ko.observable();
-    let globalIndicador = ko.observable();
+    let globalAggLevel = ko.observable(); //Almacena el nivel de agregación espacial que se está visualizando
+    let globalIndicador = ko.observable(); //Almacena el indicador que se está visualizando
 
-    let selectedSectores = ko.observableArray([]);
-    let opcionesIndicadores = ko.observableArray([]);
-    let datos = ko.observableArray([])
-    let perfil = ko.observableArray([])
+    let selectedSectores = ko.observableArray([]); //Almacena los codigos de los sectores que se han seleccionado
+    let opcionesIndicadores = ko.observableArray([]); //Almacena los distintos indicadores con sus respectivos subindicadores que se pueden seleccionar en un dashboard
+    let datos = ko.observableArray([]) //Almacena los datos de los sectores para un indicador específico.
+    let perfil = ko.observableArray([]) // Almacena los datos de cada sector utilizados para desplegar su perfil de desempeño
 
+    /*
+    Objeto que almacena en cada una de sus propiedades los datos de los sectores en función del tipo de dashboard que se está visualizando.
+    Los datos guardados en el array tendrán la siguiente estructura : {"code": undifine,"value": null, "values": []}
+    */
     let datos_object = {
         datos_G: [],
         datos_H: [],
@@ -31,6 +35,7 @@ let myViewModel = new function () {
         datos_Perfil: []
     }
 
+    //Objecto que almacena en cada una de sus propiedades el tipo de dashboard que se está visualizando.
     let variabilidad_object = {
         general: undefined,
         hombre: undefined,
@@ -40,7 +45,7 @@ let myViewModel = new function () {
         perfil: undefined
     }
 
-    let totalidadIndicadores = [];
+    let totalidadIndicadores = []; //Almacena todos los subindicadores
 
 
     const DETAIL1 = "global";
@@ -49,13 +54,14 @@ let myViewModel = new function () {
     const DETAIL4 = "hospital";
 
 
-    //Variable para registrar el nivel de agregación
+
     let aggLevel = { codigo: "", descripcion: "" };
-    let aggLevels = ko.observableArray([]);
+    let aggLevels = ko.observableArray([]); //Variable que almacena los niveles de agregación
 
     let indicador = { id: "", nombre: "" }
-    let indicadores = ko.observableArray([]);
+    let indicadores = ko.observableArray([]); //Variable que almacena los subindicadores
 
+    //Funcion que se usa para fijar el tipo de dashboard que se está visualizando
     let setVariabilidad = function (variabilidad) {
         if (variabilidad == 'General') {
             variabilidad_object.general = variabilidad
@@ -78,6 +84,11 @@ let myViewModel = new function () {
         //console.log(variabilidad_object)
     }
 
+    /*
+        Funcion que se usa para fijar los datos que se van a visualizar.
+        Su almacenamiento depende del tipo de dashboard.
+        Modifica el observable datos()
+    */
     let setData = function (variabilidad, data) {
         if (variabilidad == 'General') {
             datos_object.datos_G = [];
@@ -114,34 +125,61 @@ let myViewModel = new function () {
     }
 
 
+    /**
+     * Funcion que fija el indicador que se va a visualizar
+     * @param {*} indicador 
+     */
     let setIndicador = function (indicador) {
         //console.log('en setIndicador', indicador)
         if (indicador != undefined) {
             globalIndicador(indicador.id)
         }
     }
+
+    /**
+     * Funcion que devuelve el indicador que se va a visualizar
+     * @returns 
+     */
     let getIndicador = function () {
         let indicador = globalIndicador();
         //console.log('en getIndicador', indicador)
         return indicador ? indicador : '';
     }
 
+    /**
+     * Funcion que fija el nivel de agregación que se va a visualizar
+     * @param {*} aggLevel 
+     */
     let setAggLevel = function (aggLevel) {
         if (aggLevel != undefined) {
             globalAggLevel(aggLevel.codigo)
         }
     }
 
+    /**
+     * Funcion que devuelve el nivel de agregación que se va a visualizar
+     * @returns 
+     */
     let getAggLevel = function () {
         let aggLevel = globalAggLevel();
         return aggLevel ? aggLevel : '';
     };
 
+    /**
+     * Funcion que complementa a la funcion setDataAggLevels()
+     * @param {*} c 
+     * @param {*} d 
+     */
     function addAggLevel(c, d) {
         aggLevels.push({ codigo: c, descripcion: d })
     }
 
-    //en esta funcion se añadiran los distintos niveles al array de aggLevels
+
+    /**
+     * Funcion para annadir los distintos niveles de agregación cargados de base de datos
+     * También fija el nivel de agregación que se visualizará por defecto
+     * @param {*} response 
+     */
     let setDataAggLevels = function (response) {
         let data = response.aggLevels
         aggLevels.removeAll();
@@ -165,17 +203,20 @@ let myViewModel = new function () {
 
     }
 
+    /**
+     * Funcion que complementa a la funcion elegirIndicadores()
+     * @param {*} i 
+     */
     function addIndicador(i) {
         indicadores.push(i)
     }
 
-    /*function addSubindicador(si) {
-        let array = []
-        array.push(si.id)
-        array.push(si.nombre)
-        perfil.push(array)
-    }*/
 
+    /**
+     * Esta funcion es un computed observable.
+     * 
+     * Devuelve las distintas opsiones de indicadores que se visualizan en un dashboard en base al nivel de agregación seleccionado.
+     */
     let elegirIndicadores = ko.computed(function () {
         if (opcionesIndicadores().length != 0) {
             indicadores.removeAll()
@@ -204,7 +245,8 @@ let myViewModel = new function () {
     /**
      * Este método actúa de la siguiente manera:
      *  Si el indicador global no está definido entonces lo define añadiendo el primer valor de la lista.
-     *  Cuando el indicador ya está seleccionado y se cambia de escala, se asigna el valor de este indicador pero para la otra escala 
+     *  Cuando el indicador ya está seleccionado y se cambia de escala, se asigna el valor de este indicador pero para la otra escala.
+     * De esta forma cuando se cambie de nivel de agregación, siempre se visualizará el indicador que se encuentre al mismo nivel en la lista de indicadores del dashboard.
     */
     elegirIndicadores.subscribe(function () {
         console.log('se ejecuta')
@@ -229,10 +271,13 @@ let myViewModel = new function () {
         }
     })
 
-    //Variables para registrar las areas sanitarias
-    let area_sanitaria = { codigo: undefined, nombre: "", value: undefined };
-    let areas_sanitarias = ko.observableArray([]);
 
+    let area_sanitaria = { codigo: undefined, nombre: "", value: undefined };
+
+    /*
+        Objeto que almacena en cada una de sus propiedades los datos de las areas sanitarias separados por el tipo de variabiliadad
+        El as almacenada tiene la siguiente estructura: { codigo: undefined, nombre: "", value: undefined }
+    */
     let areas_sanitarias_object = {
         general: ko.observableArray([]),
         hombre: ko.observableArray([]),
@@ -242,12 +287,7 @@ let myViewModel = new function () {
         perfil: ko.observableArray([])
     }
 
-    //add area sanitaria
-    function addAS(c, d, v) {
-        areas_sanitarias.push({ codigo: c, nombre: d, value: v })
-    }
-
-    //add area sanitaria
+    //Estas funciones annaden cada una de las areas sanitarias a los observables arrays dentro del objeto areas_sanitarias 
     function addASG(c, d, v) {
         areas_sanitarias_object.general.push({ codigo: c, nombre: d, value: v })
     }
@@ -272,7 +312,7 @@ let myViewModel = new function () {
         areas_sanitarias_object.perfil.push({ codigo: c, nombre: d, value: v })
     }
 
-    //obtener las areas sanitarias
+    //obtener las areas sanitarias de la base de datos
     function getAS() {
         return $.ajax({
             dataType: "json",
@@ -283,8 +323,8 @@ let myViewModel = new function () {
         })
     }
 
+    //Esta funcion vacia los arrays del objeto areas_sanitarias y annade el codigo y el nombre de cada una de las areas sanitarias obtenidas de getAS()
     var callbackAS = function (response) {
-        areas_sanitarias.removeAll();
         areas_sanitarias_object.general.removeAll();
         areas_sanitarias_object.hombre.removeAll();
         areas_sanitarias_object.mujer.removeAll();
@@ -292,7 +332,6 @@ let myViewModel = new function () {
         areas_sanitarias_object.edad_80.removeAll();
         areas_sanitarias_object.perfil.removeAll();
         $.each(response, function (index, item) {
-            addAS(item.properties.IDN, item.properties.M3D)
             addASG(item.properties.IDN, item.properties.M3D)
             addASH(item.properties.IDN, item.properties.M3D)
             addASM(item.properties.IDN, item.properties.M3D)
@@ -320,10 +359,12 @@ let myViewModel = new function () {
         }
     };
 
-    //Variables para registrar las zonas básicas de salud
     let zona_bas_salud = { codigo: undefined, nombre: "", value: undefined };
-    let zonas_bas_salud = ko.observableArray([])
 
+    /*
+    Objeto que almacena en cada una de sus propiedades los datos de las zonas básicas de salud separados por el tipo de variabiliadad
+    El zbs almacenada tiene la siguiente estructura: { codigo: undefined, nombre: "", value: undefined }
+*/
     let zonas_bas_salud_object = {
         general: ko.observableArray([]),
         hombre: ko.observableArray([]),
@@ -333,11 +374,8 @@ let myViewModel = new function () {
         perfil: ko.observableArray([])
     };
 
-    //add zona basica
-    function addZBS(c, d, v) {
-        zonas_bas_salud.push({ codigo: c, nombre: d, value: v })
-    }
 
+    //Estas funciones annaden cada una de las zonas básicas de salud a los observables arrays dentro del objeto zonas_bas_salud
     function addZBSG(c, d, v) {
         zonas_bas_salud_object.general.push({ codigo: c, nombre: d, value: v })
     }
@@ -362,6 +400,8 @@ let myViewModel = new function () {
         zonas_bas_salud_object.perfil.push({ codigo: c, nombre: d, value: v })
     }
 
+
+    //obtener las zonas básicas de salud de la base de datos
     function getZBS() {
         //console.log('llamaada a zonas')
         return $.ajax({
@@ -373,8 +413,9 @@ let myViewModel = new function () {
         })
     }
 
+
+    //Esta funcion vacia los arrays del objeto zonas_bas_salud y annade el codigo y el nombre de cada una de las zonas basicas de salud obtenidas de getZBS()
     let callbackZBS = function (response) {
-        zonas_bas_salud.removeAll();
         zonas_bas_salud_object.general.removeAll()
         zonas_bas_salud_object.hombre.removeAll()
         zonas_bas_salud_object.mujer.removeAll()
@@ -382,8 +423,6 @@ let myViewModel = new function () {
         zonas_bas_salud_object.edad_80.removeAll()
         zonas_bas_salud_object.perfil.removeAll()
         $.each(response, function (index, item) {
-            //console.log(item.properties.codatzbs)
-            addZBS(item.properties.codatzbs, item.properties.n_zbs)
             addZBSG(item.properties.codatzbs, item.properties.n_zbs)
             addZBSH(item.properties.codatzbs, item.properties.n_zbs)
             addZBSM(item.properties.codatzbs, item.properties.n_zbs)
@@ -411,6 +450,13 @@ let myViewModel = new function () {
         }
     };
 
+
+    /**
+     * Funcion push creada para que mute el array sobre el que actua y además introduzca en el los valores del array que recibe la funcion como parametro
+     * 
+     * @param {*} valuesToPushed 
+     * @returns 
+     */
     ko.observableArray.fn.pushAll = function (valuesToPushed) {
         var underlyingArray = this();
         this.valueWillMutate();
@@ -420,6 +466,14 @@ let myViewModel = new function () {
         return this;
     };
 
+    /**
+     * Función que añade los datos completos al objeto areas_sanitarias o zonas_bas_salud dependiendo del nivel de agregación y el tipo de variabilidad del dashboard.
+     * 
+     * Lo que se produce:
+     *  {"codigo": "33","nombre": "Huesca","value": undefine} + {"codigo": "33","value": 3.2,"values": [...]} = {"codigo": "33","nombre": "Huesca","value": 3.2}
+     * 
+     * Cuando se han modificado todos los elementos del array de datos entonces en introducido en el array de areas sanitarias o zonas basicas de salud correspondiente.
+     */
     function annadirValueSectores() {
         if (variabilidad_object.general == 'General') {
             if (globalAggLevel() === "as") {
@@ -597,6 +651,9 @@ let myViewModel = new function () {
     }
 
 
+    /*
+        cada vez que se modifica el observable datos() entonces se ejecuta la funcion annadirValueSectores()
+    */
     datos.subscribe(function () {
 
         annadirValueSectores()
@@ -604,7 +661,9 @@ let myViewModel = new function () {
     })
 
 
-    //Se muestran las zonas o las areas con sus valores de indicadores dependiendo del nivel de agregación seleccionado
+    /*
+        Los siguientes computed observables se ejecutan devolviendo el array adecuado teniendo en cuenta el nivel de agregación y el tipo de variabilidad.
+    */
 
     let getAreasZonasGeneral = ko.computed(function () {
 
@@ -717,44 +776,71 @@ let myViewModel = new function () {
 
     }, this)
 
+
+    /*
+        Los codigos de los sectores seleccionados se eliminan cuando se cambia de nivel de agregación
+    */
     globalAggLevel.subscribe(function () {
         //console.log("en subscribe aggLevel", globalAggLevel())
         selectedSectores.removeAll()
     })
 
+
+    /**
+     * Cuando el observable selectedSectores cambia se resetea el perfil del sector y se procede a realizar : getDataTabla(indicador, selectedSectores()).done(annadirPerfil)
+     * Solo se ejecuta cuando el tipo de variabilidad es 'Perfil', es decir, para el dashboard de perfil de desempeño.
+     */
     selectedSectores.subscribe(function () {
         perfil.removeAll()
-        if (opcionesIndicadores().length > 0 && selectedSectores().length > 0 && variabilidad_object.perfil=='Perfil') {
+        if (opcionesIndicadores().length > 0 && selectedSectores().length > 0 && variabilidad_object.perfil == 'Perfil') {
 
-            console.log('perfil',perfil())
+            //console.log('perfil', perfil())
             let datosIndicadores = opcionesIndicadores().find(element => element.escala == globalAggLevel()).indicadores[0].subindicadores
 
-            console.log('sectores seleccionados', selectedSectores())
+            //console.log('sectores seleccionados', selectedSectores())
 
             $.each(datosIndicadores, function (index, indicador) {
                 //console.log(selectedSectores())
                 getDataTabla(indicador, selectedSectores()).done(annadirPerfil)
             })
 
-            console.log('totalidad', datosIndicadores)
-            console.log('perfil', perfil())
+            //console.log('totalidad', datosIndicadores)
+            //console.log('perfil', perfil())
         }
     })
 
 
-
+    /**
+     * Funcion que recibe los datos de la funcion getDataTabla() --> Esta funcion se encuentra en el javascript correpondiente al widget que muestra la tabla de perfil de desempeño.
+     * 
+     * El array que se introduce dentro del observable array perfil() tiene la siguiente estructura : 
+     * [
+            34.29, --> tasa estandarizada
+            339772, --> Población
+            1457, --> Nº de casos
+            "Naranja", --> color de la bola
+            "P", --> Tendencia
+            32.93, --> P25
+            "Cuenca", --> ZBS/Área
+            "HPE por cualquier causa en mayores de 40 años", --> Indicador
+            85 --> codigo de zbs o as
+        ]
+     * 
+        Este array se usará para renderizar y crear la tabla de perfil de desempeño
+     * @param {*} datos 
+     */
     function annadirPerfil(datos) {
-        const {idIndicador, nombreIndicador, data: dataPerfil} = datos;
+        const { idIndicador, nombreIndicador, data: dataPerfil } = datos;
         //console.log('indicador id', idIndicador)
-        //console.log('perfil en cliente',dataPerfil)
+        //console.log('perfil en cliente', dataPerfil)
         let perfilSector = []
         dataPerfil.data.forEach(element => {
             //console.log(element)
             let nombre = null;
-            if(element.code_as) {
+            if (element.code_as) {
                 nombre = datos_object.datos_Perfil.find(dato => dato.codigo == element.code_as).nombre;
             }
-            if(element.code_zbs) {
+            if (element.code_zbs) {
                 nombre = datos_object.datos_Perfil.find(dato => dato.codigo == element.code_zbs).nombre;
             }
             //console.log('nombre sector', nombre)
@@ -767,6 +853,17 @@ let myViewModel = new function () {
         perfil.push(perfilSector)
     }
 
+
+    /**
+     * Esta función realiza dos cosas:
+     * 
+     * Si el codigo del sector ya está en el array de selectedSectores eso significa que el sector ya estaba seleccionado, entonces se elimina ese codigo del array 
+     * y se deja de destacar el sector en el mapa.
+     * 
+     * Si no estaba seleccionado entonces se destacan todos los sectores del mapa correspondientes a los codigos contenidos en el array sectoresSeleccionados
+     *  y se añade el nuevo codigo al array
+     * Además se envía a la parte superior de la tabla la fila correspondiente al sector que se acaba de seleccionar.
+     */
     function seleccionSector(sectorId, sectoresSeleccionados) {
         //console.log(selectedSectores())
         if (selectedSectores().includes(sectorId)) {
@@ -851,6 +948,14 @@ let myViewModel = new function () {
         }
     }
 
+    /**
+     * Función que se ejecuta en el javascript que crea el Mapa.
+     * 
+     * Cuando se clicke en un sector en cualquiera de los mapas se seleccionarán los elementos path que tengan como clase el codigo de ese sector.
+     * 
+     * El codigo y los elementos se pasan como parámetros a la funcion seleccionSector()
+     * @param {*} s 
+     */
     let setSector = function (s) {
         //console.log("sector en biganStructure ", s)
         let sectoresSeleccionados = $(`.${s}`)
@@ -858,6 +963,13 @@ let myViewModel = new function () {
         seleccionSector(s, sectoresSeleccionados)
     }
 
+    /**
+     * Funcion que ordena las filas de la tabla de selección de forma alfabetica por el nombre del sector.
+     * 
+     * Se ejecuta cada vez que se clicke en el icono de la flecha.
+     * 
+     * @param {*} element 
+     */
     function ordenarAlfabeticamente(element) {
         let id = $(element).attr('id')
 
@@ -993,11 +1105,16 @@ let myViewModel = new function () {
         }
     }
 
+    /**
+     * Custom binding localizado en el HTML correspondiente al widgte de tabla de perfil de desempeño.
+     * 
+     * En este binding se ejecuta la funcion leyendaTendencia() que se encuentra en el javascript correspondiente al widgte de tabla de perfil de desempeño.
+     */
     ko.bindingHandlers.bindingTendencia = {
-        init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 
         },
-        update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
             let value = ko.unwrap(valueAccessor());
 
             leyendaTendencia(element, value)
@@ -1005,11 +1122,16 @@ let myViewModel = new function () {
         }
     };
 
+        /**
+     * Custom binding localizado en el HTML correspondiente al widgte de tabla de perfil de desempeño.
+     * 
+     * En este binding se ejecuta la funcion leyendaTendencia() que se encuentra en el javascript correspondiente al widgte de tabla de perfil de desempeño.
+     */
     ko.bindingHandlers.bindingPerfilDesempenno = {
-        init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 
         },
-        update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
             let values = ko.unwrap(valueAccessor());
 
             //const {color, id, P25} = value;
@@ -1022,7 +1144,9 @@ let myViewModel = new function () {
 
     var init = function () {
 
-        //se cargan las zonas básicas de salud
+        /**
+         * Al final de los callback se ejecuta la función annadirValueSectores() para que se muestren los datos por defecto al cargar la página
+         */
         Promise.all([getZBS(), getAS()]).then(values => {
             callbackZBS(values[0])
             callbackAS(values[1])
@@ -1030,16 +1154,26 @@ let myViewModel = new function () {
         })
 
 
+        /**
+         * Se aplican los binding del modelo
+         */
         $(".str-bindable").each(function () {
 
             ko.applyBindings(myViewModel, this)
         })
 
+        /**
+         * Cuando se clicke el icono de la flecha se ejecuta la funcion ordenarAlfabeticamente() y se modifica la orientación de la flecha.
+         */
         $(this).on('click', 'i[title="Ordenar alfabéticamente"]', function () {
             ordenarAlfabeticamente(this)
             $(this).toggleClass('fa-arrow-circle-up fa-arrow-circle-down')
         })
 
+        /**
+         * Cuando se clicke en una de las líneas de la tabla significa que se ha seleccionado ese sector entonces se identifica el id del sector y los elementos del mapa que corresponden a ese id
+         * Se pasan como parametros a la funcion seleccionSector().
+         */
         $(this).on('click', '#table-item', function () {
             let idSector = +$(this).find('p').text()
             let sectoresSeleccionados = $(`.${idSector}`)
@@ -1047,10 +1181,13 @@ let myViewModel = new function () {
             seleccionSector(idSector, sectoresSeleccionados)
         })
 
-        $(this).on('click', '#Limpiar', function() {
+        /**
+         * Cuando se clicka el icono de la x roja entonces se dejan de destacar los sectores del mapa y las filas de la tabla.
+         */
+        $(this).on('click', '#Limpiar', function () {
             selectedSectores.removeAll()
             let sectores = $('path')
-            $.each(sectores, function(index, sector) {
+            $.each(sectores, function (index, sector) {
                 d3.select(sector).style('stroke', "gray").style('stroke-width', '0.1')
             })
         })

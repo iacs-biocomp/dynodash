@@ -1,0 +1,35 @@
+
+<h2>{{template}}</h2>
+
+<h3 id="description"></h3>
+
+<div class="container">
+	<div class="row">
+		<div class="col-6">
+			<div id="container" style="width: 100%; height: 600px; border: 1px solid grey"></div>
+		</div>
+		<div class="col-6">
+			<div id="view" style="width: 100%; height: 600px; border: 1px solid grey"></div>
+		</div>
+	</div>
+</div>
+<!-- OR ANY OTHER AMD LOADER HERE INSTEAD OF loader.js -->
+<script src="/public/js/monaco-editor/min/vs/loader.js"></script>
+<script>
+	require.config({ paths: { vs: '/public/js/monaco-editor/min/vs' } });
+	require(['vs/editor/editor.main'], function () {
+		var editor = monaco.editor.create(document.getElementById('container'), {
+			language: 'javascript'
+		});
+		$.get('/templates/item/{{template}}',
+			function( data ) { 
+				editor.setValue(data.content);
+				$('#description').html(data.description);
+				console.log('description: ' + data.description);
+				$('#view').html(data.content);
+				editor.getModel().onDidChangeContent((event) => {
+					$('#view').html(editor.getValue());
+				});
+			});
+	});
+</script>

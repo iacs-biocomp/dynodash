@@ -1,59 +1,81 @@
 import { Injectable } from '@nestjs/common';
-
 import { InjectModel } from '@nestjs/mongoose';
-import { Response } from 'express';
 
+//import { Response } from 'express';
 import { Error, Model } from 'mongoose';
 import { CrearTemplateDTO } from './dto';
-import { DashboardType, Template, TemplateType } from './schemas';
+import { Template, TemplateType } from './schemas';
 
 @Injectable()
 export class TemplatesService {
   constructor(
-    @InjectModel('Dashboard') private dashboardModel: Model<DashboardType>,
     @InjectModel('Template') private templateModel: Model<TemplateType>,
   ) { }
 
+  
   /**
    * Esta funcion inserta un documento Template en la coleccion Templates
    *
-   * @param insertarTemplate
+   * @param template
    * @returns
    */
-  async insertarTemplate(
-    insertarTemplate: CrearTemplateDTO
+  async insertTemplate(
+    templateInstance: CrearTemplateDTO
   ): Promise<Template> {
 
-    const { code, content} = insertarTemplate
+    const { code, content, description } = templateInstance;
 
     //Comprobar que el code no existe
     const existingTemplate = await this.templateModel.findOne({ code }).exec();
     if (existingTemplate) {
-      throw new Error('Ya existe un dashboard con ese nombre.');
+      throw new Error('Ya existe un template con ese código.');
     }
     const contentBase64 = Buffer.from(content).toString('base64');
-    const templateInsertado = new this.templateModel({ code, content : contentBase64 });
-    return templateInsertado.save();
+    const templateToinsert = new this.templateModel({ code, content : contentBase64, description });
+    return templateToinsert.save();
   }
 
-  async obtenerDashboard(id: string): Promise<string> {
-    //const { template } = await this.dashboardModel.findById(id);
-    const { content } = await this.templateModel.findOne({ code: id }).exec();
+
+  /**
+   * Retrieve a template from database for a given code (id)
+   * @param id 
+   * @returns 
+   */
+  async getTemplate(id: string): Promise<Template> {
+    const { code, content, description } = await this.templateModel.findOne({ code: id }).exec();
     const html = Buffer.from(content, 'base64').toString('utf-8');
-    return html;
+    return { code, content: html, description };
   }
 
-  async actulizarDashboard(nameDashboard : string, template: CrearTemplateDTO) {
-    const {content} = template
-    const contentBase64 = Buffer.from(content).toString('base64');
-    return await this.templateModel.updateOne({code : nameDashboard}, {$set : {content: contentBase64}})
+  
+  
+  /**
+   * Updates template's content
+   * @param template 
+   * @returns 
+   */
+  async updateTemplate(template: CrearTemplateDTO) {
+    const contentBase64 = Buffer.from(template.content).toString('base64');
+    return await this.templateModel.updateOne({code : template.code}, {$set : {content: contentBase64, 
+                                                                               description: template.description}});
   }
 
-  async eliminarDashboard(nameDashboard: string) {
-    return await this.templateModel.deleteOne({code : nameDashboard})
+
+  /**
+   * Deletes a template
+   * @param id code of the template to delete
+   * @returns 
+   */
+  async deleteTemplate(id: string) {
+    return await this.templateModel.deleteOne({code : id})
   }
 
-  async obtenerTemplates(): Promise<Template[]> {
-    return await this.templateModel.find()
+  
+  /**
+   * Gets the list of all templates
+   * @returns 
+   */
+  async getTemplateList(): Promise<Template[]> {
+    return await this.templateModel.find().lean()
   }
 }

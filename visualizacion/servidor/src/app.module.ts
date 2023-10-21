@@ -4,18 +4,27 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { PlantillasModule } from './plantillas/plantillas.module';
 
+// modules
+import { PlantillasModule } from './plantillas/plantillas.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Funciones } from './common/funciones/funciones';
 import { DatosModule } from './datos/datos.module';
+
+// Controllers
+import { AppController } from './app.controller';
+
+// providers
+import { AppService } from './app.service';
+import { Funciones } from './common/funciones/funciones';
+
+const db_hostname = '1.44.4.42';
+const db_port = '27018';
+const db_database = 'dynodash';
 
 @Module({
   imports: [
     PlantillasModule,
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/atlas_vpm'),
+    MongooseModule.forRoot(`mongodb://${db_hostname}:${db_port}/${db_database}`),
     DatosModule,
   ],
   controllers: [AppController],

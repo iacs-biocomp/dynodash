@@ -2,7 +2,12 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DatosController } from './datos.controller';
 import { DatosService } from './datos.service';
-import { AggLevelSchema, DatoSchema, IndicadorSchema, LeyendaSchema } from './schemas';
+import {
+  AggLevelSchema,
+  DatoSchema,
+  IndicadorSchema,
+  LeyendaSchema,
+} from './schemas';
 
 @Module({
   imports: [
@@ -10,10 +15,10 @@ import { AggLevelSchema, DatoSchema, IndicadorSchema, LeyendaSchema } from './sc
       { name: 'Dato', schema: DatoSchema },
       { name: 'Leyenda', schema: LeyendaSchema },
       { name: 'Indicador', schema: IndicadorSchema },
-      { name: 'AggLevel', schema: AggLevelSchema}
+      { name: 'AggLevel', schema: AggLevelSchema },
     ]),
   ],
   controllers: [DatosController],
-  providers: [DatosService]
+  providers: [DatosService],
 })
 export class DatosModule {}

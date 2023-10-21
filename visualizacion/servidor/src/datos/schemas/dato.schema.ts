@@ -13,13 +13,11 @@ export type DatoType = HydratedDocument<Dato>;
 
 @Schema({ strict: false })
 export class Dato {
-
   @Prop({ required: true })
   id: string;
 
   @Prop({ required: true })
   indicador: string;
-
 }
 
 /**

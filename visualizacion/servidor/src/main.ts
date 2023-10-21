@@ -11,6 +11,7 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
+  console.log('starting Nest application ......');
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   //allow resources to be requested from different domains
@@ -21,6 +22,7 @@ async function bootstrap() {
   app.set('views', join(__dirname, '..', '..', 'views'));
 
   // config view engine
+  console.log('configuing view engine');
   const hbs = exphbs.create({
     defaultLayout: 'index',
     layoutsDir: join(__dirname, '..', '..', 'views', 'layouts'),
@@ -30,8 +32,6 @@ async function bootstrap() {
   });
   app.engine('.hbs', hbs.engine);
   app.set('view engine', '.hbs');
-
-
 
   /*app.setBaseViewsDir(join(__dirname, '..','..', 'views/layouts'));
 
@@ -52,13 +52,11 @@ async function bootstrap() {
 
   const port = 8080;
 
-
-
   /*Solo mantener en desarrollo. 
   Permite solicitudes HTTP realizadas desde un origen (dominio, protocolo y puerto) diferente al origen del recurso solicitado.
   */
-   // Enable CORS
-   const corsOptions: CorsOptions = {
+  // Enable CORS
+  const corsOptions: CorsOptions = {
     origin: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -66,9 +64,10 @@ async function bootstrap() {
   app.enableCors(corsOptions);
   app.use(bodyParser.json({ limit: '10mb' }));
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+  console.log('starting http listener');
   await app.listen(port);
 
   console.log(`app running at http://localhost:${port}/`);
 }
 bootstrap();
-

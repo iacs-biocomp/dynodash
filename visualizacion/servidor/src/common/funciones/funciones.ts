@@ -1,22 +1,26 @@
+import { Logger } from '@nestjs/common';
 import * as Handlebars from 'handlebars';
-
 import { PlantillasService } from 'src/plantillas/plantillas.service';
 
+
+/**
+ * 
+ */
 export class Funciones {
+  // Logger de Nest
+  private readonly logger = new Logger('Funciones');
   constructor(
-    //private appService: AppService,
     private plantillaService: PlantillasService,
   ) {}
 
   // Este array es estatico y solo se modificará cuando se refresque la página del buscador y se encuentren agumentos "type" nuevos.
   private scriptTypes = [];
 
+
+
   /**
-   *
    * Funcion que recibe una plantilla HTML con etiquetas {{{etiqueta}}}.
-   *
    * Localiza las etiquetas únicas.
-   *
    * Devuelve un array con los nombres de las etiquetas.
    *
    * @param plantilla
@@ -32,14 +36,12 @@ export class Funciones {
     const etiquetasMatched = matches.filter(
       (item) => matches.indexOf(item) % 2 != 0,
     );
-
     //Solo se guardan las etiquetas únicas
-    const etiquetasUnicas = etiquetasMatched.filter(
-      (value, index, self) => self.indexOf(value) == index,
-    );
-
+    const etiquetasUnicas = [ ... new Set(etiquetasMatched)]
     return etiquetasUnicas;
   }
+
+
 
   /**
    *
@@ -53,10 +55,8 @@ export class Funciones {
    * @param map
    * @returns
    */
-
   crearJSON(etiquetas: string[], map: Map<string, string>) {
     let data = '';
-
 
     //Si no hay etiquetas se devuelve un json vacio
     if (etiquetas.length == 0) {
@@ -98,6 +98,8 @@ export class Funciones {
     return json;
   }
 
+
+
   /**
    *
    * Se recibe el array de widgets.
@@ -111,11 +113,10 @@ export class Funciones {
    * @param widgets
    * @returns string[]
    */
-
   async constructorDashboard(
     arrayWidgets: Record<string, any>[],
   ): Promise<any> {
-    let arrayHTML_JS = ['', '', []];
+    const arrayHTML_JS = ['', '', []];
 
     let scriptTypes: string[] = [];
 
@@ -124,7 +125,7 @@ export class Funciones {
     }
 
     //Se ordenan los elementos dentro del array por su atributo "order" de manera ascendente
-    let arrayWidgetsOrdenado = this.ordenarWidgetsPorOrder(arrayWidgets);
+    const arrayWidgetsOrdenado = this.ordenarWidgetsPorOrder(arrayWidgets);
 
     //Pasar el widget a un bucle que contendrá la funcion contruirHTML y construirScript
     for (let index = 0; index < arrayWidgetsOrdenado.length; index++) {
@@ -142,6 +143,8 @@ export class Funciones {
     return arrayHTML_JS;
   }
 
+
+
   /**
    *
    * Esta funcion recibe como parametro un array de widgets.
@@ -153,7 +156,6 @@ export class Funciones {
    * @param widget
    * @returns
    */
-
   async construirFrame(widget: Record<string, any>): Promise<string> {
     let documentDecoded = '';
 
@@ -184,22 +186,19 @@ export class Funciones {
     //*****************Esta creacion del map podría ser una funcion
     const map = new Map<string, string>();
 
-    const nombresEtiquetas = ['title', 'info', 'label', 'url']
+    const nombresEtiquetas = ['title', 'info', 'label', 'url'];
 
     for (let i = 0; i < nombresEtiquetas.length; i++) {
       const propiedad = widget[nombresEtiquetas[i]];
 
-      if(Array.isArray(propiedad) && propiedad.length >1) {
-
+      if (Array.isArray(propiedad) && propiedad.length > 1) {
         for (let j = 0; j < propiedad.length; j++) {
-          map.set(nombresEtiquetas[i] +"_"+(j + 1), propiedad[j]);
+          map.set(nombresEtiquetas[i] + '_' + (j + 1), propiedad[j]);
         }
-      }
-      else {
+      } else {
         map.set(nombresEtiquetas[i], propiedad);
       }
     }
-
 
     map.set('frame_id', frame_id);
     map.set('doc', documentDecoded);
@@ -224,7 +223,6 @@ export class Funciones {
    * @param widget
    * @returns
    */
-
   async construirScriptSpecific(widget: Record<string, any>): Promise<string> {
     let script = '';
     let javaScriptSpecific = '';
@@ -261,9 +259,7 @@ export class Funciones {
   }
 
   /**
-   *
    * Esta funcion recibe el array estatico de los tipos de widget.
-   *
    * Se relizan peticones a la coleccion Widgets para extraer el el argumento "js". Este argumento contiene la URL donde está localizada la librería JavaScript necesaria.
    *
    * Al funcion devuelve las etiquetas script con la src = URL
@@ -271,7 +267,6 @@ export class Funciones {
    * @param scriptGeneric
    * @returns
    */
-
   async construirScriptGeneric(scriptTypes: string[]): Promise<string> {
     let javaScriptGeneric = '';
 
@@ -284,7 +279,7 @@ export class Funciones {
         //contruir etiqueta de javascript
         if (javas) {
           const script = await this.plantillaService.obtenerScript(javas);
-          javaScriptGeneric += "<script>" + script + "</script>\n";
+          javaScriptGeneric += '<script>' + script + '</script>\n';
         }
       }
     }
@@ -300,7 +295,6 @@ export class Funciones {
    * @param widget
    * @returns
    */
-
   obtenerScriptTypes(widget: Record<string, any>): string[] {
     const { type } = widget;
 
@@ -320,7 +314,7 @@ export class Funciones {
   ordenarWidgetsPorOrder(
     arrayWidgets: Record<string, any>[],
   ): Record<string, any>[] {
-    let arrayWidgetsOrdenado = arrayWidgets.sort(function (a, b) {
+    const arrayWidgetsOrdenado = arrayWidgets.sort(function (a, b) {
       if (a.order > b.order) {
         return 1;
       }

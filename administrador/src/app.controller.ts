@@ -8,40 +8,30 @@ import {
   UseGuards,
   UseFilters,
   Res,
+  Param
 } from '@nestjs/common';
 import * as secureSession from '@fastify/secure-session';
 
 import { AppService } from './app.service';
 import { LocalAuthGuard, AthenticatedSession, DeletedSession } from './gards';
 import { AuthService } from './auth/auth.service';
-
 import { HttpExceptionFilter } from './common/exceptionFilters/globalFilterExpress';
 import { Response, Request } from 'express';
-import { ImageType } from './models/images/imagesSchema';
 
 @Controller()
 export class AppController {
+  plantillaServicio: any;
   constructor(
     private readonly appService: AppService,
     private authService: AuthService,
   ) {}
-
-  @Post('images')
-  async insertarImagen(@Req() req: Request) {
-    await this.appService.insertarImagen(req);
-  }
-
-  @Get('images')
-  async obtenerImagenes(): Promise<ImageType[]> {
-    return await this.appService.obtenerImages();
-  }
 
   @Get()
   @Render('main.hbs')
   root(@Session() session: secureSession.Session) {
     console.log('En root');
     console.log(session);
-    return { title: 'Pagina web' };
+    return { title: 'Login' };
   }
 
   @Get('error400')
@@ -68,6 +58,9 @@ export class AppController {
     return { title: 'Error 404' };
   }
 
+
+
+
   @UseGuards(LocalAuthGuard)
   @UseGuards(DeletedSession)
   @UseFilters(new HttpExceptionFilter())
@@ -90,6 +83,8 @@ export class AppController {
     return { title: username };
   }
 
+
+
   @UseGuards(AthenticatedSession)
   @UseGuards(DeletedSession)
   @UseFilters(new HttpExceptionFilter())
@@ -98,6 +93,9 @@ export class AppController {
   async getProfile(@Req() req) {
     return { nombre: req.session.user, title: req.session.user };
   }
+
+
+
 
   @Post('logout')
   async logout(

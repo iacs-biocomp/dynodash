@@ -1,14 +1,13 @@
 import { NestFactory } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
-import secureSession from '@fastify/secure-session';
-import helmet from '@fastify/helmet';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+//import secureSession from '@fastify/secure-session';
+//import helmet from '@fastify/helmet';
+const secureSession = require('@fastify/secure-session');
+//const helmet = require('@fastify/helmet');
 
 import { join } from 'path';
-
 import { AppModule } from './app.module';
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -21,7 +20,7 @@ async function bootstrap() {
    */
   app.useStaticAssets({
     root: join(__dirname, '..', 'public'),
-    prefix: '/public/',
+    prefix: '/public/'
   });
 
   /**
@@ -55,7 +54,8 @@ async function bootstrap() {
   Registro del middleware helmet para controlar la seguridad de la aplicacion. Modifica los headers para evitar vulnerabilidades HTTP.
   */
 
-  await app.register(helmet);
+    //await 
+  //app.register( helmet );
 
   /**
    * Registro del gestor de sesiones
@@ -72,6 +72,6 @@ async function bootstrap() {
 
   await app.listen(port, '0.0.0.0');
   console.log();
-  console.log(`app running at http://localhost:${port}`);
+    console.log(`app running at http://localhost:${port}`);
 }
 bootstrap();

@@ -75,5 +75,4 @@ export class PlantillasController {
       console.log(Error);
     }
   }
-
 }

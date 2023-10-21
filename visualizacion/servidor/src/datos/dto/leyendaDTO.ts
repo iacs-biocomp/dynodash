@@ -6,4 +6,4 @@ export class CrearLeyendaDTO {
   id: string;
   customBreaks: [];
   customLabels: [];
-  }
+}

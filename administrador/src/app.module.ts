@@ -7,13 +7,18 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TemplatesModule } from './models/templates/templates.module';
 import { ImageSchema } from './models/images/imagesSchema';
 
+
+const db_hostname = 'localhost';
+const db_port = '27017';
+const db_database = 'dynodash';
+
 @Module({
   imports: [
     AuthModule,
     UsersModule,
     TemplatesModule,
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/atlas_vpm'),
-    MongooseModule.forFeature([{ name: 'Image', schema: ImageSchema }]),
+    MongooseModule.forRoot(`mongodb://${db_hostname}:${db_port}/${db_database}`),
+    MongooseModule.forFeature([{ name: 'Image', schema: ImageSchema }])
   ],
 
   controllers: [AppController],

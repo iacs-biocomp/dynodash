@@ -3,7 +3,7 @@
  */
 
 export class CrearIndicadorTO {
-    id: string;
-    escala: string;
-    indicadores: [];
-  }
+  id: string;
+  escala: string;
+  indicadores: [];
+}

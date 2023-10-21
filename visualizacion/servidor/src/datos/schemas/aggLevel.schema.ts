@@ -13,10 +13,8 @@ export type AggLevelType = HydratedDocument<AggLevel>;
 
 @Schema({ strict: false })
 export class AggLevel {
-
-    @Prop({ required: true })
-    id: string;
-
+  @Prop({ required: true })
+  id: string;
 }
 
 /**
@@ -26,4 +24,3 @@ export class AggLevel {
  */
 
 export const AggLevelSchema = SchemaFactory.createForClass(AggLevel);
-

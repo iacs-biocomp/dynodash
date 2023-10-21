@@ -13,10 +13,8 @@ export type IndicadorType = HydratedDocument<Indicador>;
 
 @Schema({ strict: false })
 export class Indicador {
-
   @Prop({ required: true })
   id: string;
-
 }
 
 /**

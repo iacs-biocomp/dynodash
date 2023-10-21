@@ -5,4 +5,5 @@
 export class CrearTemplateDTO {
   code: string;
   content: string;
+  description: string;
 }

@@ -1,15 +1,9 @@
-import { Injectable } from '@nestjs/common';
-
+import { Injectable, Logger } from '@nestjs/common';
 import * as Handlebars from 'handlebars';
-
 import { InjectModel } from '@nestjs/mongoose';
-
 import { Model } from 'mongoose';
-
 import { Buffer } from 'buffer';
-
 import { Funciones } from '../common/funciones/funciones';
-
 import {
   Dashboard,
   DashboardType,
@@ -22,7 +16,6 @@ import {
   Widget,
   WidgetType,
 } from './schemas';
-
 import {
   CrearDashboardDTO,
   CrearDocumentDTO,
@@ -33,16 +26,20 @@ import {
 
 @Injectable()
 export class PlantillasService {
+  //Se instancia un objeto de la clase Funciones que recibe como parametro el contexto PlantillasService
+  funciones = new Funciones(this);
+  // Logger de Nest
+  private readonly logger = new Logger(PlantillasService.name);
+
   constructor(
     @InjectModel('Dashboard') private dashboardModel: Model<DashboardType>,
     @InjectModel('Documento') private documentoModel: Model<DocumentoType>,
     @InjectModel('Script') private scriptModel: Model<ScriptType>,
     @InjectModel('Template') private templateModel: Model<TemplateType>,
     @InjectModel('Widget') private widgetModel: Model<WidgetType>,
-  ) { }
+  ) {}
 
-  //Se instancia un objeto de la clase Funciones que recibe como parametro el contexto PlantillasService
-  funciones = new Funciones(this);
+
 
   /**
    * Esta funcion inserta un documento Dashboard en la coleccion Dashboards
@@ -105,12 +102,13 @@ export class PlantillasService {
     return widgetInsertado.save();
   }
 
+  
+  
   /**
    * Esta funcion busca un objeto template por el atributo code
    *
    * @param parametro
    */
-
   async obtenerHTML(parametro: string) {
     //Localiza el dashboard en la DB y se extrae el campo 'template'
     const { template, widgets } = await this.dashboardModel.findOne({
@@ -120,12 +118,14 @@ export class PlantillasService {
     //Se localiza el template en la DB y se devuelve el HTML decodificado
     const HTMLdecoded = await this.obtenerTemplateContent(template);
 
+    //this.logger.log(HTMLdecoded);
+
     //Se encuentran las etiquetas contenidas por la template
     const etiquetas = this.funciones.buscadorEtiquetas(HTMLdecoded);
 
     const map = new Map();
 
-    let arrayWidgets;
+    let arrayWidgets: Record<string, any>[];
 
     //Esta variable almacena todo el código javaScript que le da dinamismo al dashboard.
     let javaScriptSpecific = ' ';
@@ -140,19 +140,17 @@ export class PlantillasService {
 
     for (let index = 0; index < etiquetas.length; index++) {
       //Se recoge el id del frame
-      let id = etiquetas[index].split('_')[1];
+      const id = etiquetas[index].split('_')[1];
 
       //Se seleccionan los widgets cuyo frame coincide con el id del frame del dashboard
       arrayWidgets = widgets.filter((widget) => widget.frame == id);
 
-      let htmlConScript = await this.funciones.constructorDashboard(
+      const htmlConScript = await this.funciones.constructorDashboard(
         arrayWidgets,
       );
 
       const html = htmlConScript[0];
-
       javaScriptSpecific += htmlConScript[1];
-
       //Solo es valido el array obtenido el el último loop, ya que el array estará completo con todos los nombres de widgets.
       namesScriptGeneric = htmlConScript[2];
 
@@ -181,30 +179,53 @@ export class PlantillasService {
     return html;
   }
 
+  
+  /**
+   * 
+   * @param scriptName 
+   * @returns 
+   */
   async obtenerScript(scriptName: string): Promise<string> {
     const { content } = await this.scriptModel.findOne({ name: scriptName });
-    let scriptDecoded = Buffer.from(content, 'base64').toString('utf-8');
+    const scriptDecoded = Buffer.from(content, 'base64').toString('utf-8');
 
     return scriptDecoded;
   }
 
+
+  /**
+   * 
+   * @param typeTemplate 
+   * @returns 
+   */
   async obtenerWidget(typeTemplate: string): Promise<Widget> {
     const widget = await this.widgetModel.findOne({ type: typeTemplate });
 
     return widget;
   }
 
+
+  /**
+   * 
+   * @param codeTemplate 
+   * @returns 
+   */
   async obtenerTemplateContent(codeTemplate: string): Promise<string> {
     const { content } = await this.templateModel.findOne({
       code: codeTemplate,
     });
-
     //Se decodifica a utf-8
     const HTMLdecoded = Buffer.from(content, 'base64').toString('utf-8');
-
     return HTMLdecoded;
   }
 
+
+
+  /**
+   * 
+   * @param codeDoc 
+   * @returns 
+   */
   async obtenerDocumentoContent(codeDoc: number): Promise<string> {
     const { content } = await this.documentoModel.findOne({ code: codeDoc });
 

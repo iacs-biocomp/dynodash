@@ -13,10 +13,8 @@ export type LeyendaType = HydratedDocument<Leyenda>;
 
 @Schema({ strict: false })
 export class Leyenda {
-
   @Prop({ required: true })
   id: string;
-
 }
 
 /**

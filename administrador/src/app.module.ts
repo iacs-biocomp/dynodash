@@ -5,7 +5,9 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './models/users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TemplatesModule } from './models/templates/templates.module';
+import { ScriptsModule } from './models/scripts/scripts.module';
 import { ImageSchema } from './models/images/imagesSchema';
+import { WidgetsModule } from './models/widgets/widgets.module';
 
 
 const db_hostname = 'localhost';
@@ -17,8 +19,11 @@ const db_database = 'dynodash';
     AuthModule,
     UsersModule,
     TemplatesModule,
+    ScriptsModule,
+    WidgetsModule,
     MongooseModule.forRoot(`mongodb://${db_hostname}:${db_port}/${db_database}`),
-    MongooseModule.forFeature([{ name: 'Image', schema: ImageSchema }])
+    MongooseModule.forFeature([{ name: 'Image', schema: ImageSchema }]),
+    WidgetsModule
   ],
 
   controllers: [AppController],

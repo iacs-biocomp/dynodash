@@ -1,0 +1,24 @@
+    <div class="row mt-5 justify-content-around">
+  
+        <div class="col-sm-6">
+            <h1>Lista de scripts</h1>
+            <hr>
+
+        <table>
+            <thead>
+                <th>nombre</th>
+                <th>Descripción</th>
+            </thead>
+            <tbody>
+                {{#each items}}
+                    <tr>
+                        {{#with this}}
+                        <td><a href="/script/editor/{{name}}">{{name}}</a></td><td>{{description}}</td>
+                        {{/with}}
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        </div>
+    </div>

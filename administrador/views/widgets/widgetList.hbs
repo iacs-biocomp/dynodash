@@ -1,0 +1,26 @@
+    <div class="row mt-5 justify-content-around">
+  
+        <div class="col-sm-6">
+            <h1>Lista de widgets</h1>
+            <hr>
+
+        <table>
+            <thead>
+                <th>nombre</th>
+                <th>Descripción</th>
+                <th>Plantilla</th>
+                <th>Script</th>
+            </thead>
+            <tbody>
+                {{#each items}}
+                    <tr>
+                        {{#with this}}
+                        <td><a href="/widget/editor/{{type}}">{{type}}</a></td><td>{{description}}</td><td>{{template}}</td><td>{{js}}</td>
+                        {{/with}}
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        </div>
+    </div>

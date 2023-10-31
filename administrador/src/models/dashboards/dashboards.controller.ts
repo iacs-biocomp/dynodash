@@ -1,68 +1,105 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Render, Res, UseFilters } from '@nestjs/common';
 import { Response } from 'express';
 //import { HttpExceptionFilterDB } from 'src/common/exceptionFilters/globalFilterExpress';
-import { CrearTemplateDTO } from '../templates/dto';
+import { Dashboard } from './dashboard.schema';
+import { DashboardsService } from './dashboard.service';
+import { TemplatesService } from '../templates//templates.service'
 
-import { TemplatesService } from '../templates/templates.service';
 
 @Controller('dashboard')
-export class TemplatesController {
-  constructor(private templateService: TemplatesService) { }
+export class DashboardsController {
+  constructor(
+    private dashboardService: DashboardsService,
+    private templateService: TemplatesService) { }
 
-  //endpoint para obtener todos los templates
+  //endpoint para obtener todos los dashboards
   @Get()
-  async obtenerTemplates() {
-    return await this.templateService.getTemplateList();
+  async obtenerDashboards() {
+    return await this.dashboardService.getDashboardList();
   }
 
-  //endpoint para insertar un template
-  //comprobar que el data no es nulo
-  @Post('template')
-  //@UseFilters(new HttpExceptionFilterDB)
-  async insertarTemplate(@Body() insertarTemplate: CrearTemplateDTO, @Res() res: Response) {
+  /**
+   * 
+   * @returns 
+   */
+  @Get('list')
+  @Render('dashboards/dashboardList.hbs')
+  async templateList() {
+    console.log('En templateList');
+    try {
+      const list = await this.dashboardService.getDashboardList();
+      return { title: 'List of dashboards',
+               items: list
+            };     
+    } catch (Error) {
+      console.log(Error);
+    }
+  }
 
-    const { code, content} = insertarTemplate
-    if (insertarTemplate == undefined) {
+
+ //endpoint para obetener el dashboard principal del dashboard
+ @Get('item/:id')
+ async obtenerDashboard(@Param('id') dashboardId: string, @Res() res: Response) {
+
+   try {
+     const dashboardInstance = await this.dashboardService.getDashboard(dashboardId);
+     //console.log(html)
+     return res.send(dashboardInstance);
+   }catch(error) {
+     return res.status(400).send('Dashboard no encontrado.')
+   }
+ }
+
+  /**
+   * 
+   * @param id 
+   * @returns 
+   */
+  @Get('editor/:id')
+  @Render('dashboards/dashboardEditor.hbs')
+  async editor(@Param('id') id: string) {
+    try {
+        const item = await this.dashboardService.getDashboard(id);
+        const templateList = await this.templateService.getTemplateList();
+        return { title: 'Editor', dashboard: item, templates: templateList } 
+      } catch (Error) {
+        console.log(Error);
+      }
+  }
+
+  //endpoint para insertar un dashboard
+  //comprobar que el data no es nulo
+  @Post('dashboard')
+  //@UseFilters(new HttpExceptionFilterDB)
+  async insertarDashboard(@Body() insertarDashboard: Dashboard, @Res() res: Response) {
+
+    if (insertarDashboard == undefined) {
       //console.log('es nulo')
       throw new HttpException('No se han enviado datos para guardar.', HttpStatus.NOT_IMPLEMENTED);
     }
 
-    if(code==="") {
+    if(insertarDashboard.name==="") {
       //console.log('no hay code')
       throw new HttpException('Debe asignarle un nombre al dashboard.', HttpStatus.NOT_IMPLEMENTED);
     }
 
-    if(content === "") {
-      //console.log('no hay content')
-      throw new HttpException('Debe crear un dashboard previamente.', HttpStatus.NOT_IMPLEMENTED);
-    }
     try {
-      const newObject = await this.templateService.insertTemplate(insertarTemplate);
+      const newObject = await this.dashboardService.insertDashboard(insertarDashboard);
       return res.send({msg: 'Guardado con exito'});
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.CONFLICT);
     }
   }
 
-  //endpoint para obetener el template principal del dashboard
-  @Get(':id')
-  async obtenerDashboard(@Param('id') dashboardId: string, @Res() res: Response) {
 
-    try {
-      const html = await this.templateService.getTemplate(dashboardId);
-      //console.log(html)
-      return res.send(html);
-    }catch(error) {
-      return res.status(400).send('Dashboard no encontrado.')
-    }
-  }
+ 
 
   //endpoint para actualizar un dashboard
-  @Put(':id')
-  async actualizarDashboard(@Param('id') dashboardId: string, @Body() template: CrearTemplateDTO, @Res() res: Response) {
+  @Put()
+  async actualizarDashboard(@Body() dashboard: Dashboard, @Res() res: Response) {
     try {
 
-      await this.templateService.updateTemplate(template);
+      await this.dashboardService.updateDashboard(dashboard);
       console.log('ok')
       return res.send('Dashboard actualizado con éxito.')
 
@@ -76,7 +113,7 @@ export class TemplatesController {
   async eliminarDashboard(@Param('id') dashboardId: string, @Res() res: Response){
     try {
 
-      await this.templateService.deleteTemplate(dashboardId);
+      await this.dashboardService.deleteDashboard(dashboardId);
       return res.send('Dashboard eliminado con éxito.')
 
     }catch(error) {

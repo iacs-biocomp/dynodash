@@ -1,19 +1,38 @@
-
-
 <div class="container">
 
+<h1>Editor de widgets</h1>
 <form>
   <div class="form-group">
     <label for="type">Nombre</label>
-    <input type="text" class="form-control" id="type" placeholder="Nombre" value="{{widget.type}}">
+    <input type="text" class="form-control" id="name" placeholder="Nombre" value="{{widget.name}}">
     <label for="description">Descripción</label>
     <input type="text" class="form-control" id="description" placeholder="Descripcion" value="{{widget.description}}">
 
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="templateSelect">Plantilla</label>
+      </div>
+      <select class="custom-select" id="templateSelect">
+        <option selected>Choose...</option>
+        {{#each templates}}
+        <option value="{{name}}">{{description}}</option>
+        {{/each}}
+      </select>
+    </div>
 
-    <label for="template">Plantilla</label>
-    <input type="text" class="form-control" id="template" placeholder="Plantilla" value="{{widget.template}}">
-    <label for="js">Script</label>
-    <input type="text" class="form-control" id="js" placeholder="Script" value="{{widget.js}}">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="scriptSelect">Script</label>
+      </div>
+      <select class="custom-select" id="scriptSelect">
+        <option selected>Choose...</option>
+        {{#each scripts}}
+        <option value="{{name}}">{{description}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+
 
 	<button id="saveButton" type="button" class="btn btn-primary">Guardar</button>
 
@@ -28,4 +47,23 @@
 
 
 <script>
+  $('#templateSelect').val("{{widget.template}}");
+  $('#scriptSelect').val("{{widget.js}}");
+  $('#saveButton').click(function(){
+    data={
+      type: $('#name').val(),
+      template: $('#templateSelect').val(),
+      description: $('#description').val(),
+      js: $('#scriptSelect').val()
+    };
+    console.log(data);
+    $.ajax({
+      url: '/widget',
+      type: 'PUT',
+      data: data,
+      success: function(data) {
+        alert('Widget grabado correctamente');
+      }
+    });
+  });
 </script>

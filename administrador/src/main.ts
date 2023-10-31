@@ -35,6 +35,7 @@ async function bootstrap() {
     templates: join(__dirname, '..', 'views'),
     root: join(__dirname, '..', 'views'),
     layout: './layouts/index',
+    //propertyName: "principal",
     viewExt: 'hbs',
     options: {
       partials: {
@@ -47,6 +48,30 @@ async function bootstrap() {
       },
     },
   });
+
+
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  app.register(require('@fastify/view'), {
+    engine: {
+      handlebars: require('handlebars'),
+    },
+    templates: join(__dirname, '..', 'views'),
+    root: join(__dirname, '..', 'views'),
+    layout: './layouts/second',
+    propertyName: "second",
+    viewExt: 'hbs',
+    options: {
+      partials: {
+        logoutBoton: '/partials/logoutBoton.hbs',
+        modalWindowEliminarContenido: '/partials/modalWindowEliminarContenido.hbs',
+        modalWindowCrearDash: '/partials/modalWindowCrearDash.hbs',
+        modalWindowActualizarDash: '/partials/modalWindowActualizarDash.hbs',
+        modalWindowEliminarDash: '/partials/modalWindowEliminarDash.hbs',
+        error: '/partials/error.hbs'
+      },
+    },
+  });
+
 
   const port = 3000;
 

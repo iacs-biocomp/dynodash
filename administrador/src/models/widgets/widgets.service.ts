@@ -5,13 +5,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Error, Model } from 'mongoose';
 import { Widget, WidgetType } from './widget.schema';
 
+
+
 @Injectable()
 export class WidgetsService {
   constructor(
     @InjectModel('Widget') private widgetModel: Model<WidgetType>,
   ) { }
 
-  
   /**
    * Esta funcion inserta un documento widget en la coleccion widgets
    *
@@ -21,7 +22,7 @@ export class WidgetsService {
   async insertWidget(widgetInstance: Widget): Promise<Widget> {
 
     //Comprobar que el code no existe
-    const existingWidget = await this.widgetModel.findOne({ type: widgetInstance.type }).exec();
+    const existingWidget = await this.widgetModel.findOne({ type: widgetInstance.name }).exec();
     if (existingWidget) {
       throw new Error('Ya existe un widget con ese código.');
     }
@@ -48,7 +49,7 @@ export class WidgetsService {
    * @returns 
    */
   async updateWidget(widgetInstance: Widget) {
-    return await this.widgetModel.replaceOne({type : widgetInstance.type}, widgetInstance);
+    return await this.widgetModel.replaceOne({type : widgetInstance.name}, widgetInstance);
   }
 
 

@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 
 //import { Response } from 'express';
 import { Error, Model } from 'mongoose';
-import { CrearTemplateDTO } from './dto';
-import { Template, TemplateType } from './schemas';
+import { CrearTemplateDTO } from './templateDTO';
+import { Template, TemplateType } from './template.schema';
 
 @Injectable()
 export class TemplatesService {
@@ -23,15 +23,15 @@ export class TemplatesService {
     templateInstance: CrearTemplateDTO
   ): Promise<Template> {
 
-    const { code, content, description } = templateInstance;
+    const { name, content, description } = templateInstance;
 
     //Comprobar que el code no existe
-    const existingTemplate = await this.templateModel.findOne({ code }).exec();
+    const existingTemplate = await this.templateModel.findOne({ name }).exec();
     if (existingTemplate) {
       throw new Error('Ya existe un template con ese código.');
     }
     const contentBase64 = Buffer.from(content).toString('base64');
-    const templateToinsert = new this.templateModel({ code, content : contentBase64, description });
+    const templateToinsert = new this.templateModel({ name, content : contentBase64, description });
     return templateToinsert.save();
   }
 
@@ -42,9 +42,9 @@ export class TemplatesService {
    * @returns 
    */
   async getTemplate(id: string): Promise<Template> {
-    const { code, content, description } = await this.templateModel.findOne({ code: id }).exec();
+    const { name, content, description } = await this.templateModel.findOne({ code: id }).exec();
     const html = Buffer.from(content, 'base64').toString('utf-8');
-    return { code, content: html, description };
+    return { name, content: html, description };
   }
 
   
@@ -56,7 +56,7 @@ export class TemplatesService {
    */
   async updateTemplate(template: CrearTemplateDTO) {
     const contentBase64 = Buffer.from(template.content).toString('base64');
-    return await this.templateModel.updateOne({code : template.code}, {$set : {content: contentBase64, 
+    return await this.templateModel.updateOne({code : template.name}, {$set : {content: contentBase64, 
                                                                                description: template.description}});
   }
 

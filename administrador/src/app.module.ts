@@ -8,6 +8,7 @@ import { TemplatesModule } from './models/templates/templates.module';
 import { ScriptsModule } from './models/scripts/scripts.module';
 import { ImageSchema } from './models/images/imagesSchema';
 import { WidgetsModule } from './models/widgets/widgets.module';
+import { DashboardsModule } from './models/dashboards/dashboard.module'
 
 
 const db_hostname = 'localhost';
@@ -21,6 +22,7 @@ const db_database = 'dynodash';
     TemplatesModule,
     ScriptsModule,
     WidgetsModule,
+    DashboardsModule,
     MongooseModule.forRoot(`mongodb://${db_hostname}:${db_port}/${db_database}`),
     MongooseModule.forFeature([{ name: 'Image', schema: ImageSchema }]),
     WidgetsModule

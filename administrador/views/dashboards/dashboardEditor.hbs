@@ -1,0 +1,129 @@
+<div class="container">
+
+<h1>Editor de página / panel</h1>
+<form>
+  <div class="form-group">
+    <label for="name">Nombre</label>
+    <input type="text" class="form-control" id="name" placeholder="Nombre" value="{{dashboard.name}}">
+    <label for="description">Descripción</label>
+    <input type="text" class="form-control" id="description" placeholder="Descripcion" value="{{dashboard.description}}">
+    <label for="grant">Permiso</label>
+    <input type="text" class="form-control" id="grant" placeholder="Permiso" value="{{dashboard.grant}}">
+    <label for="createdBy">Creado por</label>
+    <input type="text" class="form-control" id="createdBy" placeholder="Creado por..." value="{{dashboard.created_by}}">
+    <label for="creationDate">Fecha creación</label>
+    <input type="text" class="form-control" id="creationDate" placeholder="Fecha creación" value="{{dashboard.creation_date}}">
+    <label for="updateDate">Fecha actualización</label>
+    <input type="text" class="form-control" id="updateDate" placeholder="Fecha última actualización" value="{{dashboard.creation_date}}">
+
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="templateSelect">Plantilla</label>
+      </div>
+      <select class="custom-select" id="templateSelect">
+        <option selected>Choose...</option>
+        {{#each templates}}
+        <option value="{{name}}">{{description}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div>
+      <h1>Componentes</h1>
+      <hr>
+
+      <table>
+          <thead>
+              <th>marco</th>
+              <th>orden</th>
+              <th>tipo</th>
+              <th>título</th>
+          </thead>
+          <tbody>
+              {{#each dashboard.widgets}}
+                  <tr>
+                      {{#with this}}
+                      <td>{{frame}}</td>
+                      <td>{{order}}</td>
+                      <td>{{type}}</td>
+                      <td>{{title}}</td>
+                      <td><a href="/dashboard/editwidget/{{name}}/{{frame}}/{{order}}">Editar</a></td>
+                      <td><a href="/dashboard/deletewidget/{{name}}/{{frame}}/{{order}}">Borrar</a></td>
+                      {{/with}}
+                  </tr>
+              {{/each}}
+          </tbody>
+      </table>
+      <a href="">Añadir</a>
+    </div>
+
+
+
+	<button id="saveButton" type="button" class="btn btn-primary">Guardar</button>
+
+  </div>
+</form>
+
+</div>
+
+<div>
+	<a href="/dashboard/list">Listado de páginas / paneles</a>
+</div>
+
+
+
+
+
+
+
+<form>
+  <div class="form-group">
+    <label for="w_frame">Marco</label>
+    <input type="text" class="form-control" id="w_frame" placeholder="Marco" value="">
+    <label for="w_order">Orden</label>
+    <input type="text" class="form-control" id="w_order" placeholder="Orden" value="">
+    <label for="w_url">URL</label>
+    <input type="text" class="form-control" id="w_url" placeholder="Orden" value="">
+    <label for="w_doc">Documento</label>
+    <input type="text" class="form-control" id="w_doc" placeholder="Documento" value="">
+    <label for="w_grant">Permiso</label>
+    <input type="text" class="form-control" id="w_grant" placeholder="Permiso" value="">
+    <label for="w_title">Título</label>
+    <input type="text" class="form-control" id="w_title" placeholder="Título" value="">
+    <label for="w_info">Información</label>
+    <input type="text" class="form-control" id="w_info" placeholder="Información" value="">
+    <label for="w_label">Etiqueta</label>
+    <input type="text" class="form-control" id="w_label" placeholder="Etiqueta" value="">
+    <label for="w_js">Script</label>
+    <input type="text" class="form-control" id="w_script" placeholder="Script" value="">
+  </div>
+</form>
+
+
+
+
+
+
+<script>
+  $('#templateSelect').val("{{dashboard.template}}");
+  $('#saveButton').click(function(){
+    data={
+      name: $('#name').val(),
+      grant: $('#grant').val(),
+      created_by: $('#createdBy').val(),
+      creation_date: $('#creationDate').val(),
+      last_update: $('#updateDate').val(),
+      template: $('#templateSelect').val(),
+      description: $('#description').val(),
+    };
+    console.log(data);
+    $.ajax({
+      url: '/dashboard',
+      type: 'PUT',
+      data: data,
+      success: function(data) {
+        alert('Dashboard grabado correctamente');
+      }
+    });
+  });
+</script>

@@ -2,6 +2,8 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, 
 import { Response } from 'express';
 import { WidgetsService } from './widgets.service';
 import { Widget } from './widget.schema'
+import { TemplatesService } from '../templates/templates.service';
+import { ScriptsService } from '../scripts/scripts.service';
 
 
 /**
@@ -9,7 +11,11 @@ import { Widget } from './widget.schema'
  */
 @Controller('widget')
 export class WidgetsController {
-  constructor(private widgetService: WidgetsService) { }
+  constructor(
+      private widgetService: WidgetsService,
+      private templateService: TemplatesService,
+      private scriptsService: ScriptsService
+  ) { }
 
   /**
    * 
@@ -69,7 +75,9 @@ export class WidgetsController {
   async editor(@Param('id') id: string) {
     try {
         const item = await this.widgetService.getWidget(id);
-        return { title: 'Editor', widget: item };
+        const templateList = await this.templateService.getTemplateList();
+        const scriptsList = await this.scriptsService.getScriptList();
+        return { title: 'Editor', widget: item, templates: templateList, scripts: scriptsList };
       } catch (Error) {
         console.log(Error);
       }
@@ -88,13 +96,13 @@ export class WidgetsController {
   //@UseFilters(new HttpExceptionFilterDB)
   async insertarWidget(@Body() insertarWidget: Widget, @Res() res: Response) {
 
-    const { type, template} = insertarWidget
+    const { name, template} = insertarWidget
     if (insertarWidget == undefined) {
       //console.log('es nulo')
       throw new HttpException('No se han enviado datos para guardar.', HttpStatus.NOT_IMPLEMENTED);
     }
 
-    if(type==="") {
+    if(name==="") {
       //console.log('no hay code')
       throw new HttpException('Debe asignarle un nombre al widget.', HttpStatus.NOT_IMPLEMENTED);
     }

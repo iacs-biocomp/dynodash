@@ -28,11 +28,18 @@ export class AppController {
 
   @Get()
   @Render('main.hbs')
-  root(@Session() session: secureSession.Session) {
+  root(@Session() session: secureSession.Session, @Res() response) {
     console.log('En root');
     console.log(session);
-    return { title: 'Login' };
+    return { title: 'Login'};
   }
+
+ @Get('second')
+  second(@Session() session: secureSession.Session, @Res() response) {
+    console.log('Second');
+    return response.second('main.hbs',{ title: 'Segunda'});
+  }
+
 
   @Get('error400')
   @Render('error400.hbs')
@@ -110,3 +117,5 @@ export class AppController {
     return resp.send({ session: session.deleted });
   }
 }
+
+

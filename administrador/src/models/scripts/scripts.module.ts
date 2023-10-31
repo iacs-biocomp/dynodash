@@ -12,5 +12,6 @@ import { ScriptSchema } from './script.schema';
     ],
     controllers: [ScriptsController],
     providers: [ScriptsService],
+    exports: [ScriptsService]
 })
 export class ScriptsModule {}

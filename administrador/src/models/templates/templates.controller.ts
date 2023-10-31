@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res, Render, UseFilters } from '@nestjs/common';
 import { Response } from 'express';
 //import { HttpExceptionFilterDB } from 'src/common/exceptionFilters/globalFilterExpress';
-import { CrearTemplateDTO } from './dto';
+import { CrearTemplateDTO } from './templateDTO';
 import { TemplatesService } from './templates.service';
 
 
@@ -86,13 +86,13 @@ export class TemplatesController {
   //@UseFilters(new HttpExceptionFilterDB)
   async insertarTemplate(@Body() insertarTemplate: CrearTemplateDTO, @Res() res: Response) {
 
-    const { code, content} = insertarTemplate
+    const { name, content} = insertarTemplate
     if (insertarTemplate == undefined) {
       //console.log('es nulo')
       throw new HttpException('No se han enviado datos para guardar.', HttpStatus.NOT_IMPLEMENTED);
     }
 
-    if(code==="") {
+    if(name==="") {
       //console.log('no hay code')
       throw new HttpException('Debe asignarle un nombre al dashboard.', HttpStatus.NOT_IMPLEMENTED);
     }

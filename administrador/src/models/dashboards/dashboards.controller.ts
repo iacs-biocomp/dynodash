@@ -4,6 +4,7 @@ import { Response } from 'express';
 import { Dashboard } from './dashboard.schema';
 import { DashboardsService } from './dashboard.service';
 import { TemplatesService } from '../templates//templates.service'
+import { DashboardWidgetDTO } from './dashboardWidgetDTO';
 
 
 @Controller('dashboard')
@@ -39,7 +40,7 @@ export class DashboardsController {
 
  //endpoint para obetener el dashboard principal del dashboard
  @Get('item/:id')
- async obtenerDashboard(@Param('id') dashboardId: string, @Res() res: Response) {
+ async getDashboard(@Param('id') dashboardId: string, @Res() res: Response) {
 
    try {
      const dashboardInstance = await this.dashboardService.getDashboard(dashboardId);
@@ -49,6 +50,25 @@ export class DashboardsController {
      return res.status(400).send('Dashboard no encontrado.')
    }
  }
+
+
+  //endpoint para obetener el dashboard principal del dashboard
+  @Get('widget/:id/:frame/:order')
+  async getDashboardWidget(@Param('id') dashboardId: string,
+                           @Param('frame') frame: string, 
+                           @Param('order') order: string, 
+                           @Res() res: Response) {
+     try {
+      const dashboardInstance = await this.dashboardService.getDashboard(dashboardId);
+      const widgets = dashboardInstance.widgets;
+      const w = widgets.find(element => element.frame == frame && element.order == order);
+      console.log(w);
+      return res.send(w);
+    }catch(error) {
+      return res.status(400).send('Widget no encontrado.')
+    }
+  }
+
 
   /**
    * 
@@ -107,6 +127,22 @@ export class DashboardsController {
       return res.status(400).send('Dashboard no encontrado.')
     }
   }
+
+  //endpoint para obetener el dashboard principal del dashboard
+  @Put('widget/:id/')
+  async updateWidget(@Param('id') dashboardId: string,
+                     @Body() widget: DashboardWidgetDTO,
+                     @Res() res: Response) {
+     try {
+      console.log("widget recibido: ", widget);
+      await this.dashboardService.updateWidget(dashboardId, widget);
+      return res.send('Widget succesfully updated');
+    } catch(error) {
+      return res.status(400).send('Widget not found')
+    }
+  }
+
+
 
   //endpoint para eliminar un dashboard
   @Delete(':id')

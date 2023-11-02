@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 //import { Response } from 'express';
 import { Error, Model } from 'mongoose';
 import { Dashboard, DashboardType } from './dashboard.schema';
+import { DashboardWidgetDTO } from './dashboardWidgetDTO';
 
 @Injectable()
 export class DashboardsService {
@@ -47,7 +48,32 @@ export class DashboardsService {
    * @returns 
    */
   async updateDashboard(dashboardInstance: Dashboard) {
-    return await this.dashboardModel.updateOne({code : dashboardInstance.name}, {$set : dashboardInstance});
+    return await this.dashboardModel.updateOne({name : dashboardInstance.name}, {$set : dashboardInstance});
+  }
+
+
+  /**
+   * Updates a widget in the dashboard widget's array
+   * @param dashboardId ID of the container dashboard
+   * @param frame frame position of the widget
+   * @param order order of the widget inside the frame
+   * @param widget frame to substitute the previous one
+   * @returns 
+   */
+  async updateWidget(dashboardId: string, widget: DashboardWidgetDTO) {
+    //console.log("Dashboard buscado: ", dashboardId)
+    const instance = await this.dashboardModel.findOne({name: dashboardId});
+    //console.log("Dashboard encontrado: ", instance)
+    const f = widget.frame;
+    const o = widget.order;
+    widget.frame = widget.newFrame;
+    widget.order = widget.newOrder;
+    delete widget.newFrame;
+    delete widget.newOrder;
+    //console.log("Widget transformado: ", widget)
+    instance.widgets = instance.widgets.map(item => item.frame == f && item.order == o ? widget : item);
+    //console.log("dashboard transformado: ", instance)
+    return await this.dashboardModel.updateOne({name : dashboardId}, {$set : instance});
   }
 
 

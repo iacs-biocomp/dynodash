@@ -70,6 +70,7 @@ export class DashboardsService {
     widget.order = widget.newOrder;
     delete widget.newFrame;
     delete widget.newOrder;
+    widget.doc = Buffer.from(widget.doc).toString('base64');
     //console.log("Widget transformado: ", widget)
     instance.widgets = instance.widgets.map(item => item.frame == f && item.order == o ? widget : item);
     //console.log("dashboard transformado: ", instance)

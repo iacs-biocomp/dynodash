@@ -6,7 +6,7 @@ import { PlantillasService } from 'src/plantillas/plantillas.service';
 /**
  * 
  */
-export class Funciones {
+export class Functions {
   // Logger de Nest
   private readonly logger = new Logger('Funciones');
   constructor(
@@ -19,26 +19,25 @@ export class Funciones {
 
 
   /**
-   * Funcion que recibe una plantilla HTML con etiquetas {{{etiqueta}}}.
-   * Localiza las etiquetas únicas.
-   * Devuelve un array con los nombres de las etiquetas.
+   * Returns an array set of unique tags in the form {{{tag}}}
+   * on a given text
    *
-   * @param plantilla
+   * @param text
    * @returns
    */
-  buscadorEtiquetas(plantilla: string): string[] {
+  findTags(text: string): string[] {
     const re = /\{[{]+([^{}][^{}]*)\}/g;
 
     //obtiene la etiqueta entre llaves y se devuelve un array con las etiquetas
-    const matches = [...plantilla.matchAll(re)].flat();
+    const matches = [...text.matchAll(re)].flat();
 
     //[{etiqueta}, etiqueta]
-    const etiquetasMatched = matches.filter(
+    const tagMatched = matches.filter(
       (item) => matches.indexOf(item) % 2 != 0,
     );
     //Solo se guardan las etiquetas únicas
-    const etiquetasUnicas = [ ... new Set(etiquetasMatched)]
-    return etiquetasUnicas;
+    const singleTags = [ ... new Set(tagMatched)]
+    return singleTags;
   }
 
 
@@ -165,23 +164,23 @@ export class Funciones {
     const { template } = await this.plantillaService.obtenerWidget(type);
 
     //se encuentra el template en la coleccion Templates y se devuelve el HTML decodificado
-    const templateDecoded = await this.plantillaService.obtenerTemplateContent(
+    const templateDecoded = await this.plantillaService.getTemplateContent(
       template,
     );
 
     //se encuentra el doc en la coleccion Documentos y se devuelve el HTML decodificado.
     //Si doc es null, es decir, no existe, no se realiza la busqueda
-    if (doc) {
-      documentDecoded = await this.plantillaService.obtenerDocumentoContent(
-        doc,
-      );
-    }
+ //   if (doc) {
+ //     documentDecoded = await this.plantillaService.obtenerDocumentoContent(
+ //       doc,
+ //     );
+ //   }
 
     //construccion del frame_id
     const frame_id = frame + '_' + order;
 
     //Se localizan las etiquetas
-    const etiquetas = this.buscadorEtiquetas(templateDecoded);
+    const etiquetas = this.findTags(templateDecoded);
 
     //*****************Esta creacion del map podría ser una funcion
     const map = new Map<string, string>();
@@ -233,7 +232,7 @@ export class Funciones {
     if (js) {
       javaScriptSpecific = await this.plantillaService.obtenerScript(js);
 
-      const etiquetas = this.buscadorEtiquetas(javaScriptSpecific);
+      const etiquetas = this.findTags(javaScriptSpecific);
 
       //construccion del frame_id
       const frame_id = frame + '_' + order;

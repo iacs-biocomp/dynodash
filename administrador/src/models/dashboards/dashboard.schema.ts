@@ -40,10 +40,11 @@ export class Dashboard {
       order: { type: Number },
       type: { type: String },
       url: { type: String },
-      doc: { type: Number },
+      doc: { type: String },
       grant: { type: String },
       title: { type: String },
       info: { type: String },
+      label: { type: String },      
       js: { type: String },
     }),
   ])

@@ -62,7 +62,8 @@ export class DashboardsController {
       const dashboardInstance = await this.dashboardService.getDashboard(dashboardId);
       const widgets = dashboardInstance.widgets;
       const w = widgets.find(element => element.frame == frame && element.order == order);
-      console.log(w);
+      w.doc = Buffer.from(w.doc, 'base64').toString('utf-8');
+      //console.log(w);
       return res.send(w);
     }catch(error) {
       return res.status(400).send('Widget no encontrado.')
@@ -134,7 +135,7 @@ export class DashboardsController {
                      @Body() widget: DashboardWidgetDTO,
                      @Res() res: Response) {
      try {
-      console.log("widget recibido: ", widget);
+      //console.log("widget recibido: ", widget);
       await this.dashboardService.updateWidget(dashboardId, widget);
       return res.send('Widget succesfully updated');
     } catch(error) {

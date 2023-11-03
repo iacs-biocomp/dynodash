@@ -22,9 +22,9 @@ export class Widget {
   @Prop()
   template: string;
 
-  @Prop()
+  /*@Prop()
   label: string;
-
+*/
   @Prop()
   js: string;
 }

@@ -3,7 +3,9 @@ import { HydratedDocument } from 'mongoose';
 
 /**
  * Dashboard es una interfaz de documento..
+ * 
  * Permite la creación de un tipo heterogeneo de varible con las propiedades de un documento de la colección Dashboards.
+ * 
  * Esto permite la definicion de variables de tipo Dashboard.
  */
 
@@ -12,10 +14,10 @@ export type DashboardType = HydratedDocument<Dashboard>;
 @Schema({ strict: false })
 export class Dashboard {
   @Prop({ required: true })
-  id_dashboard: string;
+  name: string;
 
   @Prop({ required: true })
-  code: string;
+  description: string;
 
   @Prop({ required: true })
   template: string;
@@ -38,9 +40,9 @@ export class Dashboard {
       order: { type: Number },
       type: { type: String },
       url: { type: String },
-      doc: { type: Number },
+      doc: { type: String },
       grant: { type: String },
-      title: { type: [String] },
+      title: { type: String },
       info: { type: String },
       label: { type: String },
       js: { type: String },
@@ -51,6 +53,7 @@ export class Dashboard {
 
 /**
  * Este esquema se asigna a la colección Dashboards y define la forma de los documentos dentro de esa colección.
+ * 
  * Los esquemas se utilizan para definir modelos. Los modelos son responsables de crear y leer documentos de la base de datos MongoDB subyacente.
  */
 export const DashboardSchema = SchemaFactory.createForClass(Dashboard);

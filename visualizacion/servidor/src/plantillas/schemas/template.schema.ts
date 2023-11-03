@@ -18,6 +18,9 @@ export class Template {
 
   @Prop()
   content: string;
+  
+  @Prop()
+  description: string;
 }
 
 /**

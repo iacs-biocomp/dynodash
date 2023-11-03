@@ -18,6 +18,9 @@ export class Script {
 
   @Prop()
   content: string;
+
+  @Prop()
+  description: string;  
 }
 
 /**

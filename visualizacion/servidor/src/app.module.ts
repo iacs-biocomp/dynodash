@@ -15,7 +15,7 @@ import { AppController } from './app.controller';
 
 // providers
 import { AppService } from './app.service';
-import { Funciones } from './common/funciones/funciones';
+import { Funciones } from './common/functions/functions';
 
 const db_hostname = '1.44.4.42';
 const db_port = '27018';

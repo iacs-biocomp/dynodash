@@ -13,5 +13,6 @@ export class DashboardWidgetDTO {
     grant: string;
     title: string;
     info: string;
+    label: string;
     js: string;
   }

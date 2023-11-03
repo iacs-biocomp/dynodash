@@ -29,8 +29,6 @@ export class AppController {
   @Get()
   @Render('main.hbs')
   root(@Session() session: secureSession.Session, @Res() response) {
-    console.log('En root');
-    console.log(session);
     return { title: 'Login'};
   }
 

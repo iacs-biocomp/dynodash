@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
-import { PlantillasService } from './plantillas.service';
+import { DashboardService } from './dashboard.service';
 import { AppService } from 'src/app.service';
 /*/import {
   CrearDashboardDTO,
@@ -24,21 +24,28 @@ import { AppService } from 'src/app.service';
   CrearWidgetDTO,
 } from './dto';
 */
-@Controller('atlas')
-export class PlantillasController {
+@Controller('page')
+export class DashboardController {
   constructor(
-    private plantillaServicio: PlantillasService,
+    private dbService: DashboardService,
   ) {}
 
-  @Get('id/:parametro')
+
+  /**
+   * 
+   * @param dashboardId 
+   * @param res 
+   * @returns 
+   */
+  @Get('id/:pageId')
   async obtenerHTML(
-    @Param('parametro') dashboardId: string,
+    @Param('pageId') dashboardId: string,
     @Res() res: Response,
   ) {
     try {
-      const html = await this.plantillaServicio.obtenerHTML(dashboardId);
+      const html = await this.dbService.getHTML(dashboardId);
       return res.render('main', {
-        html: html,
+          html: html
       });
     } catch (Error) {
       console.log(Error);

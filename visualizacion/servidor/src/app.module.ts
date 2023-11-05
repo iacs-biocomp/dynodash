@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 
 // modules
-import { PlantillasModule } from './plantillas/plantillas.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DatosModule } from './datos/datos.module';
 
@@ -15,19 +15,19 @@ import { AppController } from './app.controller';
 
 // providers
 import { AppService } from './app.service';
-import { Funciones } from './common/functions/functions';
+import { Functions } from './common/functions/functions';
 
-const db_hostname = '1.44.4.42';
-const db_port = '27018';
+const db_hostname = 'localhost';
+const db_port = '27017';
 const db_database = 'dynodash';
 
 @Module({
   imports: [
-    PlantillasModule,
+    DashboardModule,
     MongooseModule.forRoot(`mongodb://${db_hostname}:${db_port}/${db_database}`),
     DatosModule,
   ],
   controllers: [AppController],
-  providers: [AppService, Funciones],
+  providers: [AppService, Functions],
 })
 export class AppModule {}

@@ -63,6 +63,22 @@ export class WidgetsController {
     }
   }
 
+
+  /**
+   * Gets the template of a given widget
+   * @param id 
+   * @returns 
+   */
+    @Get('itemTemplate/:id')
+    async widgetItemTemplate(@Param('id') id: string) {
+      try {
+        const item = await this.widgetService.getWidget(id);
+        const template = await this.templateService.getTemplate(item.template)
+        return template;
+      } catch (Error) {
+        console.log(Error);
+      }
+    }
   
   
   /**

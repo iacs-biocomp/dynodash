@@ -3,36 +3,14 @@
 <h1>Editor de widgets</h1>
 <form>
   <div class="form-group">
-    <label for="type">Nombre</label>
+    <label for="name">Nombre</label>
     <input type="text" class="form-control" id="name" placeholder="Nombre" value="{{widget.name}}">
     <label for="description">Descripción</label>
     <input type="text" class="form-control" id="description" placeholder="Descripcion" value="{{widget.description}}">
 
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="templateSelect">Plantilla</label>
-      </div>
-      <select class="custom-select" id="templateSelect">
-        <option selected>Choose...</option>
-        {{#each templates}}
-        <option value="{{name}}">{{description}}</option>
-        {{/each}}
-      </select>
-    </div>
+    {{> templateSelect }}
 
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="scriptSelect">Script</label>
-      </div>
-      <select class="custom-select" id="scriptSelect">
-        <option selected>Choose...</option>
-        {{#each scripts}}
-        <option value="{{name}}">{{description}}</option>
-        {{/each}}
-      </select>
-    </div>
-
-
+    {{> scriptSelect }}
 
 	<button id="saveButton" type="button" class="btn btn-primary">Guardar</button>
 
@@ -51,7 +29,7 @@
   $('#scriptSelect').val("{{widget.js}}");
   $('#saveButton').click(function(){
     data={
-      type: $('#name').val(),
+      name: $('#name').val(),
       template: $('#templateSelect').val(),
       description: $('#description').val(),
       js: $('#scriptSelect').val()

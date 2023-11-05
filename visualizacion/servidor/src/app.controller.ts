@@ -2,13 +2,13 @@ import { Controller, Get, Param, Post, Render, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response, Request } from 'express';
 import * as Handlebars from 'handlebars';
-import { Funciones } from './common/functions/functions';
+import { Functions } from './common/functions/functions';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private funciones: Funciones,
+    private funciones: Functions,
   ) {}
 
   /*

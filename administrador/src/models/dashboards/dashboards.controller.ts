@@ -4,14 +4,18 @@ import { Response } from 'express';
 import { Dashboard } from './dashboard.schema';
 import { DashboardsService } from './dashboard.service';
 import { TemplatesService } from '../templates//templates.service'
+import { ScriptsService } from '../scripts/scripts.service';
 import { DashboardWidgetDTO } from './dashboardWidgetDTO';
+import { WidgetsService } from '../widgets/widgets.service';
 
 
 @Controller('dashboard')
 export class DashboardsController {
   constructor(
     private dashboardService: DashboardsService,
-    private templateService: TemplatesService) { }
+    private templateService: TemplatesService, 
+    private scriptService: ScriptsService,
+    private widgetService: WidgetsService) { }
 
   //endpoint para obtener todos los dashboards
   @Get()
@@ -82,7 +86,9 @@ export class DashboardsController {
     try {
         const item = await this.dashboardService.getDashboard(id);
         const templateList = await this.templateService.getTemplateList();
-        return { title: 'Editor', dashboard: item, templates: templateList } 
+        const scriptsList = await this.scriptService.getScriptList();
+        const widgetList = await this.widgetService.getWidgetList();
+        return { title: 'Editor', dashboard: item, templates: templateList, scripts: scriptsList, widgets: widgetList  } 
       } catch (Error) {
         console.log(Error);
       }

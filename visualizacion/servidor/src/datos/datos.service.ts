@@ -12,19 +12,23 @@ export class DatosService {
     @InjectModel('AggLevel') private aggLevelModel: Model<AggLevelType>,
   ) {}
 
-  async insertarDatos(datos: any): Promise<any> {
-    //console.log(datos)
 
+  /**
+   * 
+   * @param datos 
+   * @returns 
+   */
+  async insertarDatos(datos: any): Promise<any> {
     const datoInsertado = new this.datoModel(datos);
     return datoInsertado.save();
-    //const promises = datos.map(element => {
-    //  const datoInsertado = new this.datoModel(element);
-    //  return datoInsertado.save();
-    //});
-
-    //return Promise.all(promises);
   }
 
+
+  /**
+   * 
+   * @param indicadores 
+   * @returns 
+   */
   async insertarIndicadores(indicadores: any): Promise<any> {
     const promises = indicadores.map((element) => {
       const indicadorInsertado = new this.indicadorModel(element);
@@ -34,6 +38,12 @@ export class DatosService {
     return Promise.all(promises);
   }
 
+  
+  /**
+   * 
+   * @param leyendas 
+   * @returns 
+   */
   async insertarLeyendas(leyendas: any): Promise<any> {
     /*const leyendaInsertada = new this.leyendaModel(leyendas);
     return leyendaInsertada.save();*/
@@ -45,6 +55,12 @@ export class DatosService {
     return Promise.all(promises);
   }
 
+  
+  /**
+   * 
+   * @param aggLevel 
+   * @returns 
+   */
   async insertarAggLevel(aggLevel: any): Promise<any> {
     const promises = aggLevel.map((element) => {
       const aggLevelInsertada = new this.aggLevelModel(element);
@@ -53,6 +69,7 @@ export class DatosService {
 
     return Promise.all(promises);
   }
+
 
   /**
    * Metodo para hacer la llamada a la coleccion Escalas que contiene todos los datos sobre los niveles de agregación
@@ -66,6 +83,7 @@ export class DatosService {
       console.log('Datos no encontrados', error);
     }
   }
+
 
   /**
    * Metodo para hacer la llamada a la coleccion Indicadores que contiene todos los datos sobre los indicadores
@@ -81,6 +99,7 @@ export class DatosService {
     }
   }
 
+
   /**
    * Metodo para hacer la llamada a la coleccion Datos que contiene todos los datos de las zonas básicas de salud y áreas sanitarias
    * @returns Devuelve los datos
@@ -94,6 +113,7 @@ export class DatosService {
       console.log('fallo en get datos', error);
     }
   }
+
 
   /**
    * Metodo para hacer la llamada a la coleccion Leyendas que contiene todos los datos sobre las leyendas
@@ -109,6 +129,7 @@ export class DatosService {
     }
   }
 
+  
   /**
    * Método para obetener el perfil de desempeño de los sectores.
    */

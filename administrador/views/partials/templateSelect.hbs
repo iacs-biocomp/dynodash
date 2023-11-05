@@ -1,0 +1,45 @@
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="templateSelect">Plantilla</label>
+      </div>
+      <select class="custom-select" id="templateSelect">
+        <option selected>Choose...</option>
+        {{#each templates}}
+        <option value="{{name}}">{{description}}</option>
+        {{/each}}
+      </select>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#templateView" onclick="getTemplate()">Ver plantilla</button>
+      <button type="button" class="btn btn-primary" onclick="editTemplate()">Editar plantilla</button>
+    </div>
+
+    <!-- modal for view template -->
+<div class="modal fade" id="templateView" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="templateViewHeader"></h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="templateViewText">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+   function getTemplate() {
+    template = $("#templateSelect").val()
+    $.get('/template/item/' + template,
+			function( data ) {
+				$('#templateViewText').html(data.content);
+				$('#templateViewHeader').html(data.name);
+      })
+  }
+
+  function editTemplate() {
+    template = $("#templateSelect").val()
+    document.location.href='/template/editor/' + template
+  }
+</script>

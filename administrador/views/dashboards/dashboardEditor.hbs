@@ -16,17 +16,9 @@
     <label for="updateDate">Fecha actualización</label>
     <input type="text" class="form-control" id="updateDate" placeholder="Fecha última actualización" value="{{dashboard.creation_date}}">
 
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="templateSelect">Plantilla</label>
-      </div>
-      <select class="custom-select" id="templateSelect">
-        <option selected>Choose...</option>
-        {{#each templates}}
-        <option value="{{name}}">{{description}}</option>
-        {{/each}}
-      </select>
-    </div>
+    {{> templateSelect }}
+
+
 
     <div>
       <h1>Componentes</h1>
@@ -78,7 +70,7 @@
 
 
 <div class="modal fade" id="widgetEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Edición de componente</h5>
@@ -110,8 +102,22 @@
               <input type="text" class="form-control" id="w_order_new" placeholder="Nuevo orden">
             </div>
           </div>
-            <label for="w_type">URL</label>
-            <input type="text" class="form-control" id="w_type" placeholder="Tipo" value="">
+
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="widgetSelect">Tipo de componente</label>
+              </div>
+              <select class="custom-select" id="widgetSelect">
+                <option selected value="">Sin especificar...</option>
+                {{#each widgets}}
+                <option value="{{name}}">{{name}}/{{description}}</option>
+                {{/each}}
+              </select>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#widgetView" onclick="getWidgetTemplate()">Ver plantilla</button>
+              <button type="button" class="btn btn-primary" onclick="editWidget()">Editar componente</button>
+            </div>
+
+
             <label for="w_url">URL</label>
             <input type="text" class="form-control" id="w_url" placeholder="Orden" value="">
             <label for="w_doc">Documento</label>
@@ -124,13 +130,32 @@
             <input type="text" class="form-control" id="w_info" placeholder="Información" value="">
             <label for="w_label">Etiqueta</label>
             <input type="text" class="form-control" id="w_label" placeholder="Etiqueta" value="">
-            <label for="w_js">Script</label>
-            <input type="text" class="form-control" id="w_js" placeholder="Script" value="">
+
+            {{> scriptSelect }}
+
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="saveWidgetButton">Save changes</button>
+        <button type="button" class="btn btn-primary" id="saveWidgetButton">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- modal for view template -->
+<div class="modal fade" id="widgetView" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="widgetViewHeader"></h5>
+        <button type="button" class="close" onclick="$('#widgetView').modal('hide');" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="widgetViewText">
       </div>
     </div>
   </div>
@@ -138,8 +163,6 @@
 
 
 <!-- Script for the page -->
-
-
 <script>
   $('#templateSelect').val("{{dashboard.template}}");
   $('#saveButton').click(function(){
@@ -172,6 +195,7 @@
         $("#w_frame_new").val(data.frame)
         $("#w_order_new").val(data.order)
         $("#w_type").val(data.type)
+        $('#widgetSelect').val(data.type)
         $("#w_url").val(data.url)
         $("#w_doc").val(data.doc)
         $("#w_grant").val(data.grant)
@@ -179,10 +203,13 @@
         $("#w_info").val(data.info)
         $("#w_label").val(data.label)
         $("#w_js").val(data.js)
+        $("#scriptSelect").val(data.js)
+        
         //console.log(data);
       }
     });    
   }
+
 
   $("#saveWidgetButton").click(function() {
     data = {}
@@ -211,5 +238,24 @@
       },
     });
   })
+
+
+  function getWidgetTemplate() {
+    widget = $("#widgetSelect").val()
+    if(widget) {
+        $.get('/widget/itemTemplate/' + widget,
+			function( data ) {
+				$('#widgetViewText').html(data.content);
+				$('#widgetViewHeader').html(data.name);
+        })
+    }
+  }
+
+  function editWidget() {
+    widget = $("#widgetSelect").val()
+    if(widget) {
+        document.location.href='/widget/editor/' + widget
+    }
+  }
 
 </script>

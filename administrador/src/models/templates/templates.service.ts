@@ -42,7 +42,7 @@ export class TemplatesService {
    * @returns 
    */
   async getTemplate(id: string): Promise<Template> {
-    const { name, content, description } = await this.templateModel.findOne({ code: id }).exec();
+    const { name, content, description } = await this.templateModel.findOne({ name: id }).exec();
     const html = Buffer.from(content, 'base64').toString('utf-8');
     return { name, content: html, description };
   }
@@ -56,7 +56,7 @@ export class TemplatesService {
    */
   async updateTemplate(template: CrearTemplateDTO) {
     const contentBase64 = Buffer.from(template.content).toString('base64');
-    return await this.templateModel.updateOne({code : template.name}, {$set : {content: contentBase64, 
+    return await this.templateModel.updateOne({name : template.name}, {$set : {content: contentBase64, 
                                                                                description: template.description}});
   }
 
@@ -67,7 +67,7 @@ export class TemplatesService {
    * @returns 
    */
   async deleteTemplate(id: string) {
-    return await this.templateModel.deleteOne({code : id})
+    return await this.templateModel.deleteOne({name : id})
   }
 
   

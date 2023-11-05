@@ -39,6 +39,8 @@ async function bootstrap() {
     viewExt: 'hbs',
     options: {
       partials: {
+        templateSelect: '/partials/templateSelect.hbs', 
+        scriptSelect: '/partials/scriptSelect.hbs', 
         logoutBoton: '/partials/logoutBoton.hbs',
         modalWindowEliminarContenido: '/partials/modalWindowEliminarContenido.hbs',
         modalWindowCrearDash: '/partials/modalWindowCrearDash.hbs',

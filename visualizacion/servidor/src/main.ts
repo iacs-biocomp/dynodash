@@ -34,11 +34,8 @@ async function bootstrap() {
   app.set('view engine', '.hbs');
 
   /*app.setBaseViewsDir(join(__dirname, '..','..', 'views/layouts'));
-
   app.setViewEngine('hbs');
-
   hbs.registerPartials(join(__dirname, '..','..', '/views/partials'));
-
   app.engine(
     'hbs',
     () => hbs.create({

@@ -14,28 +14,6 @@ import { DatosService } from './datos.service';
 export class DatosController {
   constructor(private datosService: DatosService) {}
 
-  @Post('dato')
-  async insertarDatos(@Body() insertarDato: any) {
-    await this.datosService.insertarDatos(insertarDato);
-  }
-
-  @Post('indicador')
-  async insertarIndicadores(@Body() insertarIndicador: any) {
-    await this.datosService.insertarIndicadores(insertarIndicador);
-  }
-
-  @Post('leyenda')
-  async insertarLeyenda(@Body() insertarLeyenda: any) {
-    await this.datosService.insertarLeyendas(insertarLeyenda);
-  }
-
-  @Post('aggLevel')
-  async insertarAggLevel(@Body() insertarAggLevel: any) {
-    await this.datosService.insertarAggLevel(insertarAggLevel);
-  }
-
-  //Este end-point debe desarrollarse en otro modulo llamado datos.
-
   @Get('aggLevels/:idAggLevel')
   async obetenerAggLevels(@Param('idAggLevel') idAggLevel: string) {
     return await this.datosService.obtenerAggLevel(idAggLevel);

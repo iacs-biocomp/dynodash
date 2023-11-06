@@ -10,7 +10,6 @@ import {
   WidgetSchema,
 } from './schemas';
 import { AppService } from 'src/app.service';
-import { Functions } from 'src/common/functions/functions';
 
 @Module({
   imports: [
@@ -22,6 +21,6 @@ import { Functions } from 'src/common/functions/functions';
     ]),
   ],
   controllers: [DashboardController],
-  providers: [DashboardService, AppService, Functions],
+  providers: [DashboardService, AppService],
 })
 export class DashboardModule {}

@@ -15,7 +15,6 @@ import { AppController } from './app.controller';
 
 // providers
 import { AppService } from './app.service';
-import { Functions } from './common/functions/functions';
 
 const db_hostname = 'localhost';
 const db_port = '27017';
@@ -27,7 +26,6 @@ const db_database = 'dynodash';
     MongooseModule.forRoot(`mongodb://${db_hostname}:${db_port}/${db_database}`),
     DatosModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, Functions],
+  controllers: [AppController]
 })
 export class AppModule {}

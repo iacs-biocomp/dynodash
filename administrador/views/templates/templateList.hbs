@@ -1,5 +1,3 @@
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
     <div class="row mt-5 justify-content-around">
   
         <div class="col-sm-6">
@@ -14,7 +12,7 @@
                 {{#each items}}
                     <tr>
                         {{#with this}}
-                        <td><a href="/template/delete/{{name}}"><i class='bx bxs-trash'></i></a></td>
+                        <td><a href="javascript: modalDelete('{{name}}')"><i class='fas fa-trash'></i></a></td>
                         <td><a href="/template/editor/{{name}}">{{name}}</a></td><td>{{description}}</td>
                         {{/with}}
                     </tr>
@@ -25,3 +23,52 @@
         <a href="/template/add"><i class='bx bx-plus-medical'></i> Añadir template</a>
         </div>
     </div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirm-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Confirmar</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="modal-btn-si">Si</button>
+        <button type="button" class="btn btn-primary" id="modal-btn-no">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var modalConfirm = function(callback){
+  $("#modal-btn-si").on("click", function(){
+    callback(true);
+    $("confirm-modal").modal('hide');
+  });
+  $("#modal-btn-no").on("click", function(){
+    callback(false);
+    $("#confirm-modal").modal('hide');
+  });
+};
+
+function modalDelete(name) {
+    modalConfirm(function(confirm){
+    if(confirm){
+        $.ajax({
+            url: '/template/' + name,
+            type: 'DELETE',
+            success: function(result) {
+                $("#confirm-modal").modal('hide');
+                alert('Plantilla borrada correctamente');
+                location.reload();
+            }
+        });
+    }
+
+    });
+    //$("#myModalLabel").html(`¿Realmente desea borrar la plantilla ${name} ?`)
+    $("#confirm-modal").modal('show');
+}
+
+</script>

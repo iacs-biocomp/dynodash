@@ -48,7 +48,7 @@
 			template.content = editor.getValue();
 
 			$.ajax({
-				url: '/template/add',
+				url: '/template',
 				type: 'POST',
 				data: template,
 				success: function (data) {

@@ -11,7 +11,8 @@ import { WidgetsModule } from './models/widgets/widgets.module';
 import { DashboardsModule } from './models/dashboards/dashboard.module'
 
 
-const db_hostname = 'localhost';
+// const db_hostname = 'localhost';
+const db_hostname = '1.44.4.82';
 const db_port = '27017';
 const db_database = 'dynodash';
 

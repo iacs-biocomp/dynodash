@@ -1,3 +1,5 @@
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <div class="row mt-5 justify-content-around">
   
         <div class="col-sm-6">
@@ -12,12 +14,14 @@
                 {{#each items}}
                     <tr>
                         {{#with this}}
+                        <td><a href="/template/delete/{{name}}"><i class='bx bxs-trash'></i></a></td>
                         <td><a href="/template/editor/{{name}}">{{name}}</a></td><td>{{description}}</td>
                         {{/with}}
                     </tr>
                 {{/each}}
             </tbody>
         </table>
-
+        <br>
+        <a href="/template/add"><i class='bx bx-plus-medical'></i> Añadir template</a>
         </div>
     </div>

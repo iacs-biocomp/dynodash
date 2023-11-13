@@ -63,14 +63,22 @@ export class TemplatesService {
 
   /**
    * Deletes a template
-   * @param id code of the template to delete
+   * @param id
    * @returns 
    */
   async deleteTemplate(id: string) {
     return await this.templateModel.deleteOne({name : id})
   }
 
-  
+  /**
+   * Creates a template
+   * @param id
+   * @returns 
+   */
+  async createTemplate(templateData: Template): Promise<Template> {
+    return await this.templateModel.create(templateData);
+  }
+
   /**
    * Gets the list of all templates
    * @returns 

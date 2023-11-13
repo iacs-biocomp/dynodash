@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res, Render, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res, Render, UseFilters, Redirect } from '@nestjs/common';
 import { Response } from 'express';
 //import { HttpExceptionFilterDB } from 'src/common/exceptionFilters/globalFilterExpress';
 import { CrearTemplateDTO } from './templateDTO';
 import { TemplatesService } from './templates.service';
+import { Template } from './template.schema';
 
 
 /**
@@ -75,7 +76,56 @@ export class TemplatesController {
 
 
 
+  /**
+   * Renderiza la pagina de confirmacion
+   * @param id 
+   * @returns 
+   */
+  @Get('delete/:id')
+  @Render('templates/templateDelete.hbs')
+  delete(@Param('id') id:string){
+    return { title:'Delete', template : id};
+  }
 
+  /**
+   * Maneja la solicitud POST para eliminar el template.
+   * Redirige a la lista de templates
+   * @param id ID del template a eliminar
+   * @returns Redirige a la lista de templates después de la eliminación
+   */
+  @Post('delete/:id')
+  @Redirect('/template/list')
+  async deleteTemplate(@Param('id') id: string) {
+    await this.templateService.deleteTemplate(id);
+  }
+
+
+
+  /**
+   * Renderiza la pagina de creacion de templates
+   * @param id 
+   * @returns 
+   */
+  @Get('add')
+  @Render('templates/templateAdd.hbs')
+    addTemplate(@Param('id') id: string) {
+        return { title:'Añadir', template : id};
+    }
+
+  /**
+   * Maneja la solicitud POST para crear el template
+   * Redirige a la lista de templates
+   * @param id 
+   * @returns 
+   */
+  @Post('add')
+  @Redirect('/template/list')
+    async createTemplate(@Body() templateData: Template) {
+      await this.templateService.createTemplate(templateData);
+    }
+
+
+    
   /**
    * 
    * @param insertarTemplate 

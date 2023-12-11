@@ -1,23 +1,36 @@
-    <div class="row mt-5 justify-content-around">
+<div class="row mt-5 justify-content-around">
   
-        <div class="col-sm-6">
-            <h1>Lista de páginas y paneles</h1>
-            <hr>
+    <div class="col-sm-6">
+        <h1>Lista de páginas y paneles</h1>
+        <hr>
 
-        <table>
-            <thead>
-                <th>nombre</th>
-            </thead>
-            <tbody>
-                {{#each items}}
-                    <tr>
-                        {{#with this}}
-                        <td><a href="/dashboard/editor/{{name}}">{{name}}</a></td><td>{{description}}</td>
-                        {{/with}}
-                    </tr>
-                {{/each}}
-            </tbody>
-        </table>
+    <table>
+        <thead>
+            <th>nombre</th>
+        </thead>
+        <tbody>
+            {{#each items}}
+                <tr>
+                    {{#with this}}
+                    <td><a href="/dashboard/editor/{{name}}">{{name}}</a></td>
+                    <td>{{description}}</td>
+                    <td><button onclick="duplicateDashboard('{{name}}')">Duplicar</button></td>
+                    {{/with}}
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
 
-        </div>
     </div>
+</div>
+
+<script>
+    function duplicateDashboard(dashboardName) {
+        $.post(`/dashboard/duplicate/${dashboardName}`, function(response) {
+            alert('Dashboard duplicado con éxito.');
+            window.location.href = `/dashboard/list`;
+        }).fail(function() {
+            alert('Error al duplicar el dashboard.');
+        });
+    }
+</script>

@@ -95,4 +95,29 @@ export class DashboardsService {
   async getDashboardList(): Promise<Dashboard[]> {
     return await this.dashboardModel.find().lean()
   }
+
+
+
+  /**
+   * Duplicates a dashboard
+   */
+// En tu servicio (DashboardsService)
+  async duplicateAndSaveDashboard(id: string): Promise<Dashboard> {
+    try {
+      
+      const originalDashboard = await this.dashboardModel.findOne({ name: id }).exec();
+      if (!originalDashboard) {
+        throw new Error('Dashboard no encontrado.');
+      }
+      const duplicatedDashboard = new this.dashboardModel(originalDashboard.toObject());
+      duplicatedDashboard.name = `${originalDashboard.name} (copia)`;
+      duplicatedDashboard._id = null;
+      const savedDashboard = await duplicatedDashboard.save();
+
+      return savedDashboard;
+    } catch (error) {
+      throw new Error('Error al duplicar y guardar el dashboard.');
+    }
+  }
+
 }

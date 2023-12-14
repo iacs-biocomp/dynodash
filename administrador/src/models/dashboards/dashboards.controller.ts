@@ -30,7 +30,7 @@ export class DashboardsController {
   @Get('list')
   @Render('dashboards/dashboardList.hbs')
   async templateList() {
-    console.log('En templateList');
+    console.log('En dashboardList');
     try {
       const list = await this.dashboardService.getDashboardList();
       return { title: 'List of dashboards',
@@ -164,4 +164,17 @@ export class DashboardsController {
     }
   }
 
+  /**
+   * Duplicates a dashboard
+   */
+  @Post('duplicate/:id')
+  async duplicateDashboard(@Param('id') id: string, @Res() res: Response) {
+    try {
+        const savedDashboard = await this.dashboardService.duplicateAndSaveDashboard(id);
+        return res.send(savedDashboard);
+    } catch (error) {
+        return res.status(400).send('Error al duplicar y guardar el dashboard.');
+    }
+  }
+  
 }

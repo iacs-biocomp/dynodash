@@ -30,7 +30,10 @@ export class DatosController{
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f340cbcfb485d6869d0cc745124ef010f1d406a2
     /**
      * Returns a page with the list of datos
      * @returns
@@ -109,6 +112,7 @@ export class DatosController{
     return { title: 'Añadir', datos: id };
    }    
 
+<<<<<<< HEAD
 
 
    /**
@@ -116,6 +120,8 @@ export class DatosController{
     * @param datos 
     * @returns 
     */
+=======
+>>>>>>> f340cbcfb485d6869d0cc745124ef010f1d406a2
    @Post()
    async createDatos(@Body() datos:CrearDatosDTO){
     const nuevoDato = await this.datosService.createDatos(datos);
@@ -146,6 +152,10 @@ export class DatosController{
     async agregarDatos(@Body() nuevosDatos: any[], @Res() res: Response) {
         try {
             await this.datosService.agregarDatos(nuevosDatos);
+<<<<<<< HEAD
+=======
+            console.log('Datos agregados correctamente con $addFields.');
+>>>>>>> f340cbcfb485d6869d0cc745124ef010f1d406a2
             return res.send('ok');
         } catch (error) {
             console.error('Error al agregar datos con $addFields:', error);

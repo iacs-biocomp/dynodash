@@ -101,8 +101,15 @@ export class DashboardsService {
   /**
    * Duplicates a dashboard
    */
+<<<<<<< HEAD
   async duplicateAndSaveDashboard(id: string): Promise<Dashboard> {
     try {
+=======
+// En tu servicio (DashboardsService)
+  async duplicateAndSaveDashboard(id: string): Promise<Dashboard> {
+    try {
+      
+>>>>>>> f340cbcfb485d6869d0cc745124ef010f1d406a2
       const originalDashboard = await this.dashboardModel.findOne({ name: id }).exec();
       if (!originalDashboard) {
         throw new Error('Dashboard no encontrado.');

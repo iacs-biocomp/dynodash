@@ -69,10 +69,6 @@ export class DatosService{
     * @param templateData 
     * @returns 
     */
-<<<<<<< HEAD
-//    async createDatos(templateData: Datos): Promise<Datos> {
-//     return await this.datosModel.create(templateData);
-//    }
     async createDatos(templateData: Datos): Promise<Datos> {
         const filteredData = templateData.data.map(item => {
             const filteredItem = {};
@@ -102,11 +98,6 @@ export class DatosService{
 
         return datosToInstert.save();
     }
-=======
-   async createDatos(templateData: Datos): Promise<Datos> {
-    return await this.datosModel.create(templateData);
-   }
->>>>>>> f340cbcfb485d6869d0cc745124ef010f1d406a2
 
 
 

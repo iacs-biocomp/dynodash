@@ -61,12 +61,7 @@
 		$.get('/datos/item/{{datos.id}}',
 			function( data ) {
 				datos = data; 
-<<<<<<< HEAD
     
-=======
-
-                
->>>>>>> f340cbcfb485d6869d0cc745124ef010f1d406a2
 				editor.setValue(JSON.stringify(datos.data, null, 2));
                 $('#indicador').val(data.indicador);
                 $('#id').val(data.id);

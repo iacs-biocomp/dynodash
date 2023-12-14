@@ -6,7 +6,6 @@
         <div class="form-group">
             <h2>
             <label for="indicador">Indicador</label>
-<<<<<<< HEAD
             <input type="text" class="form-control" id="indicador" name="indicador" placeholder="Indicador" required>
             </h2><hr>
             <label for="id">Id</label>
@@ -21,22 +20,6 @@
             <input type="text" class="form-control" id="anno_inicial" name="anno_inicial" placeholder="Año de inicio">
             <label for="anno_final">Año de final</label>
             <input type="text" class="form-control" id="anno_final" name="anno_final" placeholder="Año de final">
-=======
-            <input type="text" class="form-control" id="indicador" placeholder="Indicador" required>
-            </h2><hr>
-            <label for="id">Id</label>
-            <input type="text" class="form-control" id="id" placeholder="ID" required>
-            <label for="ambito">Ámbito</label>
-            <input type="text" class="form-control" id="ambito" placeholder="Ambito">
-            <label for="nivel">Nivel</label>
-            <input type="text" class="form-control" id="nivel" placeholder="Nivel">
-            <label for="distintivo">Distintivo</label>
-            <input type="text" class="form-control" id="distintivo" placeholder="Distintivo">
-            <label for="anno_inicial">Año de inicio</label>
-            <input type="text" class="form-control" id="anno_inicial" placeholder="Año de inicio">
-            <label for="anno_final">Año de final</label>
-            <input type="text" class="form-control" id="anno_final" placeholder="Año de final">
->>>>>>> f340cbcfb485d6869d0cc745124ef010f1d406a2
             <br>
             <div id="camposAdicionales">
                 {{#each datos.nuevosCampos}}
@@ -94,14 +77,10 @@
 				url: '/datos',
 				type: 'POST',
 				data: datos,
-<<<<<<< HEAD
                 data: JSON.stringify(datos),
                 contentType: 'application/json',
 				success: function (data) {
                     console.log(datos);
-=======
-				success: function (data) {
->>>>>>> f340cbcfb485d6869d0cc745124ef010f1d406a2
 					alert('Datos creados correctamente');
 					$('#saveButton').prop('disabled', true);
 					window.location.href = '/datos/list';
@@ -165,11 +144,7 @@
                 data: JSON.stringify(datosNuevos),
                 success: function(data) {
                     console.log(data);
-<<<<<<< HEAD
                     alert('Datos agregados correctamente con $addFields');
-=======
-                    alert('Datos agregados correctamente');
->>>>>>> f340cbcfb485d6869d0cc745124ef010f1d406a2
                     $('#saveButton').prop('disabled', true);
                     window.location.href = '/datos/list';
                 },

@@ -23,6 +23,7 @@
             <br>
             <div id="camposAdicionales">
                 {{#each datos.nuevosCampos}}
+                    <i class="fas fa-trash" style="cursor: pointer;" onclick="borrarCampo('{{@key}}')"></i>
                     <label for="{{@key}}">{{@key}}</label>
                     <input type="text" class="form-control" id="{{@key}}" value="{{this}}">
                     <br>
@@ -155,3 +156,4 @@
         });
     });
 </script>
+

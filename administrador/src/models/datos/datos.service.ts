@@ -136,4 +136,26 @@ export class DatosService{
             throw error;
         }
     }
+
+
+
+    /**
+     * Deletes dinamic fields
+     * @param camposABorrar 
+     */
+    async borrarDatos(camposABorrar: string[]): Promise<void> {
+        try {
+            const unsetData = {};
+            camposABorrar.forEach(campo => {
+                unsetData[`nuevosCampos.${campo}`] = 1;
+            });
+    
+            await this.datosModel.updateMany({}, {
+                $unset: unsetData
+            });
+        } catch (error) {
+            console.error('Error al borrar datos:', error);
+            throw error;
+        }
+    }
 }

@@ -8,7 +8,7 @@
     <form>
         <div class="form-group">
             <label for="id">Id</label>
-            <input type="text" class="form-control" id="id" placeholder="ID">
+            <input type="text" class="form-control" id="id" name="id" placeholder="ID">
             <label for="ambito">Ámbito</label>
             <input type="text" class="form-control" id="ambito" placeholder="Ambito">
             <label for="nivel">Nivel</label>
@@ -22,6 +22,7 @@
             <br>
             <div id="camposAdicionales">
                 {{#each datos.nuevosCampos}}
+                    <i class="fas fa-trash" style="cursor: pointer;" onclick="borrarCampo('{{@key}}')"></i>
                     <label for="{{@key}}">{{@key}}</label>
                     <input type="text" class="form-control" id="{{@key}}" value="{{this}}">
                     <br>
@@ -110,6 +111,8 @@
         var agregarCampo = document.getElementById('agregarCampo');
         var camposContainer = document.getElementById('camposAdicionales');
         var guardar = document.getElementById('saveButton');
+        var id = $('#id').val();
+        console.log("Valor del id: " + id);
 
         agregarCampo.addEventListener('click', function() {
             var nuevoLabelInput = document.createElement('input');
@@ -162,4 +165,28 @@
             });
         });
     });
+</script>
+
+
+<script>
+    function borrarCampo(campo) {
+        var confirmacion = confirm('¿Quieres borrar este campo?');
+
+        if (confirmacion) {
+            $.ajax({
+                url: '/datos/deleteFields',
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify([campo]),
+                success: function(data) {
+                    console.log(data);
+                    alert('Campo borrado correctamente en todos los datos');
+                    window.location.reload();
+                },
+                error: function(error) {
+                    console.error('Error al borrar el campo:', error);
+                }
+            });
+        }
+    }
 </script>

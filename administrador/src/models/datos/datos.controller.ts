@@ -152,4 +152,24 @@ export class DatosController{
             return res.status(400).send('Error al agregar datos con $addFields.');
         }
     } 
+
+
+    
+    
+    /**
+     * Deletes dinamic fields
+     * @param camposABorrar 
+     * @param res 
+     * @returns 
+     */
+    @Put('deleteFields')
+    async borrarDatos(@Body() camposABorrar: string[], @Res() res: Response) {
+        try {
+            await this.datosService.borrarDatos(camposABorrar);
+            return res.send('ok');
+        } catch (error) {
+            console.error('Error al borrar datos:', error);
+            return res.status(400).send('Error al borrar datos.');
+        }
+    }
 }

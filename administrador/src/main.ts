@@ -1,5 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 //import secureSession from '@fastify/secure-session';
 //import helmet from '@fastify/helmet';
 const secureSession = require('@fastify/secure-session');
@@ -20,7 +23,7 @@ async function bootstrap() {
    */
   app.useStaticAssets({
     root: join(__dirname, '..', 'public'),
-    prefix: '/public/'
+    prefix: '/public/',
   });
 
   /**
@@ -39,14 +42,14 @@ async function bootstrap() {
     viewExt: 'hbs',
     options: {
       partials: {
-        templateSelect: '/partials/templateSelect.hbs', 
-        scriptSelect: '/partials/scriptSelect.hbs', 
+        templateSelect: '/partials/templateSelect.hbs',
+        scriptSelect: '/partials/scriptSelect.hbs',
         logoutBoton: '/partials/logoutBoton.hbs',
-        modalWindowEliminarContenido: '/partials/modalWindowEliminarContenido.hbs',
+        modalWindowEliminarContenido:'/partials/modalWindowEliminarContenido.hbs',
         modalWindowCrearDash: '/partials/modalWindowCrearDash.hbs',
         modalWindowActualizarDash: '/partials/modalWindowActualizarDash.hbs',
         modalWindowEliminarDash: '/partials/modalWindowEliminarDash.hbs',
-        error: '/partials/error.hbs'
+        error: '/partials/error.hbs',
       },
     },
   });
@@ -60,7 +63,7 @@ async function bootstrap() {
     templates: join(__dirname, '..', 'views'),
     root: join(__dirname, '..', 'views'),
     layout: './layouts/second',
-    propertyName: "second",
+    propertyName: 'second',
     viewExt: 'hbs',
     options: {
       partials: {
@@ -69,7 +72,7 @@ async function bootstrap() {
         modalWindowCrearDash: '/partials/modalWindowCrearDash.hbs',
         modalWindowActualizarDash: '/partials/modalWindowActualizarDash.hbs',
         modalWindowEliminarDash: '/partials/modalWindowEliminarDash.hbs',
-        error: '/partials/error.hbs'
+        error: '/partials/error.hbs',
       },
     },
   });
@@ -80,8 +83,7 @@ async function bootstrap() {
   /*
   Registro del middleware helmet para controlar la seguridad de la aplicacion. Modifica los headers para evitar vulnerabilidades HTTP.
   */
-
-    //await 
+  //await
   //app.register( helmet );
 
   /**
@@ -99,6 +101,6 @@ async function bootstrap() {
 
   await app.listen(port, '0.0.0.0');
   console.log();
-    console.log(`app running at http://localhost:${port}`);
+  console.log(`app running at http://localhost:${port}`);
 }
 bootstrap();

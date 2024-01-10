@@ -8,9 +8,10 @@ import { TemplatesModule } from './models/templates/templates.module';
 import { ScriptsModule } from './models/scripts/scripts.module';
 import { ImageSchema } from './models/images/imagesSchema';
 import { WidgetsModule } from './models/widgets/widgets.module';
-import { DashboardsModule } from './models/dashboards/dashboard.module'
+import { DashboardsModule } from './models/dashboards/dashboard.module';
 import { DatosModule } from './models/datos/datos.module';
-
+import { DataModule } from './models/data/data.module';
+import { MongoDbDriverModule } from 'nest-mongodb-driver';
 
 // const db_hostname = 'localhost';
 const db_hostname = '1.44.4.82';
@@ -26,8 +27,15 @@ const db_database = 'dynodash';
     WidgetsModule,
     DashboardsModule,
     DatosModule,
-    MongooseModule.forRoot(`mongodb://${db_hostname}:${db_port}/${db_database}`),
+    DataModule,
+    MongooseModule.forRoot(
+      `mongodb://${db_hostname}:${db_port}/${db_database}`,
+    ),
     MongooseModule.forFeature([{ name: 'Image', schema: ImageSchema }]),
+    MongoDbDriverModule.forRoot({
+      url: `mongodb://${db_hostname}:${db_port}/${db_database}`,
+    }),
+    DataModule,
   ],
 
   controllers: [AppController],

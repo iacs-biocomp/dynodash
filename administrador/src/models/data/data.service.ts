@@ -35,8 +35,6 @@ export class DataService {
    * @returns
    */
   async updateDatos(datos: JSON) {
-    return await this.db
-      .collection('datos')
-      .replaceOne({ id: datos['id'] }, datos);
+    return await this.db.collection('datos').replaceOne({ id: datos['id'] }, datos);
   }
 }

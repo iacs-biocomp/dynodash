@@ -17,6 +17,8 @@ import { CrearDatosDTO } from './datosDTO';
 export class DatosController {
   constructor(private datosService: DatosService) {}
 
+
+
   /**
    * Returns the list of data as JSON
    * @returns
@@ -26,20 +28,24 @@ export class DatosController {
     return await this.datosService.getDatosList();
   }
 
+
+
   /**
    * Returns a page with the list of datos
    * @returns
    */
   @Get('list')
   @Render('datos/datosList.hbs')
-  async datosList() {
+  async datosList(id:string) {
     try {
       const list = await this.datosService.getDatosList();
       return { title: 'List of datos', items: list };
-    } catch (Error) {
-      console.log(Error);
+    } catch (error) {
+      console.log(error);
     }
   }
+
+
 
   /**
    * Returnos a detailed view of the datos
@@ -50,8 +56,19 @@ export class DatosController {
   @Render('datos/datosView.hbs')
   async view(@Param('id') id: string) {
     const datos = await this.datosService.getDatos(id);
-    return { title: 'View', datos: datos };
+    delete datos._id;
+    delete datos.data;
+    delete datos.__v;
+    return {
+      title: 'View',
+      id: datos.id,
+      indicador: datos.indicador,
+      data: datos.data,
+      campos: datos,
+    };
   }
+
+
 
   /**
    * Updates datos
@@ -60,15 +77,17 @@ export class DatosController {
    * @returns
    */
   @Put()
-  async updateDatos(@Body() datos: CrearDatosDTO, @Res() res: Response) {
+  async updateDatos(@Body() datos: string, @Res() res: Response) {
     try {
-      await this.datosService.updateDatos(datos);
+      this.datosService.updateDatos(JSON.parse(datos));
       console.log('Dato actualizado con exito.');
       return res.send('ok');
     } catch (error) {
       return res.status(400).send('Datos no encontrados.');
     }
   }
+
+
 
   /**
    * Returns a single dato as a json
@@ -84,6 +103,8 @@ export class DatosController {
       console.log(error);
     }
   }
+
+
 
   /**
    * Renderiza la pagina de creacion de datos
@@ -101,11 +122,13 @@ export class DatosController {
    * @param datos
    * @returns
    */
-  @Post()
-  async createDatos(@Body() datos: CrearDatosDTO) {
-    const nuevoDato = await this.datosService.createDatos(datos);
-    return { datos: nuevoDato };
-  }
+  // @Post()
+  // async createDatos(@Body() datos: CrearDatosDTO) {
+  //   const nuevoDato = await this.datosService.createDatos(datos);
+  //   return { datos: nuevoDato };
+  // }
+
+
 
   /**
    * Deletes a dato
@@ -117,22 +140,7 @@ export class DatosController {
     return await this.datosService.deleteDatos(id);
   }
 
-  /**
-   * Agrega datos con $addFields
-   * @param nuevosDatos
-   * @param res
-   * @returns
-   */
-  @Put('addFields')
-  async agregarDatos(@Body() nuevosDatos: any[], @Res() res: Response) {
-    try {
-      await this.datosService.agregarDatos(nuevosDatos);
-      return res.send('ok');
-    } catch (error) {
-      console.error('Error al agregar datos con $addFields:', error);
-      return res.status(400).send('Error al agregar datos con $addFields.');
-    }
-  }
+
 
   /**
    * Deletes dinamic fields
@@ -140,14 +148,31 @@ export class DatosController {
    * @param res
    * @returns
    */
-  @Put('deleteFields')
-  async borrarDatos(@Body() camposABorrar: string[], @Res() res: Response) {
+  @Delete('deleteFields/:id')
+  async borrarDatos(@Body() camposABorrar: string[], @Param('id') id: string, @Res() res: Response) {
     try {
-      await this.datosService.borrarDatos(camposABorrar);
-      return res.send('ok');
+      return await this.datosService.borrarDatos(camposABorrar, id);
     } catch (error) {
       console.error('Error al borrar datos:', error);
       return res.status(400).send('Error al borrar datos.');
+    }
+  }
+
+
+  /**
+   * Duplicates a dashboard
+   * @param id 
+   * @param res 
+   * @returns 
+   */
+  @Post('duplicate/:id')
+  async duplicateDatos(@Param('id') id: string, @Res() res: Response) {
+    try {
+      const savedDatos = await this.datosService.duplicateAndSaveDatos(id);
+      return res.send(savedDatos);
+    } catch (error) {
+      console.error('Error al duplicar datos:', error);
+      return res.status(400).send(`Error al duplicar y guardar el dato: ${error.message}`);
     }
   }
 }

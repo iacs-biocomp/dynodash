@@ -18,6 +18,7 @@
                         <td><a href="javascript: modalDelete('{{id}}')"><i class='fas fa-trash'></i></a></td>
                         <td>{{id}}</td>
                         <td><a href="/datos/view/{{id}}">{{indicador}}</a></td>
+                        <td><button onclick="duplicarDatos('{{id}}')">Duplicar</button></td>
                         {{/with}}
                     </tr>
                 {{/each}}
@@ -75,4 +76,15 @@ function modalDelete(id) {
     $("#confirm-modal").modal('show');
 }
 
+</script>
+
+<script>
+    function duplicarDatos(id) {
+        $.post(`/datos/duplicate/${id}`, function(response) {
+            alert('Dato duplicado con éxito.');
+            window.location.href = `/datos/list`;
+        }).fail(function() {
+            alert('Error al duplicar el dato.');
+        });
+    }
 </script>

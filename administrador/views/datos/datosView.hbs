@@ -3,37 +3,22 @@
 </div>
 <div class="container">
 
-    <h1>{{datos.indicador}}</h1>
+    <h1>{{indicador}}</h1>
     <hr>
-    <form>
+    <form id="camposContainer">
         <div class="form-group">
-            <label for="id">Id</label>
-            <input type="text" class="form-control" id="id" name="id" placeholder="ID">
-            <label for="ambito">Ámbito</label>
-            <input type="text" class="form-control" id="ambito" placeholder="Ambito">
-            <label for="nivel">Nivel</label>
-            <input type="text" class="form-control" id="nivel" placeholder="Nivel">
-            <label for="distintivo">Distintivo</label>
-            <input type="text" class="form-control" id="distintivo" placeholder="Distintivo">
-            <label for="anno_inicial">Año de inicio</label>
-            <input type="text" class="form-control" id="anno_inicial" placeholder="Año de inicio">
-            <label for="anno_final">Año de final</label>
-            <input type="text" class="form-control" id="anno_final" placeholder="Año de final">
-            <br>
-            <div id="camposAdicionales">
-                {{#each datos.nuevosCampos}}
+
+            {{#each campos}}
                     <i class="fas fa-trash" style="cursor: pointer;" onclick="borrarCampo('{{@key}}')"></i>
                     <label for="{{@key}}">{{@key}}</label>
                     <input type="text" class="form-control" id="{{@key}}" value="{{this}}">
-                    <br>
-                {{/each}}
-            </div>
-            <br>
-            <button type="button" class="btn btn-primary" id="agregarCampo"><i class="fa fa-plus"></i> Añadir nuevo campo</button><br>
-            
+            {{/each}}
 
         </div>
     </form>
+
+    <br>
+    <button type="button" class="btn btn-primary" id="agregarCampo"><i class="fa fa-plus"></i> Añadir nuevo campo</button><br>
 
     <div class="container-fluid">
         <div class="row">
@@ -59,37 +44,35 @@
 			language: 'json'
 		});
         var datos = null;
-		$.get('/datos/item/{{datos.id}}',
+		$.get('/datos/item/{{campos.id}}',
 			function( data ) {
 				datos = data; 
     
 				editor.setValue(JSON.stringify(datos.data, null, 2));
-                $('#indicador').val(data.indicador);
-                $('#id').val(data.id);
-                $('#ambito').val(data.ambito);
-                $('#nivel').val(data.nivel);
-                $('#distintivo').val(data.distintivo);
-                $('#anno_inicial').val(data.anno_inicial);
-                $('#anno_final').val(data.anno_final);  
 
 				editor.getModel().onDidChangeContent((event) => {
 					$('#saveButton').prop('disabled', false);
 				});
 		    });
-		$("#saveButton").click(function(){
-			datos.data = JSON.parse(editor.getValue()) 
-            datos.id = $('#id').val()
-            datos.indicador = $('#indicador').val()
-            datos.ambito = $('#ambito').val()
-            datos.nivel = $('#nivel').val()
-            datos.distintivo = $('#distintivo').val()
-            datos.anno_inicial = $('#anno_inicial').val()
-            datos.anno_final = $('#anno_final').val()
 
+		$("#saveButton").click(function(){
+            var datos = {}
+            var camposContainer = document.getElementById('camposContainer');
+            var nuevosCamposDivs = camposContainer.querySelectorAll('.form-control');
+            
+            nuevosCamposDivs.forEach(function(fieldInput) {
+                var labelValue = fieldInput ? fieldInput.id : '';
+                var campoValue = fieldInput ? fieldInput.value : '';
+                
+                datos[labelValue] = campoValue
+            });
+			datos['data'] = JSON.parse(editor.getValue().replace(/(\r\n|\n|\r)/gm, "")); 
+            
 			$.ajax({
 				url: '/datos',
 				type: 'PUT',
-				data: datos,
+				data: JSON.stringify(datos),
+                contentType: 'text/plain',
 				success: function(data) {
 					alert('Datos actualizados correctamente');
 					$('#saveButton').prop('disabled', true);
@@ -109,62 +92,31 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var agregarCampo = document.getElementById('agregarCampo');
-        var camposContainer = document.getElementById('camposAdicionales');
+        var camposContainer = document.getElementById('camposContainer');
         var guardar = document.getElementById('saveButton');
         var id = $('#id').val();
         console.log("Valor del id: " + id);
 
         agregarCampo.addEventListener('click', function() {
-            var nuevoLabelInput = document.createElement('input');
-            nuevoLabelInput.type = 'text';
-            nuevoLabelInput.className = 'form-control';
-            nuevoLabelInput.placeholder = 'Inserte aquí el título del dato';
+            let label = prompt('Introduce el nombre del nuevo campo')
+
+            var nuevoLabel = document.createElement('label');
+            nuevoLabel.for = label
+            nuevoLabel.innerHTML = label
 
             var nuevoCampo = document.createElement('input');
             nuevoCampo.type = 'text';
             nuevoCampo.className = 'form-control';
+            nuevoCampo.id = label
             nuevoCampo.placeholder = 'Inserte aquí los datos';
 
             var nuevoDiv = document.createElement('div');
-            nuevoDiv.appendChild(nuevoLabelInput);
+            nuevoDiv.className = 'form-group'
+            nuevoDiv.appendChild(nuevoLabel);
             nuevoDiv.appendChild(nuevoCampo);
             camposContainer.appendChild(nuevoDiv);
         });
-
-        guardar.addEventListener('click', function(){
-            var nuevosCamposDivs = camposContainer.querySelectorAll('div');
-            var datosNuevos = [];
-
-            nuevosCamposDivs.forEach(function(div) {
-                var labelInput = div.querySelector('input[type="text"]');
-                var labelValue = labelInput ? labelInput.value : '';
-
-                var campoInput = div.querySelector('input[type="text"]');
-                var campoValue = campoInput ? campoInput.value : '';
-                
-                datosNuevos.push({
-                    titulo: labelValue,
-                    valor: campoValue
-                });
-            });
-
-            $.ajax({
-                url: '/datos/addFields',
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(datosNuevos),
-                success: function(data) {
-                    console.log(data);
-                    alert('Datos agregados correctamente con $addFields');
-                    $('#saveButton').prop('disabled', true);
-                    window.location.href = '/datos/list';
-                },
-                error: function(error) {
-                    console.error('Error al enviar datos al servidor:', error);
-                }
-            });
-        });
-    });
+    }); 
 </script>
 
 
@@ -174,13 +126,13 @@
 
         if (confirmacion) {
             $.ajax({
-                url: '/datos/deleteFields',
+                url: '/datos/deleteFields/:id',
                 type: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify([campo]),
                 success: function(data) {
                     console.log(data);
-                    alert('Campo borrado correctamente en todos los datos');
+                    alert('Campo borrado correctamente');
                     window.location.reload();
                 },
                 error: function(error) {

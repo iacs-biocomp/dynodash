@@ -48,7 +48,7 @@ export class DatosController {
 
 
   /**
-   * Returnos a detailed view of the datos
+   * Returns a detailed view of the datos
    * @param id
    * @returns
    */
@@ -143,7 +143,7 @@ export class DatosController {
 
 
   /**
-   * Deletes dinamic fields
+   * Deletes fields
    * @param camposABorrar
    * @param res
    * @returns
@@ -151,7 +151,8 @@ export class DatosController {
   @Delete('deleteFields/:id')
   async borrarDatos(@Body() camposABorrar: string[], @Param('id') id: string, @Res() res: Response) {
     try {
-      return await this.datosService.borrarDatos(camposABorrar, id);
+      await this.datosService.borrarCampos(camposABorrar, id);
+      res.status(200).send('Campo borrado correctamente');
     } catch (error) {
       console.error('Error al borrar datos:', error);
       return res.status(400).send('Error al borrar datos.');
@@ -160,7 +161,7 @@ export class DatosController {
 
 
   /**
-   * Duplicates a dashboard
+   * Duplicates a dato
    * @param id 
    * @param res 
    * @returns 

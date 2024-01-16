@@ -97,14 +97,14 @@ export class DatosService {
    * Deletes fields
    * @param camposABorrar
    */
-  async borrarDatos(camposABorrar: string[], id: string) {
+  async borrarCampos(camposABorrar: string[], id: string){
     const unsetDatos = {};
     camposABorrar.forEach((campo) => {
       unsetDatos[campo] = 1;
     });
-    await this.db.collection('datos').updateOne({ id: id }, { $unset: unsetDatos });
+    
+    await this.db.collection('datos').updateOne({ "id": id }, { $unset: unsetDatos });
   }
-
 
 
   /**

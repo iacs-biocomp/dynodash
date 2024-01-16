@@ -122,18 +122,22 @@
 
 <script>
     function borrarCampo(campo) {
+        var id = $('#id').val();
         var confirmacion = confirm('¿Quieres borrar este campo?');
-
+        console.log("El valor del id es: " + id);
+        console.log("El campo es: " + campo);
         if (confirmacion) {
             $.ajax({
-                url: '/datos/deleteFields/:id',
-                type: 'PUT',
+                url: `/datos/deleteFields/${id}`,
+                type: 'DELETE',
                 contentType: 'application/json',
                 data: JSON.stringify([campo]),
-                success: function(data) {
-                    console.log(data);
-                    alert('Campo borrado correctamente');
-                    window.location.reload();
+                success: function(data, textStatus, xhr) {
+                    if(xhr.status === 200){
+                        console.log(data);
+                        alert('Campo borrado correctamente');
+                        window.location.reload();
+                    }     
                 },
                 error: function(error) {
                     console.error('Error al borrar el campo:', error);

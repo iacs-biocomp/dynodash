@@ -9,9 +9,9 @@
         <div class="form-group">
 
             {{#each campos}}
-                    <i class="fas fa-trash" style="cursor: pointer;" onclick="borrarCampo('{{@key}}')"></i>
-                    <label for="{{@key}}">{{@key}}</label>
-                    <input type="text" class="form-control" id="{{@key}}" value="{{this}}">
+                <i class="fas fa-trash" style="cursor: pointer;" onclick="borrarCampo('{{@key}}')"></i>
+                <label for="{{@key}}">{{@key}}</label>
+                <input type="text" class="form-control" id="{{@key}}" value="{{this}}">
             {{/each}}
 
         </div>

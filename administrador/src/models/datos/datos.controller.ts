@@ -122,11 +122,18 @@ export class DatosController {
    * @param datos
    * @returns
    */
-  // @Post()
-  // async createDatos(@Body() datos: CrearDatosDTO) {
-  //   const nuevoDato = await this.datosService.createDatos(datos);
-  //   return { datos: nuevoDato };
-  // }
+  @Post()
+  async createDatos(@Body() data: any[]) {
+    console.log('Datos recibidos: ', data);
+    try {
+      await this.datosService.createDatos(data);
+      console.log("try ", data);
+      return { success: true };
+    } catch (error) {
+      console.error("Ha habido un error", error);
+      return { success: false, error: error.message };
+    }
+  }
 
 
 

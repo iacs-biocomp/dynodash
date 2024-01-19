@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-bDFFtArOpH9C6NlrMzZqHA5dXRF+AXXR8jL6VJY6FpxIlE0FkncYFzEnqssMIlra" crossorigin="anonymous">
+
+
 <div>
     <a href="/datos/list">Listado de datos</a>
 </div>
@@ -8,27 +11,9 @@
             <label for="indicador">Indicador</label>
             <input type="text" class="form-control" id="indicador" name="indicador" placeholder="Indicador" required>
             </h2><hr>
-            <label for="id">Id</label>
+            <label for="id">ID</label>
             <input type="text" class="form-control" id="id" name="id" placeholder="ID" required>
-            <label for="ambito">Ámbito</label>
-            <input type="text" class="form-control" id="ambito" name="ambito" placeholder="Ambito">
-            <label for="nivel">Nivel</label>
-            <input type="text" class="form-control" id="nivel" name="nivel" placeholder="Nivel">
-            <label for="distintivo">Distintivo</label>
-            <input type="text" class="form-control" id="distintivo" name="distintivo" placeholder="Distintivo">
-            <label for="anno_inicial">Año de inicio</label>
-            <input type="text" class="form-control" id="anno_inicial" name="anno_inicial" placeholder="Año de inicio">
-            <label for="anno_final">Año de final</label>
-            <input type="text" class="form-control" id="anno_final" name="anno_final" placeholder="Año de final">
-            <br>
-            <div id="camposAdicionales">
-                {{#each datos.nuevosCampos}}
-                    <i class="fas fa-trash" style="cursor: pointer;" onclick="borrarCampo('{{@key}}')"></i>
-                    <label for="{{@key}}">{{@key}}</label>
-                    <input type="text" class="form-control" id="{{@key}}" value="{{this}}">
-                    <br>
-                {{/each}}
-            </div>
+            <div id="camposContainer"></div>
             <br>
             <button type="button" class="btn btn-primary" id="agregarCampo"><i class="fa fa-plus"></i> Añadir nuevo campo</button><br>
         </div>
@@ -48,31 +33,29 @@
 
 <!-- OR ANY OTHER AMD LOADER HERE INSTEAD OF loader.js -->
 <script src="/public/js/monaco-editor/min/vs/loader.js"></script>
+
 <script>
 	require.config({ paths: { vs: '/public/js/monaco-editor/min/vs' } });
 	require(['vs/editor/editor.main'], function () {
 		var editor = monaco.editor.create(document.getElementById('container'), {
 			language: 'json'
 		});
-		var datos = {
-            id: '',
-            indicador: '',
-			ambito: '',
-			nivel: '',
-			distintivo: '',
-            anno_inicial: '',
-            anno_final: '',
-            data: '',
-		};
+        var datos = {};
 		$("#saveButton").click(function () {
-            datos.id = $('#id').val();
-            datos.indicador = $('#indicador').val();
-			datos.ambito = $('#ambito').val();
-			datos.nivel = $('#nivel').val();
-			datos.distintivo = $('#distintivo').val();
-            datos.anno_inicial = $('#anno_inicial').val();
-            datos.anno_final = $('#anno_final').val();
-            datos.data = JSON.parse(editor.getValue());
+            datos['id'] = $('#id').val();
+            datos['indicador'] = $('#indicador').val();
+            
+            var camposContainer = document.getElementById('camposContainer');
+            var nuevosCamposDivs = camposContainer.querySelectorAll('.form-control');
+
+            nuevosCamposDivs.forEach(function(fieldInput) {
+                var labelValue = fieldInput ? fieldInput.id : '';
+                var campoValue = fieldInput ? fieldInput.value : '';
+                
+                datos[labelValue] = campoValue
+            });
+
+            datos['data'] = JSON.parse(editor.getValue().replace(/(\r\n|\n|\r)/gm, ""));
 
 			$.ajax({
 				url: '/datos',
@@ -101,59 +84,41 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var agregarCampo = document.getElementById('agregarCampo');
-        var camposContainer = document.getElementById('camposAdicionales');
+        var camposContainer = document.getElementById('camposContainer');
         var guardar = document.getElementById('saveButton');
+        var id = $('#id').val();
+        console.log("Valor del id: " + id);
 
-        agregarCampo.addEventListener('click', function() {
-            var nuevoLabelInput = document.createElement('input');
-            nuevoLabelInput.type = 'text';
-            nuevoLabelInput.className = 'form-control';
-            nuevoLabelInput.placeholder = 'Inserte aquí el título del dato';
+        function agregarNuevoCampo() {
+            let label = prompt('Introduce el nombre del nuevo campo');
+
+            var nuevoDiv = document.createElement('div');
+            nuevoDiv.className = 'form-group';
+            
+            var iconoPapelera = document.createElement('i');
+            iconoPapelera.className = 'fas fa-trash';
+            iconoPapelera.style.cursor = 'pointer';
+            
+            var nuevoLabel = document.createElement('label');
+            nuevoLabel.for = label;
+            nuevoLabel.innerHTML = label;
 
             var nuevoCampo = document.createElement('input');
             nuevoCampo.type = 'text';
             nuevoCampo.className = 'form-control';
+            nuevoCampo.id = label;
             nuevoCampo.placeholder = 'Inserte aquí los datos';
 
-            var nuevoDiv = document.createElement('div');
-            nuevoDiv.appendChild(nuevoLabelInput);
+            nuevoDiv.appendChild(iconoPapelera);
+            nuevoDiv.appendChild(nuevoLabel);
             nuevoDiv.appendChild(nuevoCampo);
             camposContainer.appendChild(nuevoDiv);
-        });
 
-        guardar.addEventListener('click', function(){
-            var nuevosCamposDivs = camposContainer.querySelectorAll('div');
-            var datosNuevos = [];
-
-            nuevosCamposDivs.forEach(function(div) {
-                var labelInput = div.querySelector('input[type="text"]');
-                var labelValue = labelInput ? labelInput.value : '';
-
-                var campoInput = div.querySelector('input[type="text"]');
-                var campoValue = campoInput ? campoInput.value : '';
-                
-                datosNuevos.push({
-                    titulo: labelValue,
-                    valor: campoValue
-                });
+            iconoPapelera.addEventListener('click', function() {
+                camposContainer.removeChild(nuevoDiv);
             });
+        }
 
-            $.ajax({
-                url: '/datos/addFields',
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(datosNuevos),
-                success: function(data) {
-                    console.log(data);
-                    alert('Datos agregados correctamente con $addFields');
-                    $('#saveButton').prop('disabled', true);
-                    window.location.href = '/datos/list';
-                },
-                error: function(error) {
-                    console.error('Error al enviar datos al servidor:', error);
-                }
-            });
-        });
-    });
+        agregarCampo.addEventListener('click', agregarNuevoCampo);
+    }); 
 </script>
-

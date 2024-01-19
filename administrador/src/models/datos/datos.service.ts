@@ -4,7 +4,7 @@ import { Datos, DatosType } from './datos.schema';
 import { Model } from 'mongoose';
 import { CrearDatosDTO } from './datosDTO';
 import { InjectClient } from 'nest-mongodb-driver';
-import { Db } from 'mongodb';
+import { Db, ObjectId } from 'mongodb';
 
 @Injectable()
 export class DatosService {
@@ -53,35 +53,26 @@ export class DatosService {
    * @param templateData
    * @returns
    */
-  // async createDatos(templateData: Datos): Promise<Datos> {
-  //   const filteredData = templateData.data.map((item) => {
-  //     const filteredItem = {};
-  //     Object.keys(item).forEach((key) => {
-  //       if (key !== 'values' && item[key] !== undefined) {
-  //         filteredItem[key] = item[key];
-  //       } else if (key === 'values') {
-  //         const values = item[key].filter((value) => value !== null);
-  //         if (values.length > 0) {
-  //           filteredItem[key] = values;
-  //         }
-  //       }
-  //     });
-  //     return filteredItem;
-  //   });
+  async createDatos(datos){
 
-  //   const datosToInstert = new this.datosModel({
-  //     id: templateData.id,
-  //     indicador: templateData.indicador,
-  //     ambito: templateData.ambito,
-  //     nivel: templateData.nivel,
-  //     distintivo: templateData.distintivo,
-  //     anno_inicial: templateData.anno_inicial,
-  //     anno_final: templateData.anno_final,
-  //     data: filteredData,
-  //   });
+    const id = datos['id'];
 
-  //   return datosToInstert.save();
-  // }
+    // Verificar si ya existe un dato con el mismo id
+    const collection = this.db.collection('datos');
+    const existingDato = await collection.findOne({ id });
+
+    if (existingDato) {
+        throw new Error('Ya existe un dato con ese ID.');
+    }
+
+    try {
+      await collection.insertOne(datos);
+    } catch (error) {
+      throw new Error(`Error al crear datos: ${error.message}`);
+    }
+  }
+
+
 
   /**
    * Updates datos
@@ -120,7 +111,7 @@ export class DatosService {
         throw new NotFoundException('Dato no encontrado');
       }
 
-      const duplicatedDato = new this.datosModel(datoToDuplicate); // Puedes usar directamente el objeto
+      const duplicatedDato = new this.datosModel(datoToDuplicate);
       duplicatedDato.indicador = `${datoToDuplicate.indicador} (copia)`;
       duplicatedDato.id = `${datoToDuplicate.id} (copia)`;
       duplicatedDato._id = null;

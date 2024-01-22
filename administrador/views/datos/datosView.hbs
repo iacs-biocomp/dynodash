@@ -12,6 +12,17 @@
                 <i class="fas fa-trash" style="cursor: pointer;" onclick="borrarCampo('{{@key}}')"></i>
                 <label for="{{@key}}">{{@key}}</label>
                 <input type="text" class="form-control" id="{{@key}}" value="{{this}}">
+
+                <script>
+                    //Hace ineditable el campo id
+                    var inputElement = document.getElementById("{{@key}}");
+                    if ("{{@key}}" === "id") {
+                        inputElement.setAttribute("readonly", "readonly");
+                    } else {
+                        inputElement.removeAttribute("readonly");
+                    }
+                </script>
+
             {{/each}}
 
         </div>

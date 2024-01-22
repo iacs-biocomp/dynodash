@@ -1,6 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-bDFFtArOpH9C6NlrMzZqHA5dXRF+AXXR8jL6VJY6FpxIlE0FkncYFzEnqssMIlra" crossorigin="anonymous">
-
-
 <div>
     <a href="/datos/list">Listado de datos</a>
 </div>
@@ -65,12 +62,18 @@
                 contentType: 'application/json',
 				success: function (data) {
                     console.log(datos);
-					alert('Datos creados correctamente');
-					$('#saveButton').prop('disabled', true);
-					window.location.href = '/datos/list';
+                    if (data.success) {
+                        alert(data.message);
+                        $('#saveButton').prop('disabled', true);
+                        window.location.href = '/datos/list';
+                    } else {
+                        console.error('Error al crear los datos:', data.error);
+                        alert('Error al crear los datos: ' + data.error);
+                    }
 				},
 				error: function (error) {
 					console.error('Error al crear los datos:', error);
+                    alert('Error al crear los datos: ' + error.responseJSON.error);
 				},
 			});
 			

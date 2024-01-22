@@ -124,15 +124,17 @@ export class DatosController {
    */
   @Post()
   async createDatos(@Body() data: any[]) {
-    console.log('Datos recibidos: ', data);
-    try {
-      await this.datosService.createDatos(data);
-      console.log("try ", data);
-      return { success: true };
-    } catch (error) {
-      console.error("Ha habido un error", error);
-      return { success: false, error: error.message };
-    }
+      try {
+          await this.datosService.createDatos(data);
+          return { success: true, message: 'Datos creados correctamente' };
+      } catch (error) {
+          if (error instanceof Error && error.message.startsWith('Ya existe un dato con el ID')) {
+              return { success: false, error: error.message };
+          } else {
+              console.error("Ha habido un error", error);
+              return { success: false, error: 'Error al crear los datos' };
+          }
+      }
   }
 
 

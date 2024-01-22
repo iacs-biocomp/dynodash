@@ -53,16 +53,14 @@ export class DatosService {
    * @param templateData
    * @returns
    */
-  async createDatos(datos){
-
+  async createDatos(datos) {
     const id = datos['id'];
-
-    // Verificar si ya existe un dato con el mismo id
     const collection = this.db.collection('datos');
-    const existingDato = await collection.findOne({ id });
+    
+    const datoExistente = await collection.findOne({ id });
 
-    if (existingDato) {
-        throw new Error('Ya existe un dato con ese ID.');
+    if (datoExistente) {
+      throw new Error(`Ya existe un dato con el ID '${id}'`);
     }
 
     try {
@@ -70,7 +68,7 @@ export class DatosService {
     } catch (error) {
       throw new Error(`Error al crear datos: ${error.message}`);
     }
-  }
+}
 
 
 

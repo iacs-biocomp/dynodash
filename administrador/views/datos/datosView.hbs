@@ -9,7 +9,7 @@
         <div class="form-group">
 
             {{#each campos}}
-                <i class="fas fa-trash" style="cursor: pointer;" onclick="borrarCampo('{{@key}}')"></i>
+                <i class="fas fa-trash" id="papelera" style="cursor: pointer;" onclick="borrarCampo('{{@key}}')"></i>
                 <label for="{{@key}}">{{@key}}</label>
                 <input type="text" class="form-control" id="{{@key}}" value="{{this}}">
 
@@ -18,6 +18,8 @@
                     var inputElement = document.getElementById("{{@key}}");
                     if ("{{@key}}" === "id") {
                         inputElement.setAttribute("readonly", "readonly");
+                        const papelera = document.getElementById("papelera");
+                        papelera.remove();
                     } else {
                         inputElement.removeAttribute("readonly");
                     }

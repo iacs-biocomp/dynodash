@@ -2,9 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Datos, DatosType } from './datos.schema';
 import { Model } from 'mongoose';
-import { CrearDatosDTO } from './datosDTO';
 import { InjectClient } from 'nest-mongodb-driver';
-import { Db, ObjectId } from 'mongodb';
+import { Db } from 'mongodb';
 
 @Injectable()
 export class DatosService {

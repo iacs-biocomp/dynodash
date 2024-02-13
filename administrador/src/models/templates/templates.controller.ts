@@ -163,15 +163,15 @@ export class TemplatesController {
    * @returns
    */
   @Delete(':id')
-  async deleteDashboard(
-    @Param('id') dashboardId: string,
+  async deleteTemplate(
+    @Param('id') templateId: string,
     @Res() res: Response,
   ) {
     try {
-      await this.templateService.deleteTemplate(dashboardId);
+      await this.templateService.deleteTemplate(templateId);
       return res.send('Template eliminado con éxito.');
     } catch (error) {
-      return res.status(400).send('Dashboard no encontrado.');
+      return res.status(400).send('Template no encontrado');
     }
   }
 }

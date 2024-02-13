@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { DatosService } from './datos.service';
-import { CrearDatosDTO } from './datosDTO';
 
 @Controller('datos')
 export class DatosController {

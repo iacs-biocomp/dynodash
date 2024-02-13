@@ -48,9 +48,10 @@ export class DashboardsService {
    * @returns
    */
   async updateDashboard(dashboardInstance: Dashboard) {
-    return await this.dashboardModel.updateOne(
+    return await this.dashboardModel.findOneAndUpdate(
       { name: dashboardInstance.name },
       { $set: dashboardInstance },
+      { new: true}
     );
   }
 
@@ -101,10 +102,46 @@ export class DashboardsService {
     return await this.dashboardModel.find().lean();
   }
 
+
+
+  /**
+   * Finds a widget in a dashboard
+   * @param id 
+   * @param frame 
+   * @param order 
+   * @returns 
+   */
+  async getDashboardWidget(id:string, frame: number, order:number){
+    try {
+      const dashboard = await this.dashboardModel.findOne({ name:id });
+      console.log("Service: Id: ",id , "Frame: ", frame, " order: ", order);
+      
+      if (!dashboard) {
+        throw new Error ("Dashboard no encontrado");
+      } 
+
+      const widgets = dashboard.widgets;
+      const widget = widgets.find(element => element.frame == frame && element.order == order);
+      console.log("El widget: ", widget);
+      
+      if (!widget) {
+        throw new Error ("Widget no encontrado");
+      }
+      return widget;
+    } catch (error) {
+      throw new Error ("Error al mostrar el widget");
+    }
+  }
+
+
+
   /**
    * Duplicates a dashboard
+   * @param id 
+   * @param nuevoNombre 
+   * @returns 
    */
-  async duplicateAndSaveDashboard(id: string): Promise<Dashboard> {
+  async duplicateAndSaveDashboard(id: string, nuevoNombre:string, descripcion:string): Promise<Dashboard> {
     try {
       const originalDashboard = await this.dashboardModel
         .findOne({ name: id })
@@ -112,10 +149,18 @@ export class DashboardsService {
       if (!originalDashboard) {
         throw new Error('Dashboard no encontrado.');
       }
+
+      const existingDashboard = await this.dashboardModel.findOne({ name: nuevoNombre }).exec();
+      if (existingDashboard) {
+        throw new Error('Ya existe un dashboard con ese nombre.');
+      }
+
       const duplicatedDashboard = new this.dashboardModel(
         originalDashboard.toObject(),
       );
-      duplicatedDashboard.name = `${originalDashboard.name} (copia)`;
+
+      duplicatedDashboard.name = nuevoNombre;
+      duplicatedDashboard.description = descripcion;
       duplicatedDashboard._id = null;
       const savedDashboard = await duplicatedDashboard.save();
 
@@ -124,4 +169,59 @@ export class DashboardsService {
       throw new Error('Error al duplicar y guardar el dashboard.');
     }
   }
+
+
+
+  /**
+   * Deletes a widget from a dashboard
+   * @param id 
+   * @param frame 
+   */
+  async deleteWidget(id: string, frame: number, order:number) {
+    try {
+      await this.dashboardModel.updateOne(
+        { name: id },
+        { $pull: { widgets: { frame, order } } },
+      );
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  
+  /**
+   * Adds a widget to a dashboard
+   * @param dashboardName 
+   * @param frame 
+   * @param widgetData 
+   * @returns 
+   */
+  async addWidget(dashboardName: string, frame: string, widgetData: any): Promise<Dashboard> {
+    try {
+      const dashboard = await this.dashboardModel.findOne({ name: dashboardName });
+  
+      if (!dashboard) {
+        throw new Error('Dashboard no encontrado');
+      }
+
+    const newWidget = {
+      frame: widgetData.frame,
+      order: widgetData.order,
+      type: widgetData.type,
+      url: widgetData.url,
+      doc: widgetData.doc,
+      grant: widgetData.grant,
+      title: widgetData.title,
+      info: widgetData.info,
+      label: widgetData.label,
+      js: widgetData.js,
+    };
+
+    dashboard.widgets.push(newWidget);
+    const updatedDashboard = await dashboard.save();
+    return updatedDashboard;
+  
+  } catch (error) {
+    throw new Error(error.message);
+  }}
 }

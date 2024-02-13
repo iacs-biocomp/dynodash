@@ -1,3 +1,7 @@
+<div>
+	<a href="/dashboard/list">Listado de páginas / paneles</a>
+</div>
+
 <div class="container">
 
 <h1>Editor de página / panel</h1>
@@ -17,8 +21,6 @@
     <input type="text" class="form-control" id="updateDate" placeholder="Fecha última actualización" value="{{dashboard.creation_date}}">
 
     {{> templateSelect }}
-
-
 
     <div>
       <h1>Componentes</h1>
@@ -40,34 +42,24 @@
                       <td>{{type}}</td>
                       <td>{{title}}</td>
                       <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#widgetEdit" onclick="getData({{frame}}, {{order}})">Editar</button></td>
-                      <td><a href="/dashboard/deletewidget/{{name}}/{{frame}}/{{order}}">Borrar</a></td>
+                      <td><a href="#" onclick="borrarWidget({{frame}}, {{order}})"><i class='fas fa-trash'></i></a></td>
                       {{/with}}
                   </tr>
               {{/each}}
           </tbody>
       </table>
-      <a href="">Añadir</a>
+      <a href="#" data-bs-toggle="modal" data-bs-target="#añadirNuevoWidget" ><i class="fa fa-plus"></i> Añadir widget</a>
     </div>
 
-
-
-	<button id="saveButton" type="button" class="btn btn-primary">Guardar</button>
-
+	  <button id="saveButton" type="button" class="btn btn-primary">Guardar dashboard</button>
 
   </div>
 </form>
 
 </div>
 
-<div>
-	<a href="/dashboard/list">Listado de páginas / paneles</a>
-</div>
-
-
-
 
 <!-- Modal window to edit widget properties -->
-
 
 <div class="modal fade" id="widgetEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
@@ -145,7 +137,77 @@
 
 
 
-    <!-- modal for view template -->
+
+<!-- modal view for adding widgets -->
+<div class="modal fade" id="añadirNuevoWidget" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Añadir widget</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+
+          <div class="row">
+            <div class="col">
+              <label for="frame">Marco</label>
+              <input type="text" class="form-control" id="frame" placeholder="Marco">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="order">Orden</label>
+              <input type="text" class="form-control" id="order" placeholder="Orden">
+            </div>
+          </div>
+            <hr>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="NewWidgetSelect">Tipo de componente</label>
+              </div>
+              <select class="custom-select" id="NewWidgetSelect">
+                <option selected value="">Sin especificar...</option>
+                {{#each widgets}}
+                <option value="{{name}}">{{name}}/{{description}}</option>
+                {{/each}}
+              </select>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#widgetView" onclick="NewGetWidgetTemplate()">Ver plantilla</button>
+              <button type="button" class="btn btn-primary" onclick="NewEditWidget()">Editar componente</button>
+            </div>
+
+            <br>
+            <label for="url">URL</label>
+            <input type="text" class="form-control" id="url" placeholder="Orden" value="">
+            <label for="doc">Documento</label>
+            <input type="text" class="form-control" id="doc" placeholder="Documento" value="">
+            <label for="grant">Permiso</label>
+            <input type="text" class="form-control" id="grant" placeholder="Permiso" value="">
+            <label for="title">Título</label>
+            <input type="text" class="form-control" id="title" placeholder="Título" value="">
+            <label for="info">Información</label>
+            <input type="text" class="form-control" id="info" placeholder="Información" value="">
+            <label for="label">Etiqueta</label>
+            <input type="text" class="form-control" id="label" placeholder="Etiqueta" value="">
+            <br>
+
+            {{> NewScriptSelect }}
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button  onclick="añadirNuevoWidget()" type="button" class="btn btn-primary" id="guardarNuevoWidget">Añadir widget</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal for view template -->
+
 <div class="modal fade" id="widgetView" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -160,7 +222,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Script for the page -->
 <script>
@@ -181,15 +242,25 @@
       data: data,
       success: function(data) {
         alert('Dashboard grabado correctamente');
+        window.location.reload();
       }
     });
   });
 
-  function getData(f,o) {
+  
+  /*
+  * Function to get the data of the widgets
+  */
+  function getData(frame,order) {
+    console.log(frame);
+    console.log(order);
+    url = `/dashboard/widget/{{dashboard.name}}/${frame}/${order}`;
+    console.log(url);
     $.ajax({
-      url: `/dashboard/widget/{{dashboard.name}}/${f}/${o}`,
+      url: url,
       type: 'GET',
       success: function(data) {
+        console.log("Prueba")
         $("#w_frame").val(data.frame)
         $("#w_order").val(data.order)
         $("#w_frame_new").val(data.frame)
@@ -204,10 +275,13 @@
         $("#w_label").val(data.label)
         $("#w_js").val(data.js)
         $("#scriptSelect").val(data.js)
-        
-        //console.log(data);
+        console.log(data)
+      },
+      error: function(error) {
+        console.error('Error al mostrar el widget:', error);
+        console.log("Error");
       }
-    });    
+    });
   }
 
 
@@ -256,6 +330,79 @@
     if(widget) {
         document.location.href='/widget/editor/' + widget
     }
+  }
+
+  /*
+  * Function to view templates when adding widgets
+  */
+  function NewGetWidgetTemplate() {
+    widget = $("#NewWidgetSelect").val()
+    if(widget) {
+        $.get('/widget/itemTemplate/' + widget,
+			function( data ) {
+				$('#widgetViewText').html(data.content);
+				$('#widgetViewHeader').html(data.name);
+        })
+    }
+  }
+
+  /*
+  * Function to edit templates when adding widgets
+  */
+  function NewEditWidget() {
+    widget = $("#NewWidgetSelect").val()
+    if(widget) {
+        document.location.href='/widget/editor/' + widget
+    }
+  }
+
+  function borrarWidget(frame, order) {
+    var confirmacion = confirm('¿Quieres eliminar este widget?');
+    if (confirmacion) {
+      $.ajax({
+        url: `/dashboard/editor/{{dashboard.name}}/${frame}/${order}`,
+        type: 'DELETE',
+        contentType: 'application/json',
+        success: function() {
+            alert('Widget borrado correctamente');
+            window.location.reload();
+        },
+        error: function(error) {
+            console.error('Error al borrar el widget:', error);
+        }
+      });
+    }
+  }
+
+
+  function añadirNuevoWidget(frame){
+    const widgetData = {
+      frame: $('#frame').val(),
+      order: $('#order').val(),
+      type: $('#NewWidgetSelect').val(),
+      url: $('#url').val(),
+      doc: btoa($('#doc').val()),
+      grant: $('#grant').val(),
+      title: $('#title').val(),
+      info: $('#info').val(),
+      label: $('#label').val(),
+      js: $("#NewScriptSelect").val(),
+    };
+    
+    $.ajax({
+      type: 'POST',
+      url: `/dashboard/add/{{dashboard.name}}/${frame}`, 
+      contentType: 'application/json',
+      data: JSON.stringify(widgetData),
+
+      success: function(response) {
+        alert('Widget añadido correctamente');
+        window.location.reload();
+      },
+      error: function(error) {
+        console.error('Error al crear el nuevo widget');
+      }
+    });
   }
 
 </script>

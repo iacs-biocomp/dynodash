@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Render, Res, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Render, Res } from '@nestjs/common';
 import { Response } from 'express';
 //import { HttpExceptionFilterDB } from 'src/common/exceptionFilters/globalFilterExpress';
 import { Dashboard } from './dashboard.schema';
@@ -57,20 +57,39 @@ export class DashboardsController {
 
 
   //endpoint para obetener el dashboard principal del dashboard
-  @Get('widget/:id/:frame/:order')
-  async getDashboardWidget(@Param('id') dashboardId: string,
-                           @Param('frame') frame: string, 
-                           @Param('order') order: string, 
-                           @Res() res: Response) {
-     try {
-      const dashboardInstance = await this.dashboardService.getDashboard(dashboardId);
-      const widgets = dashboardInstance.widgets;
-      const w = widgets.find(element => element.frame == frame && element.order == order);
-      w.doc = Buffer.from(w.doc, 'base64').toString('utf-8');
-      //console.log(w);
-      return res.send(w);
-    }catch(error) {
-      return res.status(400).send('Widget no encontrado.')
+  // @Get('widget/:id/:frame/:order')
+  // async getDashboardWidget(@Param('id') dashboardId: string,
+  //                          @Param('frame') frame: string, 
+  //                          @Param('order') order: string, 
+  //                          @Res() res: Response) {
+  //   try {
+  //     const dashboardInstance = await this.dashboardService.getDashboard(dashboardId);
+  //     const widgets = dashboardInstance.widgets;
+  //     const w = widgets.find(element => element.frame == frame && element.order == order);
+  //     w.doc = Buffer.from(w.doc, 'base64').toString('utf-8');
+  //     //console.log(w);
+  //     return res.send(w);
+  //   }catch(error) {
+  //     return res.status(400).send('Widget no encontrado.')
+  //   }                       
+  // }
+  /**
+   * Finds a widget in a dashboard
+   * @param id 
+   * @param frame 
+   * @param order 
+   * @param res 
+   * @returns 
+   */
+  @Get('widget/:name/:frame/:order')
+  async getDashboardWidget(@Param('name') name:string, @Param('frame') frame:number, @Param('order') order:number, @Res() res: Response){
+    try {
+      console.log("Controller: Name", name, " frame ", frame, " order ", order);
+      const widget = await this.dashboardService.getDashboardWidget(name,frame,order);
+      console.log("Widget mostrado con exito");
+      return {widget: widget};
+    } catch (error) {
+      return res.status(400).send('Widget no mostrado');
     }
   }
 
@@ -131,9 +150,12 @@ export class DashboardsController {
       return res.send('Dashboard actualizado con éxito.')
 
     }catch(error) {
-      return res.status(400).send('Dashboard no encontrado.')
+      throw Error (error);
+      // return res.status(400).send('Dashboard no encontrado.')
     }
   }
+
+
 
   //endpoint para obetener el dashboard principal del dashboard
   @Put('widget/:id/')
@@ -164,16 +186,70 @@ export class DashboardsController {
     }
   }
 
+
+
   /**
    * Duplicates a dashboard
+   * @param id 
+   * @param nuevoNombre 
+   * @param res 
+   * @returns 
    */
   @Post('duplicate/:id')
-  async duplicateDashboard(@Param('id') id: string, @Res() res: Response) {
+  async duplicateDashboard(@Param('id') id: string, @Body('nuevoNombre') nuevoNombre:string, @Body('descripcion') descripcion:string, @Res() res: Response) {
     try {
-        const savedDashboard = await this.dashboardService.duplicateAndSaveDashboard(id);
+        const savedDashboard = await this.dashboardService.duplicateAndSaveDashboard(id, nuevoNombre, descripcion);
         return res.send(savedDashboard);
     } catch (error) {
         return res.status(400).send('Error al duplicar y guardar el dashboard.');
+    }
+  }
+
+
+
+  /**
+   * Deletes a widget from a dashboard
+   * @param name 
+   * @param frame 
+   * @param order 
+   * @param res 
+   * @returns 
+   */
+  @Delete('editor/:name/:frame/:order')
+  async deleteWidget(
+    @Param('name') name: string,
+    @Param('frame') frame: number,
+    @Param('order') order:number,
+    @Res() res: Response,
+  ) {
+    try {
+      await this.dashboardService.deleteWidget(name, frame, order);
+      return res.send('Widget eliminado con éxito.');
+    } catch (error) {
+      return res.status(400).send('Widget no encontrado');
+    }
+  }
+
+
+
+  /**
+   * Adds a widget to a dashboard
+   * @param name 
+   * @param frame 
+   * @param widgetData 
+   * @returns 
+   */
+  @Post('add/:name/:frame')
+  async addWidget(
+    @Param('name') name: string,
+    @Param('frame') frame: string,
+    @Body() widgetData: DashboardWidgetDTO,
+  ) {
+    try {
+      const updatedDashboard = await this.dashboardService.addWidget(name, frame, widgetData);
+      return { success: true, data: updatedDashboard };
+    } catch (error) {
+      return { success: false, error: error.message };
     }
   }
   

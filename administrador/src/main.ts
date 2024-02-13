@@ -44,6 +44,7 @@ async function bootstrap() {
       partials: {
         templateSelect: '/partials/templateSelect.hbs',
         scriptSelect: '/partials/scriptSelect.hbs',
+        NewScriptSelect: '/partials/NewScriptSelect.hbs',
         logoutBoton: '/partials/logoutBoton.hbs',
         modalWindowEliminarContenido:'/partials/modalWindowEliminarContenido.hbs',
         modalWindowCrearDash: '/partials/modalWindowCrearDash.hbs',

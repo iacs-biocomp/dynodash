@@ -14,17 +14,16 @@
                 <input type="text" class="form-control" id="{{@key}}" value="{{this}}">
 
                 <script>
-                    //Hace ineditable el campo id
                     var inputElement = document.getElementById("{{@key}}");
                     if ("{{@key}}" === "id") {
-                        inputElement.setAttribute("readonly", "readonly");
+                        inputElement.setAttribute("disabled", "disabled");
                         const papelera = document.getElementById("papelera");
                         papelera.remove();
-                    } else {
-                        inputElement.removeAttribute("readonly");
+                    }if("{{@key}}" === "indicador"){
+                        const papelera = document.getElementById("papelera");
+                        papelera.remove();
                     }
                 </script>
-
             {{/each}}
 
         </div>

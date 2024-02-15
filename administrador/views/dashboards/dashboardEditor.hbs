@@ -260,22 +260,21 @@
       url: url,
       type: 'GET',
       success: function(data) {
-        console.log("Prueba")
-        $("#w_frame").val(data.frame)
-        $("#w_order").val(data.order)
-        $("#w_frame_new").val(data.frame)
-        $("#w_order_new").val(data.order)
-        $("#w_type").val(data.type)
-        $('#widgetSelect').val(data.type)
-        $("#w_url").val(data.url)
-        $("#w_doc").val(data.doc)
-        $("#w_grant").val(data.grant)
-        $("#w_title").val(data.title)
-        $("#w_info").val(data.info)
-        $("#w_label").val(data.label)
-        $("#w_js").val(data.js)
-        $("#scriptSelect").val(data.js)
-        console.log(data)
+        console.log("Prueba");
+        $("#w_frame").val(data.frame);
+        $("#w_order").val(data.order);
+        $("#w_frame_new").val(data.frame);
+        $("#w_order_new").val(data.order);
+        $("#w_type").val(data.type);
+        $('#widgetSelect').val(data.type);
+        $("#w_url").val(data.url);
+        $("#w_doc").val(data.doc);
+        $("#w_grant").val(data.grant);
+        $("#w_title").val(data.title);
+        $("#w_info").val(data.info);
+        $("#w_label").val(data.label);
+        $("#scriptSelect").val(data.js);
+        console.log("Este es el widget: ",data);
       },
       error: function(error) {
         console.error('Error al mostrar el widget:', error);

@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Render, Res } from '@nestjs/common';
 import { Response } from 'express';
-//import { HttpExceptionFilterDB } from 'src/common/exceptionFilters/globalFilterExpress';
 import { Dashboard } from './dashboard.schema';
 import { DashboardsService } from './dashboard.service';
 import { TemplatesService } from '../templates//templates.service'
@@ -87,7 +86,7 @@ export class DashboardsController {
       console.log("Controller: Name", name, " frame ", frame, " order ", order);
       const widget = await this.dashboardService.getDashboardWidget(name,frame,order);
       console.log("Widget mostrado con exito");
-      return {widget: widget};
+      return res.status(200).send(widget);
     } catch (error) {
       return res.status(400).send('Widget no mostrado');
     }

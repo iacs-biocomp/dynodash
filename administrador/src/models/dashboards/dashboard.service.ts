@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-
-//import { Response } from 'express';
 import { Error, Model } from 'mongoose';
 import { Dashboard, DashboardType } from './dashboard.schema';
 import { DashboardWidgetDTO } from './dashboardWidgetDTO';
@@ -14,7 +12,6 @@ export class DashboardsService {
 
   /**
    * Esta funcion inserta un documento Dashboard en la coleccion Dashboards
-   *
    * @param dashboard
    * @returns
    */

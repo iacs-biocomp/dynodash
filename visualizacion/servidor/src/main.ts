@@ -7,6 +7,7 @@ import * as exphbs from 'express-handlebars';
 import * as hbs from 'hbs';
 import * as helpers from '../views/helpers/helpers';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import * as mongoose from 'mongoose';
 
 import * as bodyParser from 'body-parser';
 
@@ -46,6 +47,10 @@ async function bootstrap() {
       //helpers
     }),
   );*/
+
+  const db = mongoose.connection;
+  db.on('error', (error) => console.error('Error de conexión a MongoDB:', error));
+  db.once('open', () => console.log('Conexión exitosa a MongoDB'));
 
   const port = 8080;
 

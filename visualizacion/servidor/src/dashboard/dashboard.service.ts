@@ -38,9 +38,8 @@ export class DashboardService {
     this.logger.debug("Recuperando dashboard " + dashboardId)
     //Localiza el dashboard en la DB y se extrae el campo 'template'
     const { template, widgets } = await this.dashboardModel.findOne({
-      name: dashboardId,
+      id_dashboard: dashboardId,
     });
-
     //Se localiza el template en la DB y se devuelve el HTML decodificado
     const HTMLdecoded = await this.getTemplateContent(template);
     //this.logger.log(HTMLdecoded);
@@ -121,7 +120,7 @@ export class DashboardService {
    * @returns 
    */
   async getWidget(name: string): Promise<Widget> {
-    const widget = await this.widgetModel.findOne({ name: name });
+    const widget = await this.widgetModel.findOne({ type: name });
     return widget;
   }
 
@@ -132,7 +131,7 @@ export class DashboardService {
    * @returns 
    */
   async getTemplateContent(templateName: string): Promise<string> {
-    const { content } = await this.templateModel.findOne({ name: templateName });
+    const { content } = await this.templateModel.findOne({ code: templateName });
     const HTMLdecoded = Buffer.from(content, 'base64').toString('utf-8');
     return HTMLdecoded;
   }

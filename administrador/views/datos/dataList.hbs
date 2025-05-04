@@ -1,23 +1,29 @@
-<div class="row mt-5 justify-content-around">
+<div class="row mt-5 justify-content-center">
 
-    <div class="col-sm-6">
+    <div class="col-sm-8">
 
         <h1>Lista de datos</h1>
         <hr>
 
-        <a href="/data/add"><i class="fa fa-plus"></i> Añadir datos</a>
+        <a href="/datos/add" class="btn btn-success mb-3"><i class="fa fa-plus"></i> Añadir datos</a>
 
-        <table>
+        <table class="table table-bordered table-striped">
             <thead>
-                <th>code</th>
+                <tr>
+                    <th></th>
+                    <th>Código</th>
+                    <th>Indicador</th>
+                    <th>Acciones</th>
+                </tr>
             </thead>
             <tbody>
                 {{#each items}}
                     <tr>
                         {{#with this}}
-                        <td><a href="javascript: modalDelete('{{id}}')"><i class='fas fa-trash'></i></a></td>
+                        <td><a href="javascript: modalDelete('{{id}}')" class="text-danger"><i class='fas fa-trash'></i></a></td>
                         <td>{{id}}</td>
-                        <td><a href="/data/view/{{id}}">{{indicador}}</a></td>
+                        <td><a href="/datos/view/{{id}}" class="text-decoration-none">{{indicador}}</a></td>
+                        <td><button onclick="duplicarDatos('{{id}}')" class="btn btn-primary">Duplicar</button></td>
                         {{/with}}
                     </tr>
                 {{/each}}
@@ -29,21 +35,22 @@
     </div>
 </div>
 
-
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirm-modal">
-  <div class="modal-dialog modal-sm">
+<!-- Modal Confirmación -->
+<div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirm-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Confirmar</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="confirm-modal-label">Confirmar</h5>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" id="modal-btn-si">Si</button>
-        <button type="button" class="btn btn-primary" id="modal-btn-no">No</button>
+        <button type="button" class="btn btn-danger" id="modal-btn-si">Sí</button>
+        <button type="button" class="btn btn-secondary" id="modal-btn-no" data-bs-dismiss="modal">No</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <script>
 var modalConfirm = function(callback){

@@ -1,28 +1,37 @@
-<div class="row mt-5 justify-content-around">
+<div class="row mt-5 justify-content-center">
   
-    <div class="col-sm-6">
-        <h1>Lista de páginas y paneles</h1>
-        <hr>
+  <div class="col-sm-8">
+    <h1>Lista de páginas y paneles</h1>
+    <hr>
 
-    <table>
-        <thead>
-            <th>nombre</th>
-        </thead>
-        <tbody>
-            {{#each items}}
-                <tr>
-                    {{#with this}}
-                    <td><a href="/dashboard/editor/{{name}}">{{name}}</a></td>
-                    <td>{{description}}</td>
-                    <td><button onclick="nuevoNombreDash('{{name}}')" class="btn btn-primary">Duplicar</button></td>
-                    {{/with}}
-                </tr>
-            {{/each}}
-        </tbody>
+    <table class="table table-bordered table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Identificador</th>
+          <th>Título</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each items}}
+          <tr>
+            {{#with this}}
+              <td><a href="/dashboard/editor/{{id_dashboard}}" class="text-decoration-none">{{id_dashboard}}</a></td>
+              <td>{{code}}</td>
+              <td>
+                <button onclick="nuevoNombreDash('{{id_dashboard}}')" class="btn btn-primary btn-sm">
+                  Duplicar
+                </button>
+              </td>
+            {{/with}}
+          </tr>
+        {{/each}}
+      </tbody>
     </table>
-
-    </div>
+    
+  </div>
 </div>
+
 
 <script>
 

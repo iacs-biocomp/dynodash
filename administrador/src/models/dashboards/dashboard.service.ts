@@ -17,8 +17,9 @@ export class DashboardsService {
    */
   async insertDashboard(dashboardInstance: Dashboard): Promise<Dashboard> {
     //Comprobar que el code no existe
+    console.log("dasboard", dashboardInstance)
     const existingDashboard = await this.dashboardModel
-      .findOne({ code: dashboardInstance.name })
+      .findOne({ id_dashboard: dashboardInstance.id_dashboard })
       .exec();
     if (existingDashboard) {
       throw new Error('Ya existe un dashboard con ese código.');
@@ -33,8 +34,9 @@ export class DashboardsService {
    * @returns
    */
   async getDashboard(id: string): Promise<Dashboard> {
+    console.log("id", id)
     const dashboardInstance = await this.dashboardModel
-      .findOne({ name: id })
+      .findOne({ id_dashboard: id })
       .lean();
     return dashboardInstance;
   }
@@ -46,7 +48,7 @@ export class DashboardsService {
    */
   async updateDashboard(dashboardInstance: Dashboard) {
     return await this.dashboardModel.findOneAndUpdate(
-      { name: dashboardInstance.name },
+      { id_dashboard: dashboardInstance.id_dashboard },
       { $set: dashboardInstance },
       { new: true}
     );
@@ -62,7 +64,7 @@ export class DashboardsService {
    */
   async updateWidget(dashboardId: string, widget: DashboardWidgetDTO) {
     //console.log("Dashboard buscado: ", dashboardId)
-    const instance = await this.dashboardModel.findOne({ name: dashboardId });
+    const instance = await this.dashboardModel.findOne({ id_dashboard: dashboardId });
     //console.log("Dashboard encontrado: ", instance)
     const f = widget.frame;
     const o = widget.order;
@@ -77,7 +79,7 @@ export class DashboardsService {
     );
     //console.log("dashboard transformado: ", instance)
     return await this.dashboardModel.updateOne(
-      { name: dashboardId },
+      { id_dashboard: dashboardId },
       { $set: instance },
     );
   }
@@ -88,7 +90,8 @@ export class DashboardsService {
    * @returns
    */
   async deleteDashboard(id: string) {
-    return await this.dashboardModel.deleteOne({ code: id });
+    console.log("delete", id)
+    return await this.dashboardModel.deleteOne({ id_dashboard: id });
   }
 
   /**
@@ -110,7 +113,7 @@ export class DashboardsService {
    */
   async getDashboardWidget(id:string, frame: number, order:number){
     try {
-      const dashboard = await this.dashboardModel.findOne({ name:id });
+      const dashboard = await this.dashboardModel.findOne({ id_dashboard :id });
       console.log("Service: Id: ",id , "Frame: ", frame, " order: ", order);
       
       if (!dashboard) {
@@ -141,13 +144,13 @@ export class DashboardsService {
   async duplicateAndSaveDashboard(id: string, nuevoNombre:string, descripcion:string): Promise<Dashboard> {
     try {
       const originalDashboard = await this.dashboardModel
-        .findOne({ name: id })
+        .findOne({ id_dashboard: id })
         .exec();
       if (!originalDashboard) {
         throw new Error('Dashboard no encontrado.');
       }
 
-      const existingDashboard = await this.dashboardModel.findOne({ name: nuevoNombre }).exec();
+      const existingDashboard = await this.dashboardModel.findOne({ id_dashboard: nuevoNombre }).exec();
       if (existingDashboard) {
         throw new Error('Ya existe un dashboard con ese nombre.');
       }
@@ -156,8 +159,8 @@ export class DashboardsService {
         originalDashboard.toObject(),
       );
 
-      duplicatedDashboard.name = nuevoNombre;
-      duplicatedDashboard.description = descripcion;
+      duplicatedDashboard.id_dashboard = nuevoNombre;
+      duplicatedDashboard.code = descripcion;
       duplicatedDashboard._id = null;
       const savedDashboard = await duplicatedDashboard.save();
 
@@ -177,7 +180,7 @@ export class DashboardsService {
   async deleteWidget(id: string, frame: number, order:number) {
     try {
       await this.dashboardModel.updateOne(
-        { name: id },
+        { id_dashboard: id },
         { $pull: { widgets: { frame, order } } },
       );
     } catch (error) {
@@ -195,7 +198,7 @@ export class DashboardsService {
    */
   async addWidget(dashboardName: string, frame: string, widgetData: any): Promise<Dashboard> {
     try {
-      const dashboard = await this.dashboardModel.findOne({ name: dashboardName });
+      const dashboard = await this.dashboardModel.findOne({ id_dashboard: dashboardName });
   
       if (!dashboard) {
         throw new Error('Dashboard no encontrado');

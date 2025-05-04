@@ -6,55 +6,75 @@
 
 <h1>Editor de página / panel</h1>
 <form>
-  <div class="form-group">
-    <label for="name">Nombre</label>
-    <input type="text" class="form-control" id="name" placeholder="Nombre" value="{{dashboard.name}}">
-    <label for="description">Descripción</label>
-    <input type="text" class="form-control" id="description" placeholder="Descripcion" value="{{dashboard.description}}">
-    <label for="grant">Permiso</label>
-    <input type="text" class="form-control" id="grant" placeholder="Permiso" value="{{dashboard.grant}}">
-    <label for="createdBy">Creado por</label>
-    <input type="text" class="form-control" id="createdBy" placeholder="Creado por..." value="{{dashboard.created_by}}">
-    <label for="creationDate">Fecha creación</label>
-    <input type="text" class="form-control" id="creationDate" placeholder="Fecha creación" value="{{dashboard.creation_date}}">
-    <label for="updateDate">Fecha actualización</label>
-    <input type="text" class="form-control" id="updateDate" placeholder="Fecha última actualización" value="{{dashboard.creation_date}}">
+  <div class="mb-3">
+    <label for="name" class="form-label">Nombre</label>
+    <input type="text" class="form-control mb-3" id="name" placeholder="Nombre" value="{{dashboard.id_dashboard}}">
+
+    <label for="description" class="form-label">Descripción</label>
+    <input type="text" class="form-control mb-3" id="description" placeholder="Descripcion" value="{{dashboard.code}}">
+
+    <label for="grant" class="form-label">Permiso</label>
+    <input type="text" class="form-control mb-3" id="grant" placeholder="Permiso" value="{{dashboard.grant}}">
+
+    <label for="createdBy" class="form-label">Creado por</label>
+    <input type="text" class="form-control mb-3" id="createdBy" placeholder="Creado por..." value="{{dashboard.created_by}}">
+
+    <label for="creationDate" class="form-label">Fecha creación</label>
+    <input type="text" class="form-control mb-3" id="creationDate" placeholder="Fecha creación" value="{{dashboard.creation_date}}">
+
+    <label for="updateDate" class="form-label">Fecha actualización</label>
+    <input type="text" class="form-control mb-3" id="updateDate" placeholder="Fecha última actualización" value="{{dashboard.creation_date}}">
 
     {{> templateSelect }}
 
-    <div>
-      <h1>Componentes</h1>
+    <div class="mt-4">
+      <h2>Componentes</h2>
       <hr>
 
-      <table>
-          <thead>
-              <th>marco</th>
-              <th>orden</th>
-              <th>tipo</th>
-              <th>título</th>
-          </thead>
-          <tbody>
-              {{#each dashboard.widgets}}
-                  <tr>
-                      {{#with this}}
-                      <td>{{frame}}</td>
-                      <td>{{order}}</td>
-                      <td>{{type}}</td>
-                      <td>{{title}}</td>
-                      <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#widgetEdit" onclick="getData({{frame}}, {{order}})">Editar</button></td>
-                      <td><a href="#" onclick="borrarWidget({{frame}}, {{order}})"><i class='fas fa-trash'></i></a></td>
-                      {{/with}}
-                  </tr>
-              {{/each}}
-          </tbody>
+      <table class="table table-bordered align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Marco</th>
+            <th>Orden</th>
+            <th>Tipo</th>
+            <th>Título</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each dashboard.widgets}}
+            <tr>
+              {{#with this}}
+              <td>{{frame}}</td>
+              <td>{{order}}</td>
+              <td>{{type}}</td>
+              <td>{{title}}</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#widgetEdit" onclick="getData({{frame}}, {{order}})">
+                  Editar
+                </button>
+              </td>
+              <td>
+                <a href="#" onclick="borrarWidget({{frame}}, {{order}})">
+                  <i class="fas fa-trash text-danger"></i>
+                </a>
+              </td>
+              {{/with}}
+            </tr>
+          {{/each}}
+        </tbody>
       </table>
-      <a href="#" data-bs-toggle="modal" data-bs-target="#añadirNuevoWidget" ><i class="fa fa-plus"></i> Añadir widget</a>
+
+      <a href="#" class="btn btn-outline-secondary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#añadirNuevoWidget">
+        <i class="fa fa-plus"></i> Añadir widget
+      </a>
     </div>
 
-	  <button id="saveButton" type="button" class="btn btn-primary">Guardar dashboard</button>
-
+    <button id="saveButton" type="button" class="btn btn-success mt-4">Guardar dashboard</button>
   </div>
 </form>
+
 
 </div>
 

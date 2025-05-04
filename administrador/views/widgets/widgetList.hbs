@@ -1,26 +1,31 @@
-    <div class="row mt-5 justify-content-around">
+<div class="row mt-5 justify-content-center">
   
-        <div class="col-sm-6">
-            <h1>Lista de widgets</h1>
-            <hr>
+    <div class="col-sm-8">
+        <h1>Lista de widgets</h1>
+        <hr>
 
-        <table>
+        <table class="table table-bordered table-striped">
             <thead>
-                <th>nombre</th>
-                <th>Descripción</th>
-                <th>Plantilla</th>
-                <th>Script</th>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Plantilla</th>
+                    <th>Script</th>
+                </tr>
             </thead>
             <tbody>
                 {{#each items}}
                     <tr>
                         {{#with this}}
-                        <td><a href="/widget/editor/{{name}}">{{name}}</a></td><td>{{description}}</td><td>{{template}}</td><td>{{js}}</td>
+                        <td><a href="/widget/editor/{{type}}" class="text-decoration-none">{{type}}</a></td>
+                        <td>{{descripcion}}</td>
+                        <td>{{template}}</td>
+                        <td>{{js}}</td>
                         {{/with}}
                     </tr>
                 {{/each}}
             </tbody>
         </table>
 
-        </div>
     </div>
+</div>

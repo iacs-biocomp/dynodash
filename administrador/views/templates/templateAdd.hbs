@@ -1,8 +1,8 @@
 <h2>
     <form>
 		<div class="form-group">
-			<label for="name">Nombre</label>
-			<input type="text" class="form-control" id="name" placeholder="Nombre">
+			<label for="code">Nombre</label>
+			<input type="text" class="form-control" id="code" placeholder="Nombre">
 		</div>
 	</form>
 </h2>
@@ -38,12 +38,12 @@
 			language: 'html'
 		});
 		var template = {
-			name: '',
+			code: '',
 			description: '',
 			content: '',
 		};
 		$("#saveButton").click(function () {
-			template.name = $('#name').val();
+			template.code = $('#code').val();
 			template.description = $('#description').val();
 			template.content = editor.getValue();
 

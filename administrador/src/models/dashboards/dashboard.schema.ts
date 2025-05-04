@@ -14,10 +14,10 @@ export type DashboardType = HydratedDocument<Dashboard>;
 @Schema()
 export class Dashboard {
   @Prop()
-  name: string;
+  id_dashboard: string;
 
   @Prop()
-  description: string;
+  code: string;
 
   @Prop()
   template: string;

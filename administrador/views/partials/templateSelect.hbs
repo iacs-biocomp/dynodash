@@ -2,13 +2,13 @@
       <div class="input-group-prepend">
         <label class="input-group-text" for="templateSelect">Plantilla</label>
       </div>
-      <select class="custom-select" id="templateSelect">
-        <option selected>Choose...</option>
+      <select  class="me-2"  id="templateSelect">
+        <option selected>Elegir...</option>
         {{#each templates}}
-        <option value="{{name}}">{{description}}</option>
+        <option value="{{code}}">{{code}}</option>
         {{/each}}
       </select>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#templateView" onclick="getTemplate()">Ver plantilla</button>
+      <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#templateView" onclick="getTemplate()">Ver plantilla</button>
       <button type="button" class="btn btn-primary" onclick="editTemplate()">Editar plantilla</button>
     </div>
 

@@ -13,10 +13,10 @@ import { DatosModule } from './models/datos/datos.module';
 import { DataModule } from './models/data/data.module';
 import { MongoDbDriverModule } from 'nest-mongodb-driver';
 
-// const db_hostname = 'localhost';
-const db_hostname = '1.44.4.82';
 const db_port = '27017';
-const db_database = 'dynodash';
+const db_user = "uavlgiy7kswrhkaidzmv";
+const db_database = 'bnbgibg44u4ayfh';
+const db_password = "GW2p5KpliWY5kz3R03DX";
 
 @Module({
   imports: [
@@ -29,11 +29,11 @@ const db_database = 'dynodash';
     DatosModule,
     DataModule,
     MongooseModule.forRoot(
-      `mongodb://${db_hostname}:${db_port}/${db_database}`,
+      `mongodb://${db_user}:${db_password}@n1-c2-mongodb-clevercloud-customers.services.clever-cloud.com:${db_port},n2-c2-mongodb-clevercloud-customers.services.clever-cloud.com:${db_port}/${db_database}?replicaSet=rs0`,
     ),
     MongooseModule.forFeature([{ name: 'Image', schema: ImageSchema }]),
     MongoDbDriverModule.forRoot({
-      url: `mongodb://${db_hostname}:${db_port}/${db_database}`,
+      url: `mongodb://${db_user}:${db_password}@n1-c2-mongodb-clevercloud-customers.services.clever-cloud.com:${db_port},n2-c2-mongodb-clevercloud-customers.services.clever-cloud.com:${db_port}/${db_database}?replicaSet=rs0`,
     }),
     DataModule,
   ],

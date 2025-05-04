@@ -102,7 +102,7 @@ export class TemplatesController {
     @Body() template: CrearTemplateDTO,
     @Res() res: Response,
   ) {
-    const { name, content } = template;
+    const { code, content } = template;
     if (template == undefined) {
       //console.log('es nulo')
       throw new HttpException(
@@ -111,7 +111,7 @@ export class TemplatesController {
       );
     }
 
-    if (name === '') {
+    if (code === '') {
       //console.log('no hay code')
       throw new HttpException(
         'Debe asignarle un nombre al dashboard.',

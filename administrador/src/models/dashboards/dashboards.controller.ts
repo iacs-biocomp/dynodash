@@ -123,7 +123,7 @@ export class DashboardsController {
       throw new HttpException('No se han enviado datos para guardar.', HttpStatus.NOT_IMPLEMENTED);
     }
 
-    if(insertarDashboard.name==="") {
+    if(insertarDashboard.id_dashboard==="") {
       //console.log('no hay code')
       throw new HttpException('Debe asignarle un nombre al dashboard.', HttpStatus.NOT_IMPLEMENTED);
     }

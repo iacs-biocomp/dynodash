@@ -24,15 +24,15 @@ export class TemplatesService {
     templateInstance: CrearTemplateDTO
   ): Promise<Template> {
 
-    const { name, content, description } = templateInstance;
+    const { code, content, description } = templateInstance;
 
     //Comprobar que el code no existe
-    const existingTemplate = await this.templateModel.findOne({ name }).exec();
+    const existingTemplate = await this.templateModel.findOne({ code }).exec();
     if (existingTemplate) {
       throw new Error('Ya existe un template con ese código.');
     }
     const contentBase64 = Buffer.from(content).toString('base64');
-    const templateToinsert = new this.templateModel({ name, content : contentBase64, description });
+    const templateToinsert = new this.templateModel({ code, content : contentBase64, description });
     return templateToinsert.save();
   }
 
@@ -43,9 +43,9 @@ export class TemplatesService {
    * @returns 
    */
   async getTemplate(id: string): Promise<Template> {
-    const { name, content, description } = await this.templateModel.findOne({ name: id }).exec();
+    const { code, content, description } = await this.templateModel.findOne({ code: id }).exec();
     const html = Buffer.from(content, 'base64').toString('utf-8');
-    return { name, content: html, description };
+    return { code, content: html, description };
   }
 
   
@@ -57,7 +57,7 @@ export class TemplatesService {
    */
   async updateTemplate(template: CrearTemplateDTO) {
     const contentBase64 = Buffer.from(template.content).toString('base64');
-    return await this.templateModel.updateOne({name : template.name}, {$set : {content: contentBase64, 
+    return await this.templateModel.updateOne({name : template.code}, {$set : {content: contentBase64, 
                                                                                description: template.description}});
   }
 
@@ -68,7 +68,7 @@ export class TemplatesService {
    * @returns 
    */
   async deleteTemplate(id: string) {
-    return await this.templateModel.deleteOne({name : id})
+    return await this.templateModel.deleteOne({code : id})
   }
 
   /**

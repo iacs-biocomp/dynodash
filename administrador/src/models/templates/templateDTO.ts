@@ -3,7 +3,7 @@
  */
 
 export class CrearTemplateDTO {
-  name: string;
+  code: string;
   content: string;
   description: string;
 }

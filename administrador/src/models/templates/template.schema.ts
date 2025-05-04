@@ -14,7 +14,7 @@ export type TemplateType = HydratedDocument<Template>;
 @Schema()
 export class Template {
   @Prop()
-  name: string;
+  code: string;
 
   @Prop()
   content: string;

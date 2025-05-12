@@ -90,9 +90,11 @@ export class WidgetsController {
   @Render('widgets/widgetEditor.hbs')
   async editor(@Param('id') id: string) {
     try {
+      console.log("widgetid", id)
         const item = await this.widgetService.getWidget(id);
         const templateList = await this.templateService.getTemplateList();
         const scriptsList = await this.scriptsService.getScriptList();
+        console.log(item)
         return { title: 'Editor', widget: item, templates: templateList, scripts: scriptsList };
       } catch (Error) {
         console.log(Error);
@@ -112,13 +114,13 @@ export class WidgetsController {
   //@UseFilters(new HttpExceptionFilterDB)
   async insertarWidget(@Body() insertarWidget: Widget, @Res() res: Response) {
 
-    const { name, template} = insertarWidget
+    const { type, template} = insertarWidget
     if (insertarWidget == undefined) {
       //console.log('es nulo')
       throw new HttpException('No se han enviado datos para guardar.', HttpStatus.NOT_IMPLEMENTED);
     }
 
-    if(name==="") {
+    if(type==="") {
       //console.log('no hay code')
       throw new HttpException('Debe asignarle un nombre al widget.', HttpStatus.NOT_IMPLEMENTED);
     }

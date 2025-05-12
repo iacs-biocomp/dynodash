@@ -1,27 +1,59 @@
-<div>
-	<a href="/widget/list">Listado de widgets</a>
+<!-- Link back -->
+<div class="my-3">
+  <a href="/widget/list" class="btn btn-outline-secondary">← Listado de widgets</a>
 </div>
 
-<div class="container">
+<div class="container mt-4">
+  <h1 class="mb-4">Editor de widgets</h1>
 
-<h1>Editor de widgets</h1>
-<form>
-  <div class="form-group">
-    <label for="name">Nombre</label>
-    <input type="text" class="form-control" id="name" placeholder="Nombre" value="{{widget.name}}">
-    <label for="description">Descripción</label>
-    <input type="text" class="form-control" id="description" placeholder="Descripcion" value="{{widget.description}}">
+  <form>
+    <div class="mb-3">
+      <label for="name" class="form-label">Nombre</label>
+      <input type="text" class="form-control" id="name" placeholder="Nombre" value="{{widget.type}}">
+    </div>
 
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción</label>
+      <input type="text" class="form-control" id="description" placeholder="Descripcion" value="{{widget.description}}">
+    </div>
+
+    <!-- Partial: templateSelect -->
     {{> templateSelect }}
 
+    <!-- Partial: scriptSelect -->
     {{> scriptSelect }}
 
-	<button id="saveButton" type="button" class="btn btn-primary">Guardar</button>
-
-  </div>
-</form>
-
+    <div class="mt-4">
+      <button id="saveButton" type="button" class="btn btn-success">💾 Guardar</button>
+    </div>
+  </form>
 </div>
+
+<!-- Optional Custom Styles -->
+<style>
+  select#templateSelect, select#scriptSelect {
+    min-width: 200px;
+  }
+
+  .input-group-text {
+    min-width: 90px;
+  }
+
+  .modal-body {
+    white-space: pre-wrap;
+    font-family: monospace;
+    background-color: #f8f9fa;
+  }
+
+  #templateViewHeader {
+    font-weight: 600;
+  }
+
+  .input-group {
+    margin-bottom: 1rem;
+  }
+</style>
+
 
 
 

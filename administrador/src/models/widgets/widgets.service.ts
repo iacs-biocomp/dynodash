@@ -22,7 +22,7 @@ export class WidgetsService {
   async insertWidget(widgetInstance: Widget): Promise<Widget> {
 
     //Comprobar que el code no existe
-    const existingWidget = await this.widgetModel.findOne({ name: widgetInstance.name }).exec();
+    const existingWidget = await this.widgetModel.findOne({ type: widgetInstance.type }).exec();
     if (existingWidget) {
       throw new Error('Ya existe un widget con ese código.');
     }
@@ -37,7 +37,7 @@ export class WidgetsService {
    * @returns 
    */
   async getWidget(id: string): Promise<Widget> {
-    var widgetInstance = await this.widgetModel.findOne({ name: id }).lean();
+    var widgetInstance = await this.widgetModel.findOne({ type: id }).lean();
     return widgetInstance;
   }
 
@@ -50,7 +50,7 @@ export class WidgetsService {
    */
   async updateWidget(widgetInstance: Widget) {
     console.log(widgetInstance);
-    return await this.widgetModel.replaceOne({name : widgetInstance.name}, widgetInstance);
+    return await this.widgetModel.replaceOne({type : widgetInstance.type}, widgetInstance);
   }
 
 
@@ -60,7 +60,7 @@ export class WidgetsService {
    * @returns 
    */
   async deleteWidget(id: string) {
-    return await this.widgetModel.deleteOne({name : id})
+    return await this.widgetModel.deleteOne({type : id})
   }
 
   

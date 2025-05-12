@@ -14,7 +14,7 @@ export type WidgetType = HydratedDocument<Widget>;
 @Schema()
 export class Widget {
   @Prop()
-  name: string;
+  type: string;
 
   @Prop()
   template: string;

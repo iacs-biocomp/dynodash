@@ -2,13 +2,13 @@
       <div class="input-group-prepend">
         <label class="input-group-text" for="scriptSelect">Script</label>
       </div>
-      <select class="custom-select" id="scriptSelect">
+      <select class="custom-select me-2" id="scriptSelect">
         <option selected value="">Sin script...</option>
         {{#each scripts}}
         <option value="{{name}}">{{description}}</option>
         {{/each}}
       </select>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scriptView" onclick="getScript()">Ver script</button>
+      <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#scriptView" onclick="getScript()">Ver script</button>
       <button type="button" class="btn btn-primary" onclick="editScript()">Editar script</button>
     </div>
 

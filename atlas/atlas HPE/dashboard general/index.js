@@ -17,7 +17,7 @@ function getDataIndicadores() {
   return $.ajax({
     dataType: "json",
     type: "GET",
-    url: "http://localhost:8080/datos/indicadores/452"
+    url: "http://localhost:8080/datos/indicadores/888"
   })
 }
 
@@ -36,16 +36,19 @@ myViewModel.globalIndicador.subscribe(function () {
     let escala = myViewModel.globalAggLevel();
     let indicador = myViewModel.globalIndicador();
     myViewModel.setVariabilidad('General')
-    
+
     Promise.all([getDataGeneral(indicador), getLeyendaGeneral(indicador)]).then(values => {
 
       const datos = values[0].filter(dato => dato.distintivo == 'General')[0]
       let valores = [datos, values[1]]
-
+      console.log("datos", datos)
+      //console.log("legend", values[1])
       const datosParse = parseador(escala, datos.data)
+      console.log("datos parse", datosParse)
       myViewModel.setData('General', datosParse)
 
       getMapaGeneral(valores)
+      paintChart(valores)
     })
   };
 });
@@ -57,12 +60,13 @@ myViewModel.globalIndicador.subscribe(function () {
   if (myViewModel.globalAggLevel() && myViewModel.globalIndicador()) {
 
     let indicador = myViewModel.globalIndicador();
-    
+
     Promise.all([getLeyendaGeneral(indicador)]).then(values => {
 
       let valores = values[0]
 
-      paintLeyendaGeneral(valores) 
+      paintLeyendaGeneral(valores)
+
     })
   };
 });
@@ -85,8 +89,8 @@ function getDataGeneral(indicador) {
     type: 'GET',
     url: "http://localhost:8080/datos/data/" + indicador,
   }
-  ).then(function(data) {
-      return data
+  ).then(function (data) {
+    return data
   });
 }
 
@@ -94,7 +98,7 @@ function getDataGeneral(indicador) {
 //JavaScript perteneciente al widget de mapa/gráfico
 const getMapaGeneral = function (datos) {
   const { id, data, nivel } = datos[0];
-  const { customLabels, customBreaks} = datos[1];
+  const { customLabels, customBreaks } = datos[1];
 
   let mapa = mapSpain('#mapGeneral');
 
@@ -120,20 +124,48 @@ const paintLeyendaGeneral = function (datos) {
     .paint();
 }
 
+const paintChart = function (datos) {
+  //console.log("datos chart", datos)
+  const { id, data, anno_final, anno_inicial, nivel } = datos[0];
+  console.log("datos chart", data)
+
+  //Sirve para sustituir el campo "values" por "data" para que se puedan pintar las líneas del gráfico
+  let dataUAx = data.map((item) => {
+    if (item.values) {
+      item.data = item.values; // Copia el array "values" a "data"
+      delete item.values;      // Elimina el campo "values"
+      return item
+    }
+    return item
+  })
+  
+  let chartAux = chart()
+
+  chartAux
+    .addSeries(data)
+    .addTitle("Gráfico Ejemple")
+    .paint();
+}
+
 function parseador(escala, datos) {
-  //console.log('datos inicio',datos)
+  console.log('datos inicio', datos)
   //console.log(escala)
   const arrayDatos = []
-  if(escala == 'as') {
+  if (escala == 'as') {
     datos.forEach(element => {
-      arrayDatos.push({codigo: element.code_as, nombre: element.snombre, value: element.value})
+      let name = element.snombre ? element.snombre : element.name
+      let code = +element.code_as
+      //Sirve para evitar { code_as: "Valor P50", name: "Valor P50", value: 0, … }
+      if (!isNaN(code)) {
+        arrayDatos.push({ codigo: code, nombre: name, value: element.value })
+      }
     });
     return arrayDatos
   }
-  
-  if(escala == 'zbs') {
+
+  if (escala == 'zbs') {
     datos.forEach(element => {
-      arrayDatos.push({codigo: element.code_zbs, nombre: element.znombre, value: element.value})
+      arrayDatos.push({ codigo: +element.code_zbs, nombre: element.znombre, value: element.value })
     });
     return arrayDatos
   }

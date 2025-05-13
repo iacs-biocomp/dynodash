@@ -80,6 +80,7 @@ let myViewModel = new function () {
 
     let setData = function (variabilidad, data) {
         if (variabilidad == 'General') {
+            console.log("agrega datos")
             datos_object.datos_G = [];
             datos_object.datos_G.push(...data)
             datos(data)
@@ -422,6 +423,9 @@ let myViewModel = new function () {
 
     function annadirValueSectores() {
         if (variabilidad_object.general == 'General') {
+            console.log("annadirValueSectores")
+            console.log("1", areas_sanitarias_object.general().length)
+            console.log("2", datos_object.datos_G.length)
             if (globalAggLevel() === "as") {
                 if ((areas_sanitarias_object.general().length == datos_object.datos_G.length) && areas_sanitarias_object.general().length > 0) {
 
@@ -430,7 +434,7 @@ let myViewModel = new function () {
                         item.codigo = +area.codigo
                         item.nombre = area.nombre
                     })
-
+                    console.log("annadirValueSectores")
                     areas_sanitarias_object.general.pushAll(datos_object.datos_G)
                 }
             }
@@ -608,9 +612,12 @@ let myViewModel = new function () {
 
     let getAreasZonasGeneral = ko.computed(function () {
 
+        //console.log("lenght 1 general", areas_sanitarias_object.general().length)
+
         if ((areas_sanitarias_object.general().length == datos_object.datos_G.length) &&
             areas_sanitarias_object.general().length > 0 &&
             globalAggLevel() == 'as') {
+                console.log("entra getAreasZonasGeneral as")
 
             return areas_sanitarias_object.general
         }

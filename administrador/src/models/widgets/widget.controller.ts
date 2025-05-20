@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res, Render, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res, Render, Session } from '@nestjs/common';
 import { Response } from 'express';
 import { WidgetsService } from './widgets.service';
 import { Widget } from './widget.schema'
 import { TemplatesService } from '../templates/templates.service';
 import { ScriptsService } from '../scripts/scripts.service';
-
+import * as secureSession from '@fastify/secure-session';
 
 /**
  * 
@@ -33,12 +33,13 @@ export class WidgetsController {
    */
   @Get('list')
   @Render('widgets/widgetList.hbs')
-  async widgetList() {
+  async widgetList(@Session() session: secureSession.Session) {
     console.log('En widgetList');
     try {
       const list = await this.widgetService.getWidgetList();
       return { title: 'List of widgets',
-               items: list
+               items: list,
+               username: session.user
             };     
     } catch (Error) {
       console.log(Error);

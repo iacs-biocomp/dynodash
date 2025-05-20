@@ -1,0 +1,16 @@
+<!-- Barra superior -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home">
+      <i class="fas fa-home"></i> Home
+    </a>
+    <div class="d-flex align-items-center ms-auto">
+      <span class="me-3"><strong>{{username}}</strong></span>
+      <form action="/logout" method="post" class="mb-0">
+        <button type="submit" class="btn btn-outline-danger">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </form>
+    </div>
+  </div>
+</nav>

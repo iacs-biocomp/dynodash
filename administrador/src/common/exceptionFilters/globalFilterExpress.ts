@@ -22,25 +22,25 @@ export class HttpExceptionFilter implements ExceptionFilter {
     //400 Bad Request: Server didn't understand the URL you gave it.
     if (status == HttpStatus.BAD_REQUEST) {
       console.log(join('400 Bad Request'));
-      response.redirect('/error400');
+      response.status(status).redirect('/error400');
     }
 
     //401 Unauthorized: Must be authenticated
     if (status === HttpStatus.UNAUTHORIZED) {
       console.log(join('401 Unauthorized'));
-      response.redirect('/error401');
+      response.status(status).redirect('/error401');
     }
 
     //403 Forbidden: Server refuses to give you a file, authentication won't help
     if (status == 403) {
       console.log(join('403 Forbidden'));
-      response.redirect('/error403');
+      response.status(status).redirect('/error403');
     }
 
     //404 Not Found: A file doesn't exist at that address
     if (status == 404) {
       console.log(join('404 Not Found'));
-      response.redirect('/error404');
+      response.status(status).redirect('/error404');
     }
     /*return response.status(status).json({
       filter: 'HttpExceptionFilter',

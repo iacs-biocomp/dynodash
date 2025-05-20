@@ -24,20 +24,66 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   @Get()
-  @Render('main.hbs')
-  root(@Session() session: secureSession.Session, @Res() response) {
-    return { title: 'Login'};
+  @Render('login_form.hbs')
+  getLoginForm() {
+    return { title: 'Login' };
   }
 
- @Get('second')
-  second(@Session() session: secureSession.Session, @Res() response) {
-    console.log('Second');
-    return response.second('main.hbs',{ title: 'Segunda'});
+  /*@Get('second')
+   second(@Session() session: secureSession.Session, @Res() response) {
+     console.log('Second');
+     return response.second('main.hbs',{ title: 'Segunda'});
+   }*/
+
+  @UseGuards(LocalAuthGuard, DeletedSession)
+  @UseGuards(DeletedSession)
+  @UseFilters(new HttpExceptionFilter())
+  @Post('auth/login')
+  async login(@Req() req, @Res() res: Response, @Session() session) {
+    session.visits = (session.visits || 0) + 1;
+    session.authenticated = true;
+    const username = req.body.username;
+    session.user = username;
+    return res.status(302).redirect('/home');
   }
 
+
+  @Get('home')
+  @Render("main.hbs")
+  getHome(@Session() session: secureSession.Session, @Res() res: Response) {
+    console.log("access home")
+    if (!session.authenticated) {
+      return res.status(400).redirect('/error400.hbs');
+    }
+    return { title: 'Home', username: session.user };
+  }
+
+
+  /*@UseGuards(AthenticatedSession)
+  @UseGuards(DeletedSession)
+  @UseFilters(new HttpExceptionFilter())
+  @Get('profile')
+  @Render('layouts/profile.hbs')
+  async getProfile(@Req() req) {
+    return { nombre: req.session.user, title: req.session.user };
+  }*/
+
+
+  @Post('/logout')
+  async logout(
+    @Session() session: secureSession.Session,
+    @Res() resp: Response,
+    @Req() req: Request,
+  ) {
+    session.delete();
+    console.log('En logout');
+    console.log(session);
+    resp.status(302).redirect('/');
+    return resp.send({ session: session.deleted });
+  }
 
   @Get('error400')
   @Render('error400.hbs')
@@ -61,58 +107,6 @@ export class AppController {
   @Render('error404.hbs')
   error404() {
     return { title: 'Error 404' };
-  }
-
-
-
-
-  @UseGuards(LocalAuthGuard)
-  @UseGuards(DeletedSession)
-  @UseFilters(new HttpExceptionFilter())
-  @Post('auth/creador-dashboards')
-  @Render('layouts/creador-dashboards.hbs')
-  async login(
-    @Req() req,
-    @Session() session: secureSession.Session,
-    @Res() resp: Response,
-  ) {
-    const visits = session.get('visits');
-    session.set('visits', visits ? visits + 1 : 1);
-    session.authenticated = true;
-    const username = req.body.username;
-    session.user = username;
-
-    console.log('En login');
-    console.log(req.body);
-
-    return { title: username };
-  }
-
-
-
-  @UseGuards(AthenticatedSession)
-  @UseGuards(DeletedSession)
-  @UseFilters(new HttpExceptionFilter())
-  @Get('profile')
-  @Render('layouts/profile.hbs')
-  async getProfile(@Req() req) {
-    return { nombre: req.session.user, title: req.session.user };
-  }
-
-
-
-
-  @Post('logout')
-  async logout(
-    @Session() session: secureSession.Session,
-    @Res() resp,
-    @Req() req,
-  ) {
-    session.delete();
-    console.log('En logout');
-    console.log(session);
-    resp.status(302).redirect('/');
-    return resp.send({ session: session.deleted });
   }
 }
 

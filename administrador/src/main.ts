@@ -45,7 +45,7 @@ async function bootstrap() {
         templateSelect: '/partials/templateSelect.hbs',
         scriptSelect: '/partials/scriptSelect.hbs',
         NewScriptSelect: '/partials/NewScriptSelect.hbs',
-        logoutBoton: '/partials/logoutBoton.hbs',
+        header: '/partials/header.hbs',
         modalWindowEliminarContenido:'/partials/modalWindowEliminarContenido.hbs',
         modalWindowCrearDash: '/partials/modalWindowCrearDash.hbs',
         modalWindowActualizarDash: '/partials/modalWindowActualizarDash.hbs',
@@ -57,7 +57,7 @@ async function bootstrap() {
 
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  app.register(require('@fastify/view'), {
+  /*app.register(require('@fastify/view'), {
     engine: {
       handlebars: require('handlebars'),
     },
@@ -76,7 +76,7 @@ async function bootstrap() {
         error: '/partials/error.hbs',
       },
     },
-  });
+  });*/
 
 
   const port = 3000;

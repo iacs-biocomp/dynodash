@@ -11,18 +11,19 @@ import {
   Put,
   Res,
   Render,
+  Session
 } from '@nestjs/common';
 import { Response } from 'express';
 //import { HttpExceptionFilterDB } from 'src/common/exceptionFilters/globalFilterExpress';
 import { CrearTemplateDTO } from './templateDTO';
 import { TemplatesService } from './templates.service';
-
+import * as secureSession from '@fastify/secure-session';
 /**
  *
  */
 @Controller('template')
 export class TemplatesController {
-  constructor(private templateService: TemplatesService) {}
+  constructor(private templateService: TemplatesService) { }
 
   /**
    * Returns the list of templates as JSON 
@@ -33,17 +34,17 @@ export class TemplatesController {
     return await this.templateService.getTemplateList();
   }
 
-  
+
   /**
    * Returns a page with the list of templates
    * @returns
    */
   @Get('list')
   @Render('templates/templateList.hbs')
-  async templateList() {
+  async templateList(@Session() session: secureSession.Session) {
     try {
       const list = await this.templateService.getTemplateList();
-      return { title: 'List of templates', items: list };
+      return { title: 'List of templates', items: list, username: session.user };
     } catch (Error) {
       console.log(Error);
     }

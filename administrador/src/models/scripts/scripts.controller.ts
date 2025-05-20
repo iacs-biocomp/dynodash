@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res, Render, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res, Render, UseFilters, Session } from '@nestjs/common';
 import { Response } from 'express';
 import { ScriptsService } from './scripts.service';
 import { Script } from './script.schema'
-
+import * as secureSession from '@fastify/secure-session';
 
 /**
  * 
@@ -27,12 +27,13 @@ export class ScriptsController {
    */
   @Get('list')
   @Render('scripts/scriptList.hbs')
-  async scriptList() {
+  async scriptList(@Session() session: secureSession.Session) {
     console.log('En scriptList');
     try {
       const list = await this.scriptService.getScriptList();
       return { title: 'List of scripts',
-               items: list
+               items: list,
+               username: session.user
             };     
     } catch (Error) {
       console.log(Error);

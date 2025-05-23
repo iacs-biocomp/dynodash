@@ -3,13 +3,11 @@ import { DashboardController } from './dashboard.controller';
 import { DashboardService } from './dashboard.service';
 
 import { MongooseModule } from '@nestjs/mongoose';
-import {
-  DashboardSchema,
-  ScriptSchema,
-  TemplateSchema,
-  WidgetSchema,
-} from './schemas';
 import { AppService } from 'src/app.service';
+import { DashboardSchema } from './schemas/dashboard.schema';
+import { ScriptSchema } from '../scripts/script.schema';
+import { TemplateSchema } from '../template/template.schema';
+import { WidgetSchema } from '../widgets/widget.schema';
 
 @Module({
   imports: [
@@ -21,6 +19,7 @@ import { AppService } from 'src/app.service';
     ]),
   ],
   controllers: [DashboardController],
-  providers: [DashboardService, AppService],
+  providers: [DashboardService],
+  exports: [DashboardService]
 })
 export class DashboardModule {}

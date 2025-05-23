@@ -1,51 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Midas - Mouldifi. A fully responsive, HTML5 based admin theme">
-    <meta name="keywords" content="Responsive, HTML5, admin theme, business, professional, Mouldifi, web design, CSS3">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Midas - Mouldifi. A fully responsive, HTML5 based admin theme">
+  <meta name="keywords" content="Responsive, HTML5, admin theme, business, professional, Mouldifi, web design, CSS3">
 
-    <title>BIGAN Gestión Clínica</title>
+  <title>{{pageName}}</title>
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/cdn/fontawesome-free-6.4.0/css/all.min.css">
+  <link rel='stylesheet' type='text/css' media='screen' href='/css/style.css'>
+  <link href="/cdn/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/cdn/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/cdn/js/jquery-3.6.3.min.js"></script>
+  <script src="/cdn/js/knockout-3.5.1.js"></script>
+  <script src="https://unpkg.com/d3@5.16.0/dist/d3.min.js"></script>
+  <script src="https://unpkg.com/topojson@3"></script>
+  <script src="/cdn/js/funcionesGlobales.js"></script>
+  <script src="/cdn/js/viewModel.js"></script>
 
-    <link rel="stylesheet" href="/cdn/fontawesome-free-6.4.0/css/all.min.css">
-    <link rel='stylesheet' type='text/css' media='screen' href='/css/style.css'>
-    <link href="/cdn/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/cdn/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/cdn/js/jquery-3.6.3.min.js"></script>
-    <script src="/cdn/js/knockout-3.5.1.js"></script>
-    <script src="https://unpkg.com/d3@5.16.0/dist/d3.min.js"></script>
-    <script src="https://unpkg.com/topojson@3"></script>
-    <script src="/cdn/js/funcionesGlobales.js"></script>
-    <script src="/cdn/js/viewModel.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
 
+    .main-section {
+      background-image: url('/images/background_atlas.jpg');
+      background-repeat: no-repeat;
+      background-position: bottom left;
+      background-attachment: scroll;
+      min-height: 30vh;
+      color: #ffffff;
+    }
 
+    .container {
+      width: 90%;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    h1 {
+      font-size: 45px;
+      margin-bottom: 10px;
+    }
+
+    .special-heading-border {
+      border-bottom: 2px solid #ffffff;
+      width: 100px;
+      margin-top: 10px;
+    }
+
+    .heading {
+      display: flex;
+      align-items: center;
+    }
+
+    .heading .logo img {
+      vertical-align: middle;
+      max-height: 45px;
+    }
+
+    .heading .subtext img {
+      vertical-align: middle;
+      max-height: 25px;
+      margin-left: 10px;
+    }
+  </style>
 </head>
 
 <body oncontextmenu="return true;">
 
-    <div class="p-2" title=""
-        style="visibility: visible; color: rgb(102, 102, 102); font-family: Arial; font-size: 22px; font-style: normal; font-weight: bold; width: 78.8%; left: 2.6%; top: 2.8%; opacity: 1;">
-        ATLAS DE HOSPITALIZACIONES POTENCIALMENTE EVITABLES POR CONDICIONES CRÓNICAS 2018-2020
-    </div>
+  {{{body}}}
+  <!-- /page container -->
 
-    {{{body}}}
-    <!-- /page container -->
+  <script>
+    window.open = function (url, name, features, replace) {
+      $('#iframe').attr('src', url);
+    }
 
-
-    <script>
-
-        window.open = function (url, name, features, replace) {
-            $('#iframe').attr('src', url);
-        }
-
-        function resizeIframe(obj) {
-            obj.style.height = (obj.contentWindow.document.body.scrollHeight) + 'px';
-        }
-
-    </script>
+    function resizeIframe(obj) {
+      obj.style.height = (obj.contentWindow.document.body.scrollHeight) + 'px';
+    }
+  </script>
 
 </body>
 

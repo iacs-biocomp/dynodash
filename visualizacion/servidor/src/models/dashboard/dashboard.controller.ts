@@ -44,7 +44,8 @@ export class DashboardController {
     try {
       const html = await this.dbService.getHTML(dashboardId);
       return res.render('main', {
-          html: html
+          html: html,
+          pageName: "Informe Atlas"
       });
     } catch (Error) {
       console.log(Error);

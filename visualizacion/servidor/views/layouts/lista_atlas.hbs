@@ -1,0 +1,99 @@
+{{>cabecera}}
+
+
+<div class="container py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {{#each dashboards}}
+            <div class="atlas-card card mx-auto mb-4 d-none" data-index="{{@index}}">
+                <div class="card-body">
+                    <h5 class="card-title">{{code}}</h5>
+                    <p class="card-text">{{description}}</p>
+                    <a href="/page/id/{{id_dashboard}}" target="_blank" class="btn btn-outline-primary mt-3" title="Ir al dashboard">
+                        <i class="fas fa-arrow-right me-2"></i> Ver
+                    </a>
+                </div>
+            </div>
+            {{/each}}
+
+            <nav>
+                <ul class="pagination justify-content-center" id="pagination">
+                    <li class="page-item disabled" id="prev-btn">
+                        <a class="page-link" href="#">Anterior</a>
+                    </li>
+                    <!-- Page buttons will be injected here -->
+                    <li class="page-item" id="next-btn">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const cards = Array.from(document.querySelectorAll(".atlas-card"));
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const pagination = document.getElementById("pagination");
+
+        const itemsPerPage = 3;
+        const totalPages = Math.ceil(cards.length / itemsPerPage);
+        let currentPage = 0;
+
+        function renderPaginationButtons() {
+            for (let i = 0; i < totalPages; i++) {
+                const li = document.createElement("li");
+                li.className = `page-item ${i === 0 ? 'active' : ''}`;
+                li.dataset.page = i;
+
+                const a = document.createElement("a");
+                a.className = "page-link";
+                a.href = "#";
+                a.textContent = i + 1;
+
+                li.appendChild(a);
+                pagination.insertBefore(li, nextBtn);
+
+                li.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    updateView(i);
+                });
+            }
+        }
+
+        function updateView(pageIndex) {
+            const start = pageIndex * itemsPerPage;
+            const end = start + itemsPerPage;
+
+            cards.forEach((card, i) => {
+                card.classList.toggle("d-none", i < start || i >= end);
+            });
+
+            document.querySelectorAll(".pagination .page-item").forEach(item => {
+                item.classList.remove("active");
+            });
+            const activeItem = document.querySelector(`.pagination .page-item[data-page="${pageIndex}"]`);
+            if (activeItem) activeItem.classList.add("active");
+
+            prevBtn.classList.toggle("disabled", pageIndex === 0);
+            nextBtn.classList.toggle("disabled", pageIndex === totalPages - 1);
+
+            currentPage = pageIndex;
+        }
+
+        prevBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (currentPage > 0) updateView(currentPage - 1);
+        });
+
+        nextBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (currentPage < totalPages - 1) updateView(currentPage + 1);
+        });
+
+        renderPaginationButtons();
+        updateView(0);
+    });
+</script>

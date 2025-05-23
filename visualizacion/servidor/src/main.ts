@@ -34,20 +34,6 @@ async function bootstrap() {
   app.engine('.hbs', hbs.engine);
   app.set('view engine', '.hbs');
 
-  /*app.setBaseViewsDir(join(__dirname, '..','..', 'views/layouts'));
-  app.setViewEngine('hbs');
-  hbs.registerPartials(join(__dirname, '..','..', '/views/partials'));
-  app.engine(
-    'hbs',
-    () => hbs.create({
-      extname: 'hbs',
-      defaultLayout: 'index',
-      layoutsDir: join(__dirname, '..','..','views', 'layouts'),
-      partialsDir: join(__dirname, '..','..', 'views', 'partials'),
-      //helpers
-    }),
-  );*/
-
   const db = mongoose.connection;
   db.on('error', (error) => console.error('Error de conexión a MongoDB:', error));
   db.once('open', () => console.log('Conexión exitosa a MongoDB'));

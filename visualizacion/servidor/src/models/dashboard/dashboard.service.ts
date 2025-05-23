@@ -3,14 +3,10 @@ import * as Handlebars from 'handlebars';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Buffer } from 'buffer';
-import {
-  DashboardType,
-  ScriptType,
-  TemplateType,
-  Widget,
-  WidgetType,
-} from './schemas';
-
+import { Dashboard, DashboardType } from './schemas/dashboard.schema';
+import { ScriptType } from '../scripts/script.schema';
+import { TemplateType } from '../template/template.schema';
+import { Widget, WidgetType } from '../widgets/widget.schema';
 
 
 @Injectable()
@@ -28,6 +24,13 @@ export class DashboardService {
   // Este array es estatico y solo se modificará cuando se refresque la página del buscador y se encuentren agumentos "type" nuevos.
   private scriptTypes = [];
 
+  /**
+   * Gets the list of all dashboards
+   * @returns
+   */
+  async getDashboardList(): Promise<Dashboard[]> {
+    return await this.dashboardModel.find().lean();
+  }
 
   /**
    * Esta funcion busca un objeto template por el atributo code
@@ -94,10 +97,6 @@ export class DashboardService {
     return html;
   }
 
-  
-
-
-
   /**
    * 
    * @param scriptName 
@@ -135,11 +134,6 @@ export class DashboardService {
     const HTMLdecoded = Buffer.from(content, 'base64').toString('utf-8');
     return HTMLdecoded;
   }
-
-
-
-
-
   /**
    * Returns an array set of unique tags in the form {{{tag}}}
    * on a given text
@@ -387,10 +381,6 @@ export class DashboardService {
     }
     return this.scriptTypes;
   }
-
-
-
-
 
   /**
    *

@@ -52,3 +52,6 @@ export function lista(items, options) {
     return "<p>No hay opciones disponibles.</p>"
 }
 
+export function inc (value) {
+  return parseInt(value) + 1;
+};

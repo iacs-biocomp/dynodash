@@ -7,6 +7,8 @@ import { Dashboard, DashboardType } from './schemas/dashboard.schema';
 import { ScriptType } from '../scripts/script.schema';
 import { TemplateType } from '../template/template.schema';
 import { Widget, WidgetType } from '../widgets/widget.schema';
+import { DocumentoService } from '../documents/documento.service';
+import { Documento } from '../documents/documento.schema';
 
 
 @Injectable()
@@ -19,7 +21,8 @@ export class DashboardService {
     @InjectModel('Script') private scriptModel: Model<ScriptType>,
     @InjectModel('Template') private templateModel: Model<TemplateType>,
     @InjectModel('Widget') private widgetModel: Model<WidgetType>,
-  ) {}
+    private documentoService: DocumentoService
+  ) { }
 
   // Este array es estatico y solo se modificará cuando se refresque la página del buscador y se encuentren agumentos "type" nuevos.
   private scriptTypes = [];
@@ -65,7 +68,7 @@ export class DashboardService {
 
     for (const tag of tags) { //let index = 0; index < tags.length; index++) {
       //this.logger.debug("tag " + tag)
-      
+
       //Se recoge el id del frame
       const id = tag.split('_')[1];
       //this.logger.debug("id " + id)
@@ -73,7 +76,7 @@ export class DashboardService {
       //Se seleccionan los widgets cuyo frame coincide con el id del frame del dashboard
       arrayWidgets = widgets.filter((widget) => widget.frame == id);
 
-      const dashboardStruct = await this.buildDashboard ( arrayWidgets );
+      const dashboardStruct = await this.buildDashboard(arrayWidgets);
       javaScriptSpecific += dashboardStruct.script;
       //Solo es valido el array obtenido el el último loop, ya que el array estará completo con todos los nombres de widgets.
       namesScriptGeneric = dashboardStruct.libs;
@@ -81,7 +84,7 @@ export class DashboardService {
       map.set(tag, dashboardStruct.html);
     }
 
-    javaScriptGeneric = await this.buildGlobalScript( namesScriptGeneric );
+    javaScriptGeneric = await this.buildGlobalScript(namesScriptGeneric);
 
     //construccion del JSON
     const frameMap = this.buildFrameMap(tags, map);
@@ -107,9 +110,9 @@ export class DashboardService {
     const { content } = await this.scriptModel.findOne({ name: scriptName });
     let scriptDecoded = '';
     if (content) {
-       scriptDecoded = Buffer.from(content, 'base64').toString('utf-8');
+      scriptDecoded = Buffer.from(content, 'base64').toString('utf-8');
     }
-   return scriptDecoded;
+    return scriptDecoded;
   }
 
 
@@ -121,6 +124,15 @@ export class DashboardService {
   async getWidget(name: string): Promise<Widget> {
     const widget = await this.widgetModel.findOne({ type: name });
     return widget;
+  }
+
+  decodeDocumento = (documento: Documento) : string => {
+    if (!documento) {
+      return ""
+    }
+    const content = documento.content
+    const HTMLdecoded = Buffer.from(content, 'base64').toString('utf-8');
+    return HTMLdecoded;
   }
 
 
@@ -141,43 +153,43 @@ export class DashboardService {
    * @param text
    * @returns
    */
-    findTags(text: string): string[] {
-      const re = /\{[{]+([^{}][^{}]*)\}\}\}/g;
-      const matches = [...text.matchAll(re)];
-      const tagMatched = matches.map(m => m[1])
-      //console.log("tagMatched: ", tagMatched)
-      // Each label only once
-      const singleTags = [ ... new Set(tagMatched)]
-      //console.log("singleTags: ", singleTags)
-      return singleTags;
-    }
+  findTags(text: string): string[] {
+    const re = /\{[{]+([^{}][^{}]*)\}\}\}/g;
+    const matches = [...text.matchAll(re)];
+    const tagMatched = matches.map(m => m[1])
+    //console.log("tagMatched: ", tagMatched)
+    // Each label only once
+    const singleTags = [... new Set(tagMatched)]
+    //console.log("singleTags: ", singleTags)
+    return singleTags;
+  }
 
 
-    /**
-   *
-   * Esta funcion construye un JSON especifico para compilar cada template de Handlebars.
-   *
-   * Un campo del JSON tendra como clave el nombre de la etiqueta y como valor el contenido del map con el mismo nombre que la etiqueta.
-   *
-   * El map contiene todos los campos de un Widget del arrayWidgets.
-   *
-   * @param etiquetas
-   * @param map
-   * @returns
-   */
+  /**
+ *
+ * Esta funcion construye un JSON especifico para compilar cada template de Handlebars.
+ *
+ * Un campo del JSON tendra como clave el nombre de la etiqueta y como valor el contenido del map con el mismo nombre que la etiqueta.
+ *
+ * El map contiene todos los campos de un Widget del arrayWidgets.
+ *
+ * @param etiquetas
+ * @param map
+ * @returns
+ */
   buildFrameMap(tags: string[], map: Map<string, string>) {
     let data = {};
-
+    
     //Si no hay etiquetas se devuelve un json vacio
     if (tags.length == 0) {
       return data;
     }
 
     //Se construye el JSON
-    for (let [index,tag] of tags.entries()) {
+    for (let [index, tag] of tags.entries()) {
       let t = map.get(tag)
-      if (t) t=t.replace(/(\r\n|\n|\r|\t)/gm, "")  //delete CR/LF in Json
-      if (t) t=t.replace(/([ ]+)/gm, " ")  //delete CR/LF in Json
+      if (t) t = t.replace(/(\r\n|\n|\r|\t)/gm, "")  //delete CR/LF in Json
+      if (t) t = t.replace(/([ ]+)/gm, " ")  //delete CR/LF in Json
       data[tag] = t;
     }
     return data;
@@ -199,13 +211,13 @@ export class DashboardService {
    * @param widgets
    * @returns string[]
    */
-  async buildDashboard (
+  async buildDashboard(
     arrayWidgets: Record<string, any>[],
   ): Promise<any> {
-    
+    console.log("arra", arrayWidgets)
     const content = {
-      html: '', 
-      script: '', 
+      html: '',
+      script: '',
       libs: []
     };
     let scriptTypes: string[] = [];
@@ -240,10 +252,14 @@ export class DashboardService {
    * @returns
    */
   async buildFrame(widget: Record<string, any>): Promise<string> {
-    const { frame, order, type, url, doc, title, info, label } = widget;
+    const { frame, order, type, url, doc, grant, title, info, label } = widget;
+    //console.log("title", widget)
     const { template } = await this.getWidget(type);
+    const documento = await this.documentoService.getDocumento(doc)
+    const contenidoDocumento = this.decodeDocumento(documento)
     const templateDecoded = await this.getTemplateContent(template);
-
+    //console.log("template", template)
+    //console.log("decoded", templateDecoded)
     // Look for tags in template
     const tags = this.findTags(templateDecoded);
 
@@ -254,8 +270,8 @@ export class DashboardService {
     //const tagNames = ['title', 'info', 'label', 'url', 'doc'];
     const tagNames = Object.keys(widget._doc);
     // this.logger.debug("tagNames", tagNames);
+    //console.log("tagNames", tagNames)
 
-    
     for (let tag of tagNames) {
       let value = widget[tag];
       // console.log ("tag_value: ", tag, widget[tag]);
@@ -264,11 +280,15 @@ export class DashboardService {
           map.set(tag + '_' + (j + 1), value[j]);
         }
       } else {
-        if (tag == 'doc' && value)
+        if (tag == 'doc' && value) {
           value = Buffer.from(value, 'base64').toString('utf-8');
+          value = contenidoDocumento
+        }
         map.set(tag, value);
       }
     }
+
+    //console.log("map", map)
 
     //se ejecuta la funcion crearJSON que toma como parametros el array de etiquetas y el map y devolvera un JSON
     const frameMap = this.buildFrameMap(tags, map);
@@ -276,61 +296,62 @@ export class DashboardService {
 
     //Se compila la templateDecoded con el JSON
     const compiledTemplate = Handlebars.compile(templateDecoded);
+    //console.log("fram", frameMap)
     const html = compiledTemplate(frameMap);
     return html;
-  }  
+  }
 
 
 
 
 
-    /**
-   *
-   * Esta funcion recibe como parametro un array de widgets.
-   *
-   * Contruye el javaScript específico para cada frame incluyendo su frame_id y url.
-   *
-   * @param widget
-   * @returns
-   */
-    async buildWidgetScript(widget: Record<string, any>): Promise<string> {
-      let script = '';
-      let javaScriptSpecific = '';
-  
-      const { frame, order, url, js, label } = widget;
-      
-      //this.logger.log("buildWidgetScript:")
-      //this.logger.log(widget)
-  
-      //construir el javascript especifico de los templates
-      if (js) {
-        javaScriptSpecific = await this.getScript(js);
-        // in js we can refer a stored script, or store inline script
-        if (!javaScriptSpecific) {
-          javaScriptSpecific = js;
-        }
+  /**
+ *
+ * Esta funcion recibe como parametro un array de widgets.
+ *
+ * Contruye el javaScript específico para cada frame incluyendo su frame_id y url.
+ *
+ * @param widget
+ * @returns
+ */
+  async buildWidgetScript(widget: Record<string, any>): Promise<string> {
+    let script = '';
+    let javaScriptSpecific = '';
 
-        //this.logger.debug("Script del widget:")
-        //this.logger.debug(javaScriptSpecific)
-        const scriptTags = this.findTags(javaScriptSpecific);
-  
-        const map = new Map<string, string>();
-        map.set('frame_id', frame + '_' + order);
-        map.set('url', url);
-        map.set('label', label);
-  
-        //Se aplica la funcion de crear JSON
-        const frameMap = this.buildFrameMap(scriptTags, map);
-  
-        //Se compila la javaScriptSpecific con el JSON
-        const compiledScript = Handlebars.compile(javaScriptSpecific);
-        script = compiledScript(frameMap);
+    const { frame, order, url, js, label } = widget;
+
+    //this.logger.log("buildWidgetScript:")
+    //this.logger.log(widget)
+
+    //construir el javascript especifico de los templates
+    if (js) {
+      javaScriptSpecific = await this.getScript(js);
+      // in js we can refer a stored script, or store inline script
+      if (!javaScriptSpecific) {
+        javaScriptSpecific = js;
       }
-  
-      //this.logger.debug(`Construyendo script de widget ${frame} ${order}: ${url}, ${label}`)
-      //console.log(script)
-      return script;
+
+      //this.logger.debug("Script del widget:")
+      //this.logger.debug(javaScriptSpecific)
+      const scriptTags = this.findTags(javaScriptSpecific);
+
+      const map = new Map<string, string>();
+      map.set('frame_id', frame + '_' + order);
+      map.set('url', url);
+      map.set('label', label);
+
+      //Se aplica la funcion de crear JSON
+      const frameMap = this.buildFrameMap(scriptTags, map);
+
+      //Se compila la javaScriptSpecific con el JSON
+      const compiledScript = Handlebars.compile(javaScriptSpecific);
+      script = compiledScript(frameMap);
     }
+
+    //this.logger.debug(`Construyendo script de widget ${frame} ${order}: ${url}, ${label}`)
+    //console.log(script)
+    return script;
+  }
 
 
 
@@ -349,7 +370,7 @@ export class DashboardService {
 
     if (scriptTypes && scriptTypes.length > 0) {
       for (let widgetType of scriptTypes) {
-        const { js: javas } = await this.getWidget( widgetType );
+        const { js: javas } = await this.getWidget(widgetType);
         //contruir etiqueta de javascript
         if (javas) {
           if (javas.startsWith('/')) {
@@ -389,20 +410,20 @@ export class DashboardService {
    * @param arrayWidgets
    * @returns
    */
-    sortWidgets(
-      arrayWidgets: Record<string, any>[],
-    ): Record<string, any>[] {
-      const arrayWidgetsOrdenado = arrayWidgets.sort(function (a, b) {
-        if (a.order > b.order) {
-          return 1;
-        }
-        if (a.order < b.order) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
-      return arrayWidgetsOrdenado;
-    }
+  sortWidgets(
+    arrayWidgets: Record<string, any>[],
+  ): Record<string, any>[] {
+    const arrayWidgetsOrdenado = arrayWidgets.sort(function (a, b) {
+      if (a.order > b.order) {
+        return 1;
+      }
+      if (a.order < b.order) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+    return arrayWidgetsOrdenado;
+  }
 
 }

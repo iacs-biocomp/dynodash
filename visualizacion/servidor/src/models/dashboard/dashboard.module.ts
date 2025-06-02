@@ -8,6 +8,8 @@ import { DashboardSchema } from './schemas/dashboard.schema';
 import { ScriptSchema } from '../scripts/script.schema';
 import { TemplateSchema } from '../template/template.schema';
 import { WidgetSchema } from '../widgets/widget.schema';
+import { DocumentoService } from '../documents/documento.service';
+import { DocumentoModule } from '../documents/documento.module';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { WidgetSchema } from '../widgets/widget.schema';
       { name: 'Template', schema: TemplateSchema },
       { name: 'Widget', schema: WidgetSchema },
     ]),
+    DocumentoModule
   ],
   controllers: [DashboardController],
   providers: [DashboardService],

@@ -39,10 +39,10 @@ export class AppController {
    }*/
 
   @UseGuards(LocalAuthGuard, DeletedSession)
-  @UseGuards(DeletedSession)
   @UseFilters(new HttpExceptionFilter())
   @Post('auth/login')
   async login(@Req() req, @Res() res: Response, @Session() session) {
+    console.log("entra")
     session.visits = (session.visits || 0) + 1;
     session.authenticated = true;
     const username = req.body.username;

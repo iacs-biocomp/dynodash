@@ -3,12 +3,13 @@
     <div class="col-sm-6">
         <h1>Lista de scripts</h1>
         <hr>
-
+        <a href="/script/add" class="btn btn-success mb-3"><i class="fa fa-plus"></i> Añadir script</a>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Descripción</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -17,6 +18,7 @@
                     {{#with this}}
                     <td><a href="/script/editor/{{name}}" class="text-decoration-none">{{name}}</a></td>
                     <td>{{description}}</td>
+                    <td class="text-center"><a href="javascript: modalDelete('{{name}}')" class="text-danger"><i class='fas fa-trash'></i></a></td>
                     {{/with}}
                 </tr>
                 {{/each}}
@@ -25,3 +27,53 @@
 
     </div>
 </div>
+
+<!-- Modal Confirmación -->
+<div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirm-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="confirm-modal-label">Confirmar</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="modal-btn-si">Sí</button>
+        <button type="button" class="btn btn-secondary" id="modal-btn-no" data-bs-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+var modalConfirm = function(callback){
+  $("#modal-btn-si").on("click", function(){
+    callback(true);
+    $("confirm-modal").modal('hide');
+  });
+  $("#modal-btn-no").on("click", function(){
+    callback(false);
+    $("#confirm-modal").modal('hide');
+  });
+};
+
+function modalDelete(code) {
+    modalConfirm(function(confirm){
+    if(confirm){
+        $.ajax({
+            url: '/script/' + code,
+            type: 'DELETE',
+            success: function(result) {
+                $("#confirm-modal").modal('hide');
+                alert('Script borrada correctamente');
+                location.reload();
+            }
+        });
+    }
+
+    });
+    //$("#myModalLabel").html(`¿Realmente desea borrar la plantilla ${code} ?`)
+    $("#confirm-modal").modal('show');
+}
+
+</script>

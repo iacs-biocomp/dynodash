@@ -24,7 +24,7 @@ import { AppService } from 'src/app.service';
   CrearWidgetDTO,
 } from './dto';
 */
-@Controller('page')
+@Controller('atlas')
 export class DashboardController {
   constructor(
     private dbService: DashboardService,

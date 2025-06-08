@@ -38,7 +38,7 @@ async function bootstrap() {
   db.on('error', (error) => console.error('Error de conexión a MongoDB:', error));
   db.once('open', () => console.log('Conexión exitosa a MongoDB'));
 
-  const port = 8080;
+  const port = parseInt(process.env.PORT, 10) || 8080;
 
   /*Solo mantener en desarrollo. 
   Permite solicitudes HTTP realizadas desde un origen (dominio, protocolo y puerto) diferente al origen del recurso solicitado.

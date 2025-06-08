@@ -1,23 +1,25 @@
-<div>
-	<a href="/script/list">Listado de scripts</a>
+<div class="my-3">
+  <a href="/script/list" class="btn btn-outline-secondary">← Listado de scripts</a>
 </div>
 
-<h2>{{script}}</h2>
+<div class="container mt-4">
+  <h1 class="mb-4">Editor de Script: <span class="text-primary">{{script}}</span></h1>
 
-<form>
-  <div class="form-group">
-    <label for="description">Descripción</label>
-    <input type="text" class="form-control" id="description" placeholder="Descripcion">
+  <form>
+    <div class="mb-4">
+      <label for="description" class="form-label">Descripción</label>
+      <input type="text" class="form-control" id="description" placeholder="Descripción del script">
+    </div>
+  </form>
+
+  <div class="mb-4">
+    <label class="form-label">Código</label>
+    <div id="container" style="height: 600px; border: 1px solid #ced4da; border-radius: .25rem;"></div>
   </div>
-</form>
 
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-8 offset-2">
-			<div id="container" style="height: 600px; border: 1px solid grey"></div>
-			<button id="saveButton" type="button" class="btn btn-primary" disabled>Guardar</button>
-		</div>
-	</div>
+  <div class="d-flex justify-content-end">
+    <button id="saveButton" type="button" class="btn btn-success" disabled><i class="fas fa-save"></i> Guardar</button>
+  </div>
 </div>
 
 <!-- OR ANY OTHER AMD LOADER HERE INSTEAD OF loader.js -->

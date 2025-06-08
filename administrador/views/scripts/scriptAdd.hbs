@@ -1,6 +1,6 @@
 
 <div class="my-3">
-  <a href="/template/list" class="btn btn-outline-secondary">← Listado de plantillas</a>
+  <a href="/script/list" class="btn btn-outline-secondary">← Listado de script</a>
 </div>
 <h2>
     <form>
@@ -39,26 +39,26 @@
 			language: 'html'
 		});
 		var template = {
-			code: '',
+			name: '',
 			description: '',
 			content: '',
 		};
 		$("#saveButton").click(function () {
-			template.code = $('#code').val();
+			template.name = $('#code').val();
 			template.description = $('#description').val();
 			template.content = editor.getValue();
 
 			$.ajax({
-				url: '/template',
+				url: '/script',
 				type: 'POST',
 				data: template,
 				success: function (data) {
-					alert('Plantilla grabada correctamente');
+					alert('Script grabado correctamente');
 					$('#saveButton').prop('disabled', true);
-					window.location.href = '/template/list';
+					window.location.href = '/script/list';
 				},
 				error: function (error) {
-					console.error('Error al crear la plantilla:', error);
+					console.error('Error al crear el script:', error);
 				},
 			});
 			

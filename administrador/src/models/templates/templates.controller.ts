@@ -87,6 +87,7 @@ export class TemplatesController {
   @Get('add')
   @Render('templates/templateAdd.hbs')
   addTemplate(@Param('id') id: string) {
+    console.log(id)
     return { title: 'Añadir', template: id };
   }
 

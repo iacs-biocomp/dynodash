@@ -71,7 +71,11 @@ export class ScriptsController {
     return { title: 'Editor', script: id };
   }
 
-
+  @Get('add')
+  @Render('scripts/scriptAdd.hbs')
+  addScript(@Param('id') id: string) {
+    return { title: 'Añadir', template: id };
+  }
 
 
   /**
